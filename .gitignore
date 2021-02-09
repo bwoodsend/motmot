@@ -115,3 +115,6 @@ ENV/
 
 # Misc
 .fuse_hidden*
+
+# Test dump
+tests/_data
