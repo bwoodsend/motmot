@@ -29,6 +29,10 @@ def test_basics():
     assert np.array_equal(self.vertices, mesh.vertices)
     assert self.name == "octopus"
 
+    # Length and per_polygon should be the same for both types of mesh.
+    assert len(mesh) == len(self) == len(mesh.vectors)
+    assert mesh.per_polygon == self.per_polygon == mesh.vectors.shape[1]
+
     # Test generating vectors from vertices/ids.
     assert np.array_equal(self.vectors, mesh.vectors)
     assert self._vertex_table.unique_count == len(self.vertices)

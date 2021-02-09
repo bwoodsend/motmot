@@ -149,7 +149,7 @@ class Mesh(object):
         """Indices of vertices used to construct each polygon.
 
         Returns:
-            Integer array with shape :py:`(len(mesh), vertices per polygon)`.
+            Integer array with shape :py:`(len(mesh), mesh.per_polygon)`.
 
         """
         if self.is_ids_mesh:
@@ -171,7 +171,7 @@ class Mesh(object):
         """The :py:`(x, y, z)` coordinates of each corner of each polygon.
 
         Returns:
-            An :py:`(number of polygons, vertices per polygon, 3)` shaped array.
+            An :py:`(number of polygons, mesh.per_polygon, 3)` shaped array.
 
         """
         if self.is_ids_mesh:
@@ -196,3 +196,12 @@ class Mesh(object):
     v2 = _subsample(
         "v2", idx[:, 2], "The 3\\ :superscript:`rd` corner of each polygon. "
         "Equivalent to :py:`mesh.vectors[:, 2]`.")
+
+    def __len__(self):
+        """Length is defined as the number of polygons."""
+        return len(self.__ids__ if self.is_ids_mesh else self.__vectors__)
+
+    @property
+    def per_polygon(self) -> int:
+        """The number of corners each polygon has."""
+        return (self.__ids__ if self.is_ids_mesh else self.__vectors__).shape[1]
