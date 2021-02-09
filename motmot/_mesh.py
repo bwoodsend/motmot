@@ -9,6 +9,7 @@ import warnings
 from typing import Optional
 
 import numpy as np
+import numpy
 from stl.mesh import Mesh as _Mesh
 from hoatzin import HashTable
 
@@ -82,6 +83,8 @@ class Mesh(object):
             self.is_ids_mesh = True
             dtype = self.__vertices__.dtype
         self.name = name
+
+        self._bounds = np.empty((2, 3), dtype)
 
     _vertex_table: HashTable
 
@@ -205,3 +208,36 @@ class Mesh(object):
     def per_polygon(self) -> int:
         """The number of corners each polygon has."""
         return (self.__ids__ if self.is_ids_mesh else self.__vectors__).shape[1]
+
+    @cached_property
+    def max(self) -> np.ndarray:
+        """The maximum ``x``, ``y`` and ``z`` value. Shares memory with
+        :attr:`bounds`."""
+        self._bounds[1] = [i.max() for i in (self.x, self.y, self.z)]
+        return self._bounds[1]
+
+    @cached_property
+    def min(self) -> np.ndarray:
+        """The minimum ``x``, ``y`` and ``z`` value. Shares memory with
+        :attr:`bounds`."""
+        self._bounds[0] = [i.min() for i in (self.x, self.y, self.z)]
+        return self._bounds[0]
+
+    @cached_property
+    def dims(self) -> np.ndarray:
+        """The overall length, width and height of the mesh. Or the difference
+        between :attr:`max` and :attr:`min`."""
+        return self.max - self.min
+
+    @property
+    def bounds(self) -> np.ndarray:
+        """The minimum and maximum ``(x, y, z)`` values. Equivalent to
+        :py:`array([mesh.min, mesh.max])`.
+
+        Returns:
+            2D array with shape :py:`(2, 3)`.
+
+        """
+        self.min
+        self.max
+        return self._bounds

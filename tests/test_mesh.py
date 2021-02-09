@@ -65,3 +65,16 @@ def test_slices():
     y = np.arange(40).reshape((10, 4))
     self.y = y
     assert np.array_equal(self.vectors[:, :, 1], y)
+
+
+def test_bounds():
+    """Test the min, max, bounds and dims attributes of Mesh."""
+    self = Mesh(np.empty((10, 2, 3), dtype=np.uint8))
+    self.x = np.arange(20).reshape((10, 2))
+    self.y = np.arange(50, 70).reshape((10, 2))
+    self.z = 200
+    assert self.bounds.tolist() == [[0, 50, 200], [19, 69, 200]]
+    assert self.dims.tolist() == [19, 19, 0]
+    # min and max should be aliases for bounds[0] and bounds[1].
+    assert np.shares_memory(self.min, self.bounds[0])
+    assert np.shares_memory(self.max, self.bounds[1])
