@@ -90,6 +90,14 @@ with open("rst_prolog.txt") as f:
 # Add mappings for :class:`xxx` cross references to non-motmot docs.
 intersphinx_mapping = {
     'python': ('http://docs.python.org/3', None),
+    'numpy': ('https://numpy.org/doc/stable/', None),
+}
+
+# Autodoc defaults.
+autodoc_default_options = {
+    'members': True,
+    'special-members': '__init__',
+    'undoc-members': True,
 }
 
 # -- Options for HTML output -------------------------------------------

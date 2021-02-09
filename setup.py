@@ -25,7 +25,7 @@ setup(
         'Programming Language :: Python :: 3.9',
     ],
     description="A sophisticated mesh class for analysing 3D surfaces.",
-    install_requires=[],
+    install_requires=["numpy", "hoatzin"],
     extras_require={
         "test": [
             'pytest>=3', 'pytest-order', 'coverage', 'pytest-cov',
