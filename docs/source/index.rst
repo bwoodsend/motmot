@@ -6,6 +6,7 @@
     :caption: Contents:
 
     stubs/mesh
+    stubs/geometry
 
 
 Indices and tables
