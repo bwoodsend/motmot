@@ -146,3 +146,12 @@ def test_rotate():
     self = Mesh(old[self.ids])
     self.rotate_using_matrix(m)
     assert np.all(self.vectors == vectors)
+
+
+def test_reset():
+    self = ids_mesh(10)
+    old = self.vectors
+    self.vertices[:] += 1
+    assert np.array_equal(self.vectors, old)
+    self.reset()
+    assert np.array_equal(self.vectors, old + 1)

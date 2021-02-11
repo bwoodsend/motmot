@@ -4,6 +4,7 @@ branch = True
 source = motmot
 plugins =
   coverage_conditional_plugin
+dynamic_context = test_function
 
 [report]
 # Regexes for lines to exclude from consideration
@@ -19,6 +20,8 @@ exclude_lines =
     if 0:
     if __name__ == .__main__.:
 ignore_errors = True
+# Coverage from tests in tests/test_laziness.py don't count.
+contexts = ^(?!\w+[.]test_laziness[.]\w+)
 
 [coverage_conditional_plugin]
 # Here we specify our pragma rules:
