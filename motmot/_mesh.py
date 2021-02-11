@@ -15,6 +15,7 @@ from hoatzin import HashTable
 
 from motmot._compat import cached_property
 from motmot._misc import idx
+from motmot import geometry
 
 
 def _subsample(name, indices, doc=""):
@@ -210,6 +211,18 @@ class Mesh(object):
         return (self.__ids__ if self.is_ids_mesh else self.__vectors__).shape[1]
 
     @cached_property
+    def vertex_counts(self) -> np.ndarray:
+        """The number of times each vertex id appears in :attr:`ids`.
+
+        Returns:
+            1D integer array with the same length as :attr:`vertices`.
+
+        """
+        counts = np.zeros(len(self.vertices), np.intc)
+        np.add.at(counts, self.ids, 1)
+        return counts
+
+    @cached_property
     def max(self) -> np.ndarray:
         """The maximum ``x``, ``y`` and ``z`` value. Shares memory with
         :attr:`bounds`."""
@@ -241,3 +254,62 @@ class Mesh(object):
         self.min
         self.max
         return self._bounds
+
+    @cached_property
+    def normals(self) -> np.ndarray:
+        """Normals to each polygon.
+
+        Returns:
+            2D array with shape :py:`(len(mesh), 3)`.
+
+        Normals point outwards provided that the polygons corners are listed in
+        counter-clockwise order (which is the usual convention).
+
+        """
+        return np.cross(self.v0 - self.v1, self.v1 - self.v2)
+
+    @cached_property
+    def areas(self) -> np.ndarray:
+        """Surface area of each polygon.
+
+        Returns:
+            1D array with length :py:`len(mesh)`.
+
+        """
+        return geometry.magnitude(self.normals) / 2
+
+    @cached_property
+    def area(self) -> float:
+        """The total surface area. This is simply the sum of :attr:`areas`."""
+        return np.sum(self.areas)
+
+    @cached_property
+    def units(self):
+        """Normalised outward :attr:`normals` for each polygon.
+
+        Returns:
+            2D array with shape :py:`(len(mesh), 3)`.
+
+        """
+        return self.normals / (self.areas[:, np.newaxis] * 2)
+
+    @cached_property
+    def vertex_normals(self) -> np.ndarray:
+        """Weighted outward normal for each vertex in :attr:`vertices`.
+
+        Returns:
+            2D array with shape :py:`(len(mesh.vertices), 3)`.
+
+        Computed as the normalised average of the surface :attr:`normals` of the
+        faces that contain that vertex. Averages are weighted by :attr:`areas`.
+
+        """
+        normals = np.zeros_like(self.vertices)
+        for ids in self.ids.T:
+            np.add.at(normals, ids, self.normals)
+
+        old = np.seterr(invalid="ignore", divide="ignore")
+        normals = geometry.normalised(normals)
+        np.seterr(**old)
+
+        return normals

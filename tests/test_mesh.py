@@ -5,7 +5,7 @@ import numpy as np
 import pytest
 
 from motmot import Mesh
-from tests import data
+from tests import data, ids_mesh, vectors_mesh
 
 pytestmark = pytest.mark.order(2)
 
@@ -78,3 +78,43 @@ def test_bounds():
     # min and max should be aliases for bounds[0] and bounds[1].
     assert np.shares_memory(self.min, self.bounds[0])
     assert np.shares_memory(self.max, self.bounds[1])
+
+
+def test_normals():
+    from motmot import geometry
+    mesh = Mesh(data.rabbit_path)
+
+    # ``inner_product(normals, vectors)`` should give the same value for each
+    # corner.
+    n_projections = geometry.inner_product(mesh.normals[:, np.newaxis],
+                                           mesh.vectors)
+
+    # Get the inner product at the 1st corner and all the corners.
+    x, y = np.broadcast_arrays(n_projections[:, 0, np.newaxis], n_projections)
+
+    # pytest.approx() seems super slow here for some reason.
+    assert np.allclose(x, y, atol=y.ptp() * 1e-5)
+
+    normals = geometry.magnitude(mesh.normals, keepdims=True) * mesh.units
+    assert np.allclose(normals, mesh.normals)
+    assert np.allclose(geometry.magnitude_sqr(mesh.units), 1)
+
+    assert np.allclose(geometry.inner_product(mesh.normals, mesh.units),
+                       mesh.areas * 2)
+    assert mesh.area > 0
+
+
+def test_vertex_normals():
+    from motmot.geometry import magnitude
+    # Create a mesh with deliberate missing vertices.
+    self = Mesh(np.random.random((10, 3)), np.random.randint(0, 8, (30, 3)))
+
+    # Bit of a non-test.
+    assert self.vertex_normals.shape == self.vertices.shape
+
+    # Vertices which appear in no polygons (and therefore have no meaningful
+    # definition of normals) must have vertex_normals [nan, nan, nan].
+    # All other vertices should have finite vertex_normals with magnitude 1.
+    invalid = self.vertex_counts == 0
+    assert magnitude(self.vertex_normals[~invalid]) == pytest.approx(1)
+    assert np.isnan(self.vertex_normals[invalid]).all()
