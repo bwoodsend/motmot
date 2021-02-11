@@ -107,6 +107,14 @@ class Mesh(object):
 
     _vertex_table: HashTable
 
+    def __repr__(self):
+        if not self.is_ids_mesh:
+            return f"<Vectors {type(self).__name__} at {hex(id(self))} | " \
+                   f"{len(self)} {self.vectors.shape[1]}-sided polygons>"
+        return f"<IDs {type(self).__name__} at {hex(id(self))} | " \
+               f"{len(self.vertices)} vertices | " \
+               f"{len(self)} {self.ids.shape[1]}-sided polygons>"
+
     @property
     def path(self) -> Optional[Path]:
         """The filename used to open this mesh. This is set to none if this mesh

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 """
+import re
+
 import numpy as np
 import pytest
 
@@ -155,3 +157,13 @@ def test_reset():
     assert np.array_equal(self.vectors, old)
     self.reset()
     assert np.array_equal(self.vectors, old + 1)
+
+
+def test_repr():
+    r = repr(Mesh(np.empty((6, 4, 3))))
+    assert re.fullmatch(
+        r'<Vectors Mesh at 0x[0-9a-fA-F]+ \| 6 4-sided polygons>', r)
+
+    r = repr(Mesh(np.empty((10, 3)), np.empty((6, 4))))
+    assert re.fullmatch(
+        r'<IDs Mesh at 0x[0-9a-fA-F]+ \| 10 vertices \| 6 4-sided polygons>', r)
