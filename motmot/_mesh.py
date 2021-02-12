@@ -391,6 +391,66 @@ class Mesh(object):
         """
         reset(self, reset_all)
 
+    def __getitem__(self, item):
+        """
+
+        :rtype: Mesh
+        """
+        if self.is_ids_mesh:
+            return type(self)(self.vertices, self.ids[item], name=self.name)
+        return type(self)(self.vectors[item], name=self.name)
+
+    def crop(self, mask, in_place=False):
+        """Return a subsample of the original mesh. Inclusion is defined by
+        **mask**.
+
+        Args:
+            mask (numpy.ndarray or slice):
+                Polygons to include.
+            in_place (bool):
+                Modify this mesh instead of making a modified copy, defaults to
+                False.
+
+        Returns:
+            Mesh:
+                This mesh if **in_place** or a new cropped one.
+
+        A minimal usage example:
+
+        .. code-block:: python
+
+            # Get only polygons with non-negative average Z-values.
+            cropped = mesh.crop(mesh.centers[:, 2] >= 0)
+
+        For an IDs based mesh this samples :attr:`ids` and leaves
+        :attr:`vertices` untouched without copying and is equivalent to::
+
+            cropped = Mesh(mesh.vertices, mesh.ids[mask], name=mesh.name)
+
+        For a vectors based mesh this function simply samples :attr:`vectors`::
+
+            cropped = Mesh(mesh.vectors[mask], name=mesh.name)
+
+        Please ensure you are aware of `when indexing copies in numpy`_ if you
+        intend to modify either the cropped or the original mesh afterwards.
+
+        .. _`when indexing copies in numpy`: https://numpy.org/doc/stable/reference/arrays.indexing.html#advanced-indexing
+
+        When **inplace** is false (default), cropping can also be achieved by
+        indexing the mesh directly::
+
+            cropped = mesh[mask]
+
+        """
+        if not in_place:
+            return self[mask]
+        if self.is_ids_mesh:
+            self.__ids__ = self.__ids__[mask]
+        else:
+            self.__vectors__ = self.__vectors__[mask]
+        self.reset()
+        return self
+
 
 cached_properties = {
     i.attrname for i in vars(Mesh).values() if isinstance(i, cached_property)

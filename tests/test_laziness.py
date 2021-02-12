@@ -40,6 +40,7 @@ modifiers = [
     lambda mesh: mesh.rotate_using_matrix(Mesh.rotation_matrix([-.5, 4, 8], 2)),
     lambda mesh: mesh.rotate([-.5, 4, .8], -.6),
     lambda mesh: mesh.rotate([-.5, 4, .8], -.6, point=[5, 7, 2]),
+    lambda mesh: mesh.crop((np.arange(len(mesh)) % 5) > 1, in_place=True),
     directly_modify,
 ] # yapf: disable
 

@@ -8,6 +8,23 @@ import hoatzin
 from motmot import Mesh
 
 
+def assert_mesh_equal(a: Mesh, b: Mesh, ignore_path=False):
+    """Check two meshes are equal.
+
+     This ignores all lazy attributes including :attr:`Mesh.normals` as they are
+     tested elsewhere.
+
+    """
+    import numpy as np
+    assert np.all(a.vectors == b.vectors)
+    assert np.all(a.ids == b.ids)
+    assert np.all(a.vertices == b.vertices)
+    assert a.name == b.name
+    if not ignore_path:
+        assert a.path == b.path
+    assert a.is_ids_mesh == b.is_ids_mesh
+
+
 def unique_vertices(n):
     n = int(n)
     table = hoatzin.HashTable(n * 3 // 2, np.dtype(None) * 3)

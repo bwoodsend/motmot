@@ -167,3 +167,18 @@ def test_repr():
     r = repr(Mesh(np.empty((10, 3)), np.empty((6, 4))))
     assert re.fullmatch(
         r'<IDs Mesh at 0x[0-9a-fA-F]+ \| 10 vertices \| 6 4-sided polygons>', r)
+
+
+@pytest.mark.parametrize("make_mesh", [ids_mesh, vectors_mesh])
+@pytest.mark.parametrize("in_place", [False, True])
+@pytest.mark.parametrize("crop_at", [np.min, np.mean, np.max])
+def test_cropped(make_mesh, in_place, crop_at):
+    mesh: Mesh = make_mesh(10)
+    threshold = crop_at(mesh.x[:, 0])
+    placebo = np.empty(len(mesh))
+    mask = mesh.x[:, 0] > threshold
+    cropped = mesh.crop(mask, in_place=in_place)
+    assert (cropped is mesh) is in_place
+    assert len(cropped) == len(placebo[mask])
+    assert len(cropped) == len(cropped.vectors)
+    assert (cropped.x[:, 0] > threshold).all()
