@@ -498,6 +498,23 @@ class Mesh(object):
                       dic["name"])
         self.path = dic["path"]
 
+    @cached_property
+    def centers(self) -> np.ndarray:
+        """The center of each polygon, defined as the mean of each polygon's
+        corners.
+
+        Returns:
+            2D array with shape :py:`(len(mesh), 3)`.
+
+        """
+        # This could just be `self.vectors.mean(axis=1)` but
+        # numpy.ufunc.reduce() with axis != None is much slower than pure
+        # Python.
+        out = self.vectors[:, 0]
+        for i in range(1, self.vectors.shape[1]):
+            out = out + self.vectors[:, i]
+        return out / self.vectors.shape[1]
+
 
 cached_properties = {
     i.attrname for i in vars(Mesh).values() if isinstance(i, cached_property)

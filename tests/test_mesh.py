@@ -216,3 +216,9 @@ def test_copy(copy_method, make_mesh):
             assert not np.shares_memory(copy.__vertices__, mesh.__vertices__)
         else:
             assert not np.shares_memory(copy.__vectors__, mesh.__vectors__)
+
+
+@pytest.mark.parametrize("make_mesh", [ids_mesh, vectors_mesh])
+def test_centers(make_mesh):
+    self = make_mesh(100)
+    assert self.centers == pytest.approx(np.mean(self.vectors, axis=1))
