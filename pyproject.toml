@@ -7,4 +7,5 @@ requires = [
   "numpy",
   "numpy-stl",
   "hoatzin",
+  "rockhopper",
 ]

@@ -518,6 +518,35 @@ class Mesh(object):
             out = out + self.vectors[:, i]
         return out / self.vectors.shape[1]
 
+    @independent_of_transform
+    @cached_property
+    def polygon_map(self) -> np.ndarray:
+        """Maps each polygon to its adjacent (shares a common edge) polygons.
+
+        The format is an numpy int array with the same shape as
+        :attr:`Mesh.ids`. A polygon is referenced by its position in
+        :attr:`Mesh.ids` (or :attr:`Mesh.vectors`).
+
+        For example, assume a triangular mesh is called  ``mesh``. And suppose
+        :py:`mesh.polygon_map[n]` is :py:`[i, j, k]`, then:
+
+        - The edge going from vertex *0* to vertex *1* of the triangle
+          :py:`mesh.vectors[n]` would be shared with the triangle
+          :py:`mesh.vectors[i]`,
+        - The edge going from vertex *1* to vertex *2* of the triangle
+          :py:`mesh.vectors[n]` would be shared with the triangle
+          :py:`mesh.vectors[j]`,
+        - And the edge going from vertex *2* to vertex **0** of the triangle
+          :py:`mesh.vectors[n]` would be shared with the triangle
+          :py:`mesh.vectors[k]`,
+
+        Any polygons which are missing a neighbour on a particular edge (i.e.
+        on the boundary of a non-closed mesh) use :py:`-1` as a placeholder.
+
+        """
+        from motmot._polygon_map import make_polygon_map
+        return make_polygon_map(self.ids, len(self.vertices))
+
 
 cached_properties = {
     i.attrname for i in vars(Mesh).values() if isinstance(i, cached_property)

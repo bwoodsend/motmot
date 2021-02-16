@@ -43,3 +43,8 @@ def ids_mesh(n, d=3):
 def vectors_mesh(n, d=3):
     _mesh = ids_mesh(n, d)
     return Mesh(_mesh.vectors)
+
+
+def closed_mesh(*spam):
+    from tests.data import rabbit_path
+    return Mesh(rabbit_path)

@@ -9,7 +9,7 @@ import numpy as np
 import pytest
 
 from motmot import Mesh
-from tests import data, ids_mesh, vectors_mesh, assert_mesh_equal
+from tests import data, ids_mesh, vectors_mesh, assert_mesh_equal, closed_mesh
 
 pytestmark = pytest.mark.order(2)
 
@@ -222,3 +222,28 @@ def test_copy(copy_method, make_mesh):
 def test_centers(make_mesh):
     self = make_mesh(100)
     assert self.centers == pytest.approx(np.mean(self.vectors, axis=1))
+
+
+@pytest.mark.parametrize("make_mesh", [ids_mesh, vectors_mesh, closed_mesh])
+def test_polygon_map(make_mesh):
+    self = make_mesh(100)
+    # For each polygon, what vertices does it share with each neighbour.
+    points_match = self.ids[self.polygon_map][:, :, np.newaxis] \
+                   == self.ids[:, np.newaxis, :, np.newaxis]
+
+    from motmot._polygon_map import make_polygon_map
+    no_C = make_polygon_map(self.ids, len(self.vertices), use_C=False)
+    assert np.all(self.polygon_map == no_C)
+    no_neighbour_mask = self.polygon_map == -1
+
+    assert self.polygon_map.shape == self.ids.shape
+    if make_mesh is closed_mesh:
+        assert not np.any(no_neighbour_mask)
+
+    # Count how many each polygon has in common with each neighbour.
+    match_counts = np.sum(points_match, axis=(2, 3))
+
+    # The should (provided said polygon has a neighbour) all be 2 i.e. the
+    # vertex on either end of the edge they share. In very rare cases though, a
+    # polygon may share multiple edges with a neighbour.
+    assert np.all(match_counts[~no_neighbour_mask] >= 2)
