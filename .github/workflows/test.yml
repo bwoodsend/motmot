@@ -22,14 +22,11 @@ jobs:
             os: windows-latest
             python-version: 3.9
             architecture: 'x64'
-          - name: Windows 32-bit
-            os: windows-latest
-            python-version: 3.9
-            architecture: 'x86'
 
       fail-fast: false
 
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
 
     steps:
 
