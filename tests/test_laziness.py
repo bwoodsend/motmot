@@ -5,7 +5,7 @@
 import numpy as np
 import pytest
 
-from motmot import Mesh, _compat
+from motmot import Mesh, geometry, _compat
 from tests import data, ids_mesh, vectors_mesh
 
 pytestmark = pytest.mark.order(-1)
@@ -90,6 +90,15 @@ def test_lazy_updates(modifier, attr, use_id_mesh):
 
     elif attr == "_vertex_table":
         trial_, placebo_ = trial_.unique, placebo_.unique
+
+    elif attr == "vertex_normals":
+        # Occasionally, a vertex normal is [0, 0, 0] but with rounding errors.
+        # These (normally tiny) rounding errors get geometry.normalised() up
+        # inconsistently so [1e-15, 0, 0] -> [1, 0, 0] but [0, 0, 1e-15] ->
+        # [0, 0, 1] causing the test to fail. Blot out these values by checking
+        # if the non-normalised normals are close to 0.
+        placebo_[geometry.magnitude(placebo._vertex_normals) < 1e-12] = np.nan
+        trial_[geometry.magnitude(trial._vertex_normals) < 1e-12] = np.nan
 
     if isinstance(placebo_, np.ndarray):
         # ``np.nan == np.nan`` gives False which can cause this test to fail

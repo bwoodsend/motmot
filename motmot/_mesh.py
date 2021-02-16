@@ -339,14 +339,17 @@ class Mesh(object):
         faces that contain that vertex. Averages are weighted by :attr:`areas`.
 
         """
+        old = np.seterr(invalid="ignore", divide="ignore")
+        normals = geometry.normalised(self._vertex_normals)
+        np.seterr(**old)
+        return normals
+
+    @property
+    def _vertex_normals(self):
+        """Raw un-normalised vertex normals."""
         normals = np.zeros_like(self.vertices)
         for ids in self.ids.T:
             np.add.at(normals, ids, self.normals)
-
-        old = np.seterr(invalid="ignore", divide="ignore")
-        normals = geometry.normalised(normals)
-        np.seterr(**old)
-
         return normals
 
     def translate(self, translation):
