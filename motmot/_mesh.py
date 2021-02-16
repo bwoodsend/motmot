@@ -313,3 +313,36 @@ class Mesh(object):
         np.seterr(**old)
 
         return normals
+
+    def translate(self, translation):
+        """Move this mesh without rotating."""
+        # Avoid inplace array modification because it either breaks or loses
+        # precision if the dtypes don't match.
+        if self.is_ids_mesh:
+            self.__vertices__ = self.__vertices__ + translation
+        else:
+            self.__vectors__ = self.__vectors__ + translation
+
+    def rotate_using_matrix(self, rotation_matrix, point=None):
+        """Rotate inplace, the mesh using a **rotation_matrix**.
+
+        Internally this is just a matrix multiplication where the mesh's
+        vertices are *post-multiplied* by **rotation_matrix**.
+
+        """
+        if point is not None:
+            point = np.asarray(point)
+            self.translate(-point)
+            self.rotate_using_matrix(rotation_matrix)
+            self.translate(point)
+            return
+
+        # Inplace matrix multiplication (i.e. ``@=``) is not allowed.
+        if self.is_ids_mesh:
+            self.__vertices__ = self.__vertices__ @ rotation_matrix
+        else:
+            self.__vectors__ = self.__vectors__ @ rotation_matrix
+
+    # Shamelessly nick this from numpy-stl.
+    rotation_matrix = staticmethod(_Mesh.rotation_matrix)
+    rotate = _Mesh.rotate

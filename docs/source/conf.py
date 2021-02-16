@@ -169,3 +169,6 @@ texinfo_documents = [
     (master_doc, 'motmot', 'Motmot Documentation', author, 'motmot',
      'One line description of project.', 'Miscellaneous'),
 ]
+
+# This is mistakenly used by numpy-stl.
+nitpick_ignore = [("py:class", "numpy.array")]

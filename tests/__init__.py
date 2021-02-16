@@ -3,11 +3,21 @@
 """
 
 import numpy as np
+import hoatzin
+
 from motmot import Mesh
 
 
+def unique_vertices(n):
+    n = int(n)
+    table = hoatzin.HashTable(n * 3 // 2, np.dtype(None) * 3)
+    while len(table) < n:
+        table.add(np.random.random((n - len(table), 3)))
+    return table.destroy()
+
+
 def ids_mesh(n, d=3):
-    vertices = np.arange((n * 5 // 3) * 3).reshape((-1, 3))
+    vertices = unique_vertices(n * 3 // 2)
     ids = np.append(np.arange(len(vertices)),
                     np.random.randint(0, len(vertices), n * d - len(vertices)))
     return Mesh(vertices, ids.reshape((n, d)))

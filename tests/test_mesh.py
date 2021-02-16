@@ -118,3 +118,31 @@ def test_vertex_normals():
     invalid = self.vertex_counts == 0
     assert magnitude(self.vertex_normals[~invalid]) == pytest.approx(1)
     assert np.isnan(self.vertex_normals[invalid]).all()
+
+
+def test_translate():
+    self = ids_mesh(5)
+    old = self.vertices.copy()
+    self.translate([1, 2, 3])
+    assert np.all(self.vertices == old + [1, 2, 3])
+
+    self = vectors_mesh(5)
+    old = self.vectors.copy()
+    self.translate([1, 2, 3])
+    assert np.all(self.vectors == old + [1, 2, 3])
+
+
+def test_rotate():
+    m = Mesh.rotation_matrix([0, 0, 1], np.pi / 2).round(3)
+
+    self = ids_mesh(5)
+    old = self.vertices.copy()
+    self.rotate_using_matrix(m)
+    assert np.all(self.vertices.T == [old[:, 1], -old[:, 0], old[:, 2]])
+    vectors = self.vectors.copy()
+    self.rotate_using_matrix(m, [1, 0, 0])
+    assert np.all(self.vertices.T == [1 - old[:, 0], 1 - old[:, 1], old[:, 2]])
+
+    self = Mesh(old[self.ids])
+    self.rotate_using_matrix(m)
+    assert np.all(self.vectors == vectors)
