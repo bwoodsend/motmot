@@ -547,6 +547,38 @@ class Mesh(object):
         from motmot._polygon_map import make_polygon_map
         return make_polygon_map(self.ids, len(self.vertices))
 
+    def connected_polygons(self, initial, mask=None, polygon_map=None):
+        """Recursively walk connected polygons.
+
+        Finds the whole connected region containing the triangle `arg` where
+        `whole connected region` here means that all triangles within that region
+        are joined indirectly by at least one triangle.
+
+        Args:
+            initial (int or numpy.ndarray):
+                The polygon id(s) to start at.
+            mask (numpy.ndarray):
+                Only include regions covered by `mask` if specified.
+            polygon_map (numpy.ndarray):
+                An alternative polygon map to use. Defaults to
+                :attr:`polygon_map`.
+        Returns:
+            numpy.ndarray:
+                A connected region as a 1D bool array.
+
+        This is implemented by navigating the :attr:`polygon_map`.
+        Restrictions on connectivity can be given either with the **mask**
+        parameter, which mimics removing polygons, or by overriding
+        **polygon_map** and replacing values with ``-1`` to block edges between
+        polygons. Note that the **mask** only prevents the algorithm from
+        traversing **onto** unmasked polygons. If a polygon is in **initial**
+        then it will still be included in the output.
+
+        """
+        from motmot._polygon_walk import connected
+        polygon_map = self.polygon_map if polygon_map is None else polygon_map
+        return connected(polygon_map, initial, mask)
+
 
 cached_properties = {
     i.attrname for i in vars(Mesh).values() if isinstance(i, cached_property)

@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stddef.h>
+#include "queue.h"
 
 
 typedef struct RaggedArray
@@ -50,6 +51,63 @@ void populate_polygon_map(ptrdiff_t * polygon_map, ptrdiff_t * ids,
           break;
         }
       }
+    }
+  }
+}
+
+
+ptrdiff_t ravel(ptrdiff_t i, ptrdiff_t j, ptrdiff_t d) {
+  /* Convert 2D (n, d) array index to ravelled 1D index. */
+  return i * d + j;
+}
+
+
+void connected(ptrdiff_t * initial, ptrdiff_t len_initial, ptrdiff_t d,
+               ptrdiff_t * polygon_map, Queue * queue) {
+/*
+    Navigate `polygon_map` to create a connected region.
+
+    If this function was recursive then the recursion depths required to get
+    around a typical sized mesh would cause StackOverflowErrors.
+    To avoid this, recursion is mimicked using a queue.
+    This `queue` is just an integer array listing `arg`s in the order they are
+    encountered, with a `reverse_queue` that lists an `arg`'s position in
+    `queue` to facilitate `arg in queue` checking.
+
+    In order to avoid having to inc-ref arrays, `queue` and `reverse_queue` are
+    intended to be initialised in Python using numpy.
+
+    An arg is only put into `queue` if it is to be included in the resulting
+    region so an output array is not needed as Python can just look at the queue
+    to see what was used.
+ */
+
+  // Add each `arg` from `args` to the queue.
+  Q_appends(queue, initial, len_initial);
+
+  // While there are unprocessed elements in the queue.
+  while (!Q_is_empty(queue)) {
+
+    // Read the oldest unprocessed value in the queue.
+    ptrdiff_t arg = Q_consume_later(queue);
+
+    // For each adjacent polygon:
+    for (ptrdiff_t i = 0; i < d; i++) {
+
+      // `polygon_map` in Python has shape `(n, d)` but is flattened by C.
+      // The index must be ravelled to match.
+      ptrdiff_t index = ravel(arg, i, d);
+
+      // Lookup the arg of an adjacent polygon.
+      ptrdiff_t arg_ = polygon_map[index];
+
+      // Not allowed or missing adjacent polygons are masked by
+      // -1s in `polygon_map`. These should be skipped.
+      if (arg_ == -1) continue;
+
+      // Finally Q_add `arg_` to the queue.
+      // This is ignored if `arg_` is already in it.
+      Q_add(queue, arg_);
     }
   }
 }
