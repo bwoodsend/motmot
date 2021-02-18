@@ -579,6 +579,36 @@ class Mesh(object):
         polygon_map = self.polygon_map if polygon_map is None else polygon_map
         return connected(polygon_map, initial, mask)
 
+    def group_connected_polygons(self, mask=None, polygon_map=None):
+        """Group and enumerate all polygons which are indirectly connected.
+
+        Returns:
+            (numpy.ndarray, int):
+                A :py:`(group_ids, group_count)` pair.
+
+        Functionally, this is equivalent to calling :meth:`connected_polygons`
+        repeatedly until every polygon is assigned a group.
+
+        To convert the output to a list of meshes use::
+
+            from rockhopper import RaggedArray
+            ragged = RaggedArray.group_by(mesh.vectors, *mesh.group_connected_polygons())
+            sub_meshes = [Mesh(i) for i in ragged]
+
+        Or if your using vertices/ids meshes::
+
+            from rockhopper import RaggedArray
+            ragged = RaggedArray.group_by(mesh.ids, *mesh.group_connected_polygons())
+            sub_meshes = [Mesh(mesh.vertices, ids) for ids in ragged]
+
+        Note that both will work irregardless of :attr:`is_ids_mesh`, however
+        the mismatched implementation will be slower.
+
+        """
+        from motmot._polygon_walk import group_connected
+        polygon_map = self.polygon_map if polygon_map is None else polygon_map
+        return group_connected(polygon_map, mask)
+
 
 cached_properties = {
     i.attrname for i in vars(Mesh).values() if isinstance(i, cached_property)

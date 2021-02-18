@@ -41,3 +41,16 @@ def test_connected_polygons():
 
     assert not upper_half[self.connected_polygons(upper_half.argmin())].any()
     assert upper_half[self.connected_polygons(upper_half.argmax())].all()
+
+    ids, count = self.group_connected_polygons()
+    assert count == 2
+    assert ids[0] == 0
+
+    assert np.all(ids[~upper_half] == upper_half[0])
+    assert np.all(ids[upper_half] == 1 - upper_half[0])
+
+    from rockhopper import RaggedArray
+    grouped = RaggedArray.group_by(self.vectors, ids, count)
+    halves = [Mesh(i) for i in grouped]
+    assert (self[ids == 0].vectors == halves[0].vectors).all()
+    assert (self[ids == 1].vectors == halves[1].vectors).all()

@@ -111,3 +111,36 @@ void connected(ptrdiff_t * initial, ptrdiff_t len_initial, ptrdiff_t d,
     }
   }
 }
+
+
+ptrdiff_t group_connected(ptrdiff_t * polygon_map, ptrdiff_t * shape,
+                          ptrdiff_t * group_ids, Queue * queue) {
+  /* Split a disjointed mesh into connected sub-meshes. */
+
+  // This works simply by calling connected() repeatedly until every polygon
+  // has been allocated a group number.
+
+  ptrdiff_t group_id = 0;
+  for (ptrdiff_t polygon_id = 0; polygon_id < shape[0]; polygon_id++) {
+
+    // Skip if this polygon is already in a group.
+    if (group_ids[polygon_id] != -1) continue;
+
+    // Find all polygons connected to `polygon_id`.
+    ptrdiff_t start = queue -> append_index;
+    connected(&polygon_id, 1, shape[1], polygon_map, queue);
+    ptrdiff_t end = queue -> append_index;
+
+    // Unpack the unusual output of connected().
+    for (ptrdiff_t i = start; i != end; i = (i + 1) % queue -> max_size) {
+
+      ptrdiff_t _arg = queue -> queue[i];
+      group_ids[_arg] = group_id;
+      // Reset this queue space.
+      queue -> reverse_queue[_arg] = -1;
+    }
+
+    group_id ++;
+  }
+  return group_id;
+}
