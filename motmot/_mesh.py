@@ -404,6 +404,11 @@ class Mesh(object):
             return type(self)(self.vertices, self.ids[item], name=self.name)
         return type(self)(self.vectors[item], name=self.name)
 
+    @staticmethod
+    def __array__():
+        raise TypeError("Meshes can't be converted directly to arrays. Use one "
+                        "of `vertices`, `vectors` or `ids` attributes instead.")
+
     def crop(self, mask, in_place=False):
         """Return a subsample of the original mesh. Inclusion is defined by
         **mask**.

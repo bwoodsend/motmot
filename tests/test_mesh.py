@@ -247,3 +247,10 @@ def test_polygon_map(make_mesh):
     # vertex on either end of the edge they share. In very rare cases though, a
     # polygon may share multiple edges with a neighbour.
     assert np.all(match_counts[~no_neighbour_mask] >= 2)
+
+
+def test_as_array():
+    """numpy.asarray(mesh) must be blocked."""
+    self = ids_mesh(10)
+    with pytest.raises(TypeError, match="Meshes can't .*"):
+        np.asarray(self)
