@@ -489,3 +489,53 @@ def _str_to_vector(x):
     out = np.zeros(3)
     out[axis] = _SIGNS[sign]
     return out
+
+
+def area(polygon) -> np.ndarray:
+    """Calculate the area of arbitrary polygons."""
+    polygon: np.ndarray = np.asarray(polygon)
+    assert polygon.ndim >= 2
+    assert polygon.shape[-1] == 3
+
+    if polygon.shape[-2] < 3:
+        # Area of a line or a dot is 0.
+        return np.zeros(polygon.shape[:-2], polygon.dtype)
+
+    # Triangulate using the first vertex as a focus. i.e. A hexagon:
+    #   (p0, p1, p2, p3, p4, p5)
+    # becomes 4 triangles which all start at p0:
+    #   (p0, p1, p2)
+    #   (p0, p2, p3)
+    #   (p0, p3, p4)
+    #   (p0, p4, p5)
+
+    from_v0 = polygon[..., 1:, :] - polygon[..., 0, np.newaxis, :]
+    crosses = [(np.cross(from_v0[..., i, :], -from_v0[..., i + 1, :]))
+               for i in range(polygon.shape[-2] - 2)]
+
+    # Area calculation can be simple but isn't if either all vertices are not
+    # co-planer (in which case `area` is technically arbitrary as it differs
+    # depending on which vertex is used as a triangulation focus) or if the
+    # polygon contains inside corners > 180° (think of a pie with a wedge
+    # removed).
+
+    # In the simple case, just magnitude() each item in `crosses`, add them up,
+    # then divide by 2.
+    # Non-co-planer polygons are doomed almost by definition - this complication
+    # is more or less ignored.
+    # To handle the 2nd problem, some sign magic must be done to treat the
+    # missing slice of the pie as a negative area. This is done by looking at
+    # normals to each triangle: The normal to a missing wedge will point in
+    # the opposite direction to all the other triangles' normals.
+
+    # Generate a consensus normal to this polygon which can be used to
+    # sign-match individual triangle normals and thereby detect missing wedges.
+    normal = sum(crosses[1:], crosses[0])
+
+    # Calculate a signed area for each triangle. Note that these areas are
+    # doubled what they should be.
+    areas_x2 = (
+        np.copysign(magnitude(i), inner_product(normal, i)) for i in crosses)
+
+    # Add all double-areas together and un-double them.
+    return sum(areas_x2, next(areas_x2)) / 2

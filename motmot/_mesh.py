@@ -307,8 +307,18 @@ class Mesh(object):
         Returns:
             1D array with length :py:`len(mesh)`.
 
+        Note that for non co-planer (not flat) polygons, this definition becomes
+        progressively more arbitrary as the polygons become more complicated.
+        Different areas can be obtained for identical polygons simply by
+        *rolling* a polygon's corners so that a different corner is listed
+        first.
+
         """
-        return geometry.magnitude(self.normals) / 2
+        if self.per_polygon == 3:
+            # Triangles are much simpler than other shapes and can therefore
+            # take the simpler/faster approach.
+            return geometry.magnitude(self.normals) / 2
+        return geometry.area(self.vectors)
 
     @independent_of_transform
     @cached_property
@@ -325,7 +335,15 @@ class Mesh(object):
             2D array with shape :py:`(len(mesh), 3)`.
 
         """
-        return self.normals / (self.areas[:, np.newaxis] * 2)
+        old = np.seterr(invalid="ignore", divide="ignore")
+        if self.per_polygon == 3:
+            # Again, this is marginally faster but only works for triangular
+            # meshes.
+            out = self.normals / (self.areas[:, np.newaxis] * 2)
+        else:
+            out = geometry.normalised(self.normals)
+        np.seterr(**old)
+        return out
 
     @independent_of_translate
     @cached_property

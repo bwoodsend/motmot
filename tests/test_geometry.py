@@ -146,3 +146,26 @@ def test_center_of_mass():
     weights = points[..., 0] > .4
     assert g.center_of_mass(points, weights) == pytest.approx(
         points[weights].mean(axis=0))
+
+
+def test_area():
+    # Dots and lines should have area 0.
+    assert g.area([[0, 0, 0]]) == 0
+    assert g.area([[0, 0, 0], [0, 1, 0]]) == 0
+    # As should triangles that are just lines.
+    assert g.area([[0, 0, 0], [0, 1, 0], [0, 2, 0]]) == 0
+
+    # A simple 1x1 right angle triangle.
+    polygon = [[0, 0, 0], [1, 0, 0], [1, 1, 0]]
+    assert g.area(polygon) == .5
+
+    # A simple 1x1 square.
+    polygon.append([0, 1, 0])
+    assert g.area(polygon) == 1
+
+    # Remove a triangle from the square. This should reduce the area instead of
+    # adding to it.
+    polygon.append([.5, .5, 0])
+    g.area(polygon) == .75
+
+    polygon[-1][2] = 1

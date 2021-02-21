@@ -8,7 +8,7 @@ import pickle
 import numpy as np
 import pytest
 
-from motmot import Mesh
+from motmot import Mesh, geometry
 from tests import data, ids_mesh, vectors_mesh, assert_mesh_equal, closed_mesh
 
 pytestmark = pytest.mark.order(2)
@@ -85,7 +85,6 @@ def test_bounds():
 
 
 def test_normals():
-    from motmot import geometry
     mesh = Mesh(data.rabbit_path)
 
     # ``inner_product(normals, vectors)`` should give the same value for each
@@ -106,6 +105,25 @@ def test_normals():
     assert np.allclose(geometry.inner_product(mesh.normals, mesh.units),
                        mesh.areas * 2)
     assert mesh.area > 0
+
+
+def test_square_normals():
+    self = ids_mesh(10, 4)
+    magnitudes = geometry.magnitude_sqr(self.units)
+    assert magnitudes[np.isfinite(magnitudes)] == pytest.approx(1)
+
+
+def test_square_areas():
+    """Test non-triangular area calculation on 5 similar squares."""
+    square = np.array([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]])
+    self = Mesh(np.array([
+            square,  # The simplest square should have area 1.
+            square + 1,  # Translating the square should have no effect.
+            np.roll(square, 1, axis=1) / 2,  # 1/2 scale -> 1/4 area.
+            square * 5,  # Scale up by 5 -> 25 * area.
+            square * [1, 0, 1],  # Collapsing an axis gives it area 0.
+        ]))  # yapf: disable
+    assert self.areas == pytest.approx([1, 1, .25, 25, 0])
 
 
 def test_vertex_normals():
