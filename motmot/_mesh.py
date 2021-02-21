@@ -8,6 +8,7 @@ import io
 import warnings
 from typing import Optional
 import collections
+import copy
 
 import numpy as np
 import numpy
@@ -450,6 +451,52 @@ class Mesh(object):
             self.__vectors__ = self.__vectors__[mask]
         self.reset()
         return self
+
+    def __copy__(self):
+        cls = type(self)
+        out = cls.__new__(cls)
+        out.__setstate__(self.__getstate__())
+        return out
+
+    def __deepcopy__(self, memo):
+        cls = type(self)
+        out = cls.__new__(cls)
+        state = self.__getstate__()
+        state = {key: copy.deepcopy(val, memo) for (key, val) in state.items()}
+        out.__setstate__(state)
+        return out
+
+    def copy(self, deep=True):
+        """Make a shallow or deep copy of the mesh.
+
+        Args:
+            deep (bool):
+                If true, copy the underlying :attr:`vectors` or :attr:`vertices`
+                and :attr:`ids` arrays. Otherwise output will share these arrays
+                with this mesh.
+
+        Returns:
+            Mesh: Another mesh.
+
+        Caches of cached properties are never copied.
+
+        """
+        return self.__deepcopy__({}) if deep else self.__copy__()
+
+    def __getstate__(self):
+        if self.is_ids_mesh:
+            return {
+                "vertices": self.__vertices__,
+                "ids": self.__ids__,
+                "name": self.name,
+                "path": self.path,
+            }
+        return {"vectors": self.vectors, "name": self.name, "path": self.path}
+
+    def __setstate__(self, dic):
+        self.__init__(dic.get("vectors", dic.get("vertices")), dic.get("ids"),
+                      dic["name"])
+        self.path = dic["path"]
 
 
 cached_properties = {

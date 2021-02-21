@@ -2,12 +2,14 @@
 """
 """
 import re
+import copy
+import pickle
 
 import numpy as np
 import pytest
 
 from motmot import Mesh
-from tests import data, ids_mesh, vectors_mesh
+from tests import data, ids_mesh, vectors_mesh, assert_mesh_equal
 
 pytestmark = pytest.mark.order(2)
 
@@ -182,3 +184,35 @@ def test_cropped(make_mesh, in_place, crop_at):
     assert len(cropped) == len(placebo[mask])
     assert len(cropped) == len(cropped.vectors)
     assert (cropped.x[:, 0] > threshold).all()
+
+
+pickle_copy = lambda mesh: pickle.loads(pickle.dumps(mesh))
+deep_copy_methods = [pickle_copy, copy.deepcopy, Mesh.copy]
+shallow_copy_methods = [lambda mesh: mesh.copy(deep=False), copy.copy]
+
+
+@pytest.mark.parametrize("copy_method",
+                         shallow_copy_methods + deep_copy_methods)
+@pytest.mark.parametrize("make_mesh", [ids_mesh, vectors_mesh])
+def test_copy(copy_method, make_mesh):
+    """Test shallow copying either using Mesh.copy(deep=False) or copy.copy().
+    Test deep-copying via Mesh.copy(), copy.deepcopy() and pickle/unpickle."""
+    mesh = make_mesh(20)
+    copy = copy_method(mesh)
+    assert_mesh_equal(copy, mesh)
+
+    if copy_method in shallow_copy_methods:
+        # This is a shallow copy. The contents should be the same objects.
+        if mesh.is_ids_mesh:
+            assert copy.__ids__ is mesh.__ids__
+            assert copy.__vertices__ is mesh.__vertices__
+        else:
+            assert copy.__vectors__ is mesh.__vectors__
+    else:
+
+        # This is a deep copy. The contents should be copied too.
+        if mesh.is_ids_mesh:
+            assert not np.shares_memory(copy.__ids__, mesh.__ids__)
+            assert not np.shares_memory(copy.__vertices__, mesh.__vertices__)
+        else:
+            assert not np.shares_memory(copy.__vectors__, mesh.__vectors__)
