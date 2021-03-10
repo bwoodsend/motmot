@@ -89,7 +89,7 @@ def test_lazy_updates(modifier, attr, use_id_mesh):
         return
 
     elif attr == "_vertex_table":
-        trial_, placebo_ = trial_.unique, placebo_.unique
+        trial_, placebo_ = trial_.keys, placebo_.keys
 
     elif attr == "vertex_normals":
         # Occasionally, a vertex normal is [0, 0, 0] but with rounding errors.

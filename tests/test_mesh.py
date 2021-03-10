@@ -39,7 +39,7 @@ def test_basics():
 
     # Test generating vectors from vertices/ids.
     assert np.array_equal(self.vectors, mesh.vectors)
-    assert self._vertex_table.unique_count == len(self.vertices)
+    assert len(self._vertex_table) == len(self.vertices)
 
     # Test the duplicity warning for duplicate vertices in a vertices/ids mesh.
     vertices_with_duplicate = mesh.vertices[np.arange(-1, len(mesh.vertices))]

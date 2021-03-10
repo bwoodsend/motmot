@@ -173,7 +173,7 @@ class Mesh(object):
         """
         if self.is_ids_mesh:
             return self.__vertices__
-        return self._vertex_table.unique
+        return self._vertex_table.keys
 
     @property
     def ids(self) -> np.ndarray:

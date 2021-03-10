@@ -6,6 +6,6 @@ requires = [
   "cslug",
   "numpy",
   "numpy-stl",
-  "hoatzin",
+  "hoatzin @ git+ssh://git@github.com/bwoodsend/hoatzin.git@928fc26ad120668084e20c3972d66793a8954d54",
   "rockhopper",
 ]
