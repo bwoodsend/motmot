@@ -7,7 +7,6 @@ from pathlib import Path
 import io
 import warnings
 from typing import Optional
-import collections
 import copy
 
 import numpy as np
@@ -16,7 +15,7 @@ from stl.mesh import Mesh as _Mesh
 from hoatzin import HashTable
 
 from motmot._compat import cached_property
-from motmot._misc import idx
+from motmot._misc import idx, Independency
 from motmot import geometry
 
 
@@ -33,21 +32,7 @@ def _subsample(name, indices, doc=""):
     return property(get, set, None, doc)
 
 
-def _independent(*of_s):
-
-    def wrapped(cached: cached_property):
-        for of in of_s:
-            assert cached.func is not None
-            independencies[of].add(cached.func.__name__)
-        return cached
-
-    return wrapped
-
-
-independencies = collections.defaultdict(set)
-independent_of_rotate = _independent("rotate")
-independent_of_translate = _independent("translate")
-independent_of_transform = _independent("rotate", "translate")
+independent = Independency()
 
 
 class Mesh(object):
@@ -187,7 +172,7 @@ class Mesh(object):
             return self.__ids__
         return self._ids_from_vectors
 
-    @independent_of_transform
+    @independent.of("translate", "rotate")
     @cached_property
     def _ids_from_vectors(self):
         self._vertex_table
@@ -238,7 +223,7 @@ class Mesh(object):
         """The number of corners each polygon has."""
         return (self.__ids__ if self.is_ids_mesh else self.__vectors__).shape[1]
 
-    @independent_of_transform
+    @independent.of("translate", "rotate")
     @cached_property
     def vertex_counts(self) -> np.ndarray:
         """The number of times each vertex id appears in :attr:`ids`.
@@ -265,7 +250,7 @@ class Mesh(object):
         self._bounds[0] = [i.min() for i in (self.x, self.y, self.z)]
         return self._bounds[0]
 
-    @independent_of_translate
+    @independent.of("translate")
     @cached_property
     def dims(self) -> np.ndarray:
         """The overall length, width and height of the mesh. Or the difference
@@ -285,7 +270,7 @@ class Mesh(object):
         self.max
         return self._bounds
 
-    @independent_of_translate
+    @independent.of("translate")
     @cached_property
     def normals(self) -> np.ndarray:
         """Normals to each polygon.
@@ -299,7 +284,7 @@ class Mesh(object):
         """
         return np.cross(self.v0 - self.v1, self.v1 - self.v2)
 
-    @independent_of_transform
+    @independent.of("transform")
     @cached_property
     def areas(self) -> np.ndarray:
         """Surface area of each polygon.
@@ -320,13 +305,13 @@ class Mesh(object):
             return geometry.magnitude(self.normals) / 2
         return geometry.area(self.vectors)
 
-    @independent_of_transform
+    @independent.of("translate", "rotate")
     @cached_property
     def area(self) -> float:
         """The total surface area. This is simply the sum of :attr:`areas`."""
         return np.sum(self.areas)
 
-    @independent_of_translate
+    @independent.of("translate")
     @cached_property
     def units(self):
         """Normalised outward :attr:`normals` for each polygon.
@@ -345,7 +330,7 @@ class Mesh(object):
         np.seterr(**old)
         return out
 
-    @independent_of_translate
+    @independent.of("translate")
     @cached_property
     def vertex_normals(self) -> np.ndarray:
         """Weighted outward normal for each vertex in :attr:`vertices`.
@@ -378,7 +363,9 @@ class Mesh(object):
             self.__vertices__ = self.__vertices__ + translation
         else:
             self.__vectors__ = self.__vectors__ + translation
-        reset(self, reset_on_translate)
+
+        # noinspection PyUnresolvedReferences
+        self._reset_on_translate()
 
     def rotate_using_matrix(self, rotation_matrix, point=None):
         """Rotate inplace, the mesh using a **rotation_matrix**.
@@ -399,7 +386,9 @@ class Mesh(object):
             self.__vertices__ = self.__vertices__ @ rotation_matrix
         else:
             self.__vectors__ = self.__vectors__ @ rotation_matrix
-        reset(self, reset_on_rotate)
+
+        # noinspection PyUnresolvedReferences
+        self._reset_on_rotate()
 
     # Shamelessly nick this from numpy-stl.
     rotation_matrix = staticmethod(_Mesh.rotation_matrix)
@@ -411,7 +400,8 @@ class Mesh(object):
         Use after directly writing or setting one of this mesh's array
         attributes.
         """
-        reset(self, reset_all)
+        # noinspection PyUnresolvedReferences
+        self._reset_all(self)
 
     def __getitem__(self, item):
         """
@@ -541,7 +531,7 @@ class Mesh(object):
             out = out + self.vectors[:, i]
         return out / self.vectors.shape[1]
 
-    @independent_of_transform
+    @independent.of("translate", "rotate")
     @cached_property
     def polygon_map(self) -> np.ndarray:
         """Maps each polygon to its adjacent (shares a common edge) polygons.
@@ -633,14 +623,7 @@ class Mesh(object):
         return group_connected(polygon_map, mask)
 
 
-cached_properties = {
-    i.attrname for i in vars(Mesh).values() if isinstance(i, cached_property)
-}
-reset_on_rotate = cached_properties - independencies["rotate"]
-reset_on_translate = cached_properties - independencies["translate"]
-reset_all = cached_properties
-
-
-def reset(self, attrs):
-    for i in attrs:
-        self.__dict__.pop(i, None)
+independent.init(Mesh)
+Mesh._reset_on_rotate = independent.reset_on("rotate")
+Mesh._reset_on_translate = independent.reset_on("translate")
+Mesh._reset_all = independent.reset_all
