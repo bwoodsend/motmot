@@ -272,3 +272,19 @@ def test_as_array():
     self = ids_mesh(10)
     with pytest.raises(TypeError, match="Meshes can't .*"):
         np.asarray(self)
+
+
+def test_displacements():
+    self = ids_mesh(5, 4)
+    assert self.displacements.shape == (5, 4, 3)
+
+    # Another non-test.
+    # Just the same thing as the original but in a for loop.
+    for i in range(len(self)):
+        for j in range(self.per_polygon):
+            neighbour = self.polygon_map[i, j]
+            if neighbour == -1:
+                assert np.isnan(self.displacements[i, j]).all()
+            else:
+                assert np.all(self.centers[neighbour] - self.centers[i] \
+                              == self.displacements[i, j])

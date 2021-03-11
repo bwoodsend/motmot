@@ -622,6 +622,23 @@ class Mesh(object):
         polygon_map = self.polygon_map if polygon_map is None else polygon_map
         return group_connected(polygon_map, mask)
 
+    @cached_property
+    def displacements(self) -> np.ndarray:
+        """The displacement from each polygon's center to each of its
+        neighbours' centres.
+
+        Returns:
+            A :py:`(len(mesh), mesh.per_polygon, 3)` numpy array.
+
+        Defaults to ``nan`` when a neighbour is missing.
+
+        """
+        return np.where(
+            (self.polygon_map != -1)[:, :, np.newaxis],
+            self.centers[self.polygon_map] - self.centers[:, np.newaxis],
+            np.array([[[np.nan, np.nan, np.nan]]], self.centers.dtype),
+        )
+
 
 independent.init(Mesh)
 Mesh._reset_on_rotate = independent.reset_on("rotate")
