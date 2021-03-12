@@ -48,3 +48,21 @@ def vectors_mesh(n, d=3):
 def closed_mesh(*spam):
     from tests.data import rabbit_path
     return Mesh(rabbit_path)
+
+
+def cylinder(n):
+    t = np.arange(n) * (2 * np.pi / n)
+    vertices = np.empty((n * 2, 3))
+    vertices[:n, 2] = 0
+    vertices[n:, 2] = 10
+
+    vertices[:n, 0] = np.cos(t, out=vertices[n:, 0])
+    vertices[:n, 1] = np.sin(t, out=vertices[n:, 1])
+
+    ids = np.empty((n, 4), dtype=int)
+    ids[:, 0] = np.arange(0, n)
+    ids[:, 1] = np.arange(n, 2 * n)
+    ids[:, 2] = np.roll(ids[:, 1], 1)
+    ids[:, 3] = np.roll(ids[:, 0], 1)
+
+    return Mesh(vertices, ids)

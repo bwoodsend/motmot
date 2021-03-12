@@ -1,21 +1,29 @@
 # -*- coding: utf-8 -*-
 """
 """
+import operator
 
 import numpy as np
 import pytest
 
-from motmot import Mesh, geometry, _compat
+from motmot import Mesh, geometry, _compat, Curvature
 from tests import data, ids_mesh, vectors_mesh
 
 pytestmark = pytest.mark.order(-1)
 
-attrs = [
-    i for i in dir(Mesh)
-    if isinstance(getattr(Mesh, i), (property, _compat.cached_property)) \
-    and not i.startswith("_")
-]
+
+def cache_ables(cls):
+    return [
+        i for i in dir(cls)
+        if isinstance(getattr(cls, i), (property, _compat.cached_property)) \
+           and not i.startswith("_")
+    ]
+
+
+attrs = cache_ables(Mesh)
 attrs.append("_vertex_table")
+attrs.remove("curvature")
+[attrs.append("curvature." + i) for i in cache_ables(Curvature)]
 
 
 def directly_modify(mesh):
@@ -63,6 +71,8 @@ def test_lazy_updates(modifier, attr, use_id_mesh):
     should match at the end.
 
     """
+    # attrgetter() can handle nested getattrs e.g. mesh.curvature.scaleless
+    get = operator.attrgetter(attr)
     old = np.seterr(all="ignore")
 
     # Get two copies of the same mesh.
@@ -76,14 +86,14 @@ def test_lazy_updates(modifier, attr, use_id_mesh):
     trial.path = placebo.path = None
 
     # Initialise a lazy attribute.
-    getattr(trial, attr)
+    get(trial)
 
     # Modify both meshes.
     modifier(trial)
     modifier(placebo)
 
     # Check the outputs match.
-    trial_, placebo_ = getattr(trial, attr), getattr(placebo, attr)
+    trial_, placebo_ = get(trial), get(placebo)
     if attr == "path":
         assert trial_ == placebo_
         return

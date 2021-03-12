@@ -625,7 +625,7 @@ class Mesh(object):
     @cached_property
     def displacements(self) -> np.ndarray:
         """The displacement from each polygon's center to each of its
-        neighbours' centres.
+        neighbours' centers.
 
         Returns:
             A :py:`(len(mesh), mesh.per_polygon, 3)` numpy array.
@@ -638,6 +638,16 @@ class Mesh(object):
             self.centers[self.polygon_map] - self.centers[:, np.newaxis],
             np.array([[[np.nan, np.nan, np.nan]]], self.centers.dtype),
         )
+
+    @cached_property
+    def curvature(self):
+        """Everything curvature related. See :class:`motmot.Curvature`.
+        Different *flavours* of curvature are accessible via different
+        sub-attributes of this property such as
+        :attr:`mesh.curvature.scaleless <Curvature.scaleless>`.
+        """
+        from motmot._curvatures import Curvature
+        return Curvature(self)
 
 
 independent.init(Mesh)
