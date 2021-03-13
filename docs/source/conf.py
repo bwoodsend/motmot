@@ -119,7 +119,7 @@ def setup(app):
     app.add_css_file('theme-overrides.css')
 
 
-#html_favicon = 'favicon.png'
+html_favicon = 'static/motmot-favicon.jpg'
 
 # -- Options for HTMLHelp output ---------------------------------------
 
