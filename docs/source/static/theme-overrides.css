@@ -59,3 +59,18 @@
   background-repeat: no-repeat;
   background-attachment: fixed;
 }
+
+/* --- Code blocks --- */
+.highlight {
+    background: #F7F7F5;
+}
+.rst-content div[class^="highlight"], .rst-content pre.literal-block {
+  border: 2px inset #e1e4e540;
+}
+
+/* --- sphinx autoclass/autofunction --- */
+html.writer-html4 .rst-content dl:not(.docutils) > dt, html.writer-html5 .rst-content dl[class]:not(.option-list):not(.field-list):not(.footnote):not(.glossary):not(.simple) > dt {
+    background: #7CD0ED23;
+    color: #0C546C;
+    border-top: 3px solid #1586AC;
+}
