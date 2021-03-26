@@ -38,3 +38,5 @@ def test_read(path):
         assert isinstance(self.path, Path)
         del self.path
         assert self.path is None
+
+    assert self.vectors.flags.contiguous

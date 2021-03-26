@@ -82,7 +82,7 @@ class Mesh(object):
                     self.path = vertices
                     return
                 mesh = _Mesh.from_file(vertices, calculate_normals=False)
-                self.__vectors__ = mesh.vectors
+                self.__vectors__ = np.ascontiguousarray(mesh.vectors)
                 self.path = vertices
             elif isinstance(vertices, io.IOBase):
                 mesh = _Mesh.from_file(None, fh=vertices,
