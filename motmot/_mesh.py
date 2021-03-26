@@ -71,6 +71,16 @@ class Mesh(object):
         """
         if ids is None:
             if isinstance(vertices, (str, os.PathLike)):
+                if os.path.splitext(vertices)[1] == ".xz":
+                    import lzma
+                    with lzma.open(vertices, "rb") as f:
+                        # For some reason, just passing the open lzma file to
+                        # numpy-stl causes it to only read some of it.
+                        # Create a redundant intermediate io.BytesIO().
+                        file = io.BytesIO(f.read())
+                    self.__init__(file)
+                    self.path = vertices
+                    return
                 mesh = _Mesh.from_file(vertices, calculate_normals=False)
                 self.__vectors__ = mesh.vectors
                 self.path = vertices

@@ -26,3 +26,4 @@ def _download_rabbit():
 
 
 rabbit_path = _download_rabbit()
+rabbit_xz = rabbit_path.with_suffix(".stl.xz")
