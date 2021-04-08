@@ -34,6 +34,30 @@ def test_connected():
     assert connected(polygon_map, 0, mask).tolist() == [0, 3, 1, 4]
 
 
+def test_connected_per_edge_mask():
+    polygon_map = np.array([
+        [-1, 1],
+        [0, 2],
+        [1, 3],
+        [2, 4],
+        [3, -1],
+    ], dtype=np.intp)
+
+    assert connected(polygon_map, 0).tolist() == [0, 1, 2, 3, 4]
+
+    mask = np.ones((5, 2), bool)
+    assert connected(polygon_map, 0, mask).tolist() == [0, 1, 2, 3, 4]
+
+    mask[2, 1] = False
+    assert connected(polygon_map, 0, mask).tolist() == [0, 1, 2]
+    assert connected(polygon_map, 4, mask).tolist() == [4, 3, 2, 1, 0]
+
+    mask[:, 0] = False
+    assert connected(polygon_map, 0, mask).tolist() == [0, 1, 2]
+    assert connected(polygon_map, 4, mask).tolist() == [4]
+    assert connected(polygon_map, 2, mask).tolist() == [2]
+
+
 def test_connected_polygons():
     self = Mesh(data.rabbit_path)
     upper_half = self.centers[:, 2] > self.z.mean()

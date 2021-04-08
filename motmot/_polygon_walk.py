@@ -28,7 +28,9 @@ def connected(polygon_map, initial, mask=None):
 
 def mask_polygon_map(polygon_map, mask):
     if mask is not None:
-        polygon_map = np.where(mask[polygon_map], polygon_map, -1)
+        if mask.ndim == 1:
+            mask = mask[polygon_map]
+        polygon_map = np.where(mask, polygon_map, -1)
     return polygon_map
 
 
