@@ -37,7 +37,9 @@ setup(
     },
     license="MIT license",
     long_description=readme,
-    package_data={"motmot": ["*" + CSLUG_SUFFIX, "*.json"]},
+    package_data={
+        "motmot": ["*" + CSLUG_SUFFIX, "*.json", "geometry/_unit_vector.pyi"]
+    },
     keywords='motmot',
     name='motmot',
     packages=find_packages(include=['motmot', 'motmot.*']),
