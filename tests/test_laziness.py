@@ -21,7 +21,7 @@ def cache_ables(cls):
 
 
 attrs = cache_ables(Mesh)
-attrs.append("_vertex_table")
+attrs.append("vertex_table")
 attrs.remove("curvature")
 [attrs.append("curvature." + i) for i in cache_ables(Curvature)]
 
@@ -98,7 +98,7 @@ def test_lazy_updates(modifier, attr, use_id_mesh):
         assert trial_ == placebo_
         return
 
-    elif attr == "_vertex_table":
+    elif attr == "vertex_table":
         trial_, placebo_ = trial_.keys, placebo_.keys
 
     elif attr == "vertex_normals":

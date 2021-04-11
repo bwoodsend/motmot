@@ -39,13 +39,13 @@ def test_basics():
 
     # Test generating vectors from vertices/ids.
     assert np.array_equal(self.vectors, mesh.vectors)
-    assert len(self._vertex_table) == len(self.vertices)
+    assert len(self.vertex_table) == len(self.vertices)
 
     # Test the duplicity warning for duplicate vertices in a vertices/ids mesh.
     vertices_with_duplicate = mesh.vertices[np.arange(-1, len(mesh.vertices))]
     contains_duplicate = Mesh(vertices_with_duplicate, mesh.ids)
     with pytest.warns(UserWarning):
-        contains_duplicate._vertex_table
+        contains_duplicate.vertex_table
 
 
 def _assert_first_appearances_are_sorted(ids, max):

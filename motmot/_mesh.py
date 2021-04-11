@@ -131,8 +131,25 @@ class Mesh(object):
         self._path = None
 
     @cached_property
-    def _vertex_table(self) -> HashTable:
-        """The brain behind vertex uniquifying and fast vertex lookup."""
+    def vertex_table(self) -> HashTable:
+        """The lookup table behind vertex uniquifying and fast vertex lookup.
+
+        This object, a :class:`hoatzin.HashTable`, is similar to a :class:`dict`
+        with this mesh's unique vertices as its keys and an enumeration as its
+        values.
+
+        To get a vertex id (or ids) for a given point(s) use::
+
+            ids = mesh.vertex_table[points]
+
+        This is the reciprocal of::
+
+            points = mesh.vertices[ids]
+
+        To quickly test if a vertex or vertices is in :attr:`vertices` use
+        :meth:`mesh.vertex_table.contains() <hoatzin.HashTable.contains>`.
+
+        """
         if not self.is_ids_mesh:
             points = self.__vectors__
             length = points.shape[0] * points.shape[1]
@@ -168,7 +185,7 @@ class Mesh(object):
         """
         if self.is_ids_mesh:
             return self.__vertices__
-        return self._vertex_table.keys
+        return self.vertex_table.keys
 
     @property
     def ids(self) -> np.ndarray:
@@ -185,7 +202,7 @@ class Mesh(object):
     @independent.of("translate", "rotate")
     @cached_property
     def _ids_from_vectors(self):
-        self._vertex_table
+        self.vertex_table
         return self.__ids__
 
     @cached_property
