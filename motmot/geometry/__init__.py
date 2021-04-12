@@ -14,6 +14,8 @@ from ._geometry import (
     normalise,
     normalised,
     orthogonal_bases,
+    unzip,
+    zip,
 )
 from ._geometry import _reduce_last_axis
 from ._unit_vector import UnitVector

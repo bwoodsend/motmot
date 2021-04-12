@@ -2,6 +2,8 @@
 """
 """
 
+from typing import Tuple
+
 import numpy as np
 import numpy  # Needed for PyCharm's type checking.
 
@@ -282,3 +284,62 @@ def area(polygon) -> np.ndarray:
 
     # Add all double-areas together and un-double them.
     return sum(areas_x2, next(areas_x2)) / 2
+
+
+def zip(*axes) -> np.ndarray:
+    """Combine separate x, y, z arrays into a single *points* array.
+
+    Args:
+        axes:
+            Each separate axis to combine.
+    Returns:
+        A single array with :py:`shape[-1] == len(axes)`.
+
+    All `axes` must have the matching or broadcast-able shapes. The number of
+    axes doesn't have to be 3.
+
+    .. code-block:: python
+
+        >>> zip(np.arange(5), np.arange(-2, 3))
+        array([[ 0, -2],
+               [ 1, -1],
+               [ 2,  0],
+               [ 3,  1],
+               [ 4,  2]])
+
+        >>> zip(np.arange(10), 4, np.arange(-5, 5))
+        array([[ 0,  4, -5],
+               [ 1,  4, -4],
+               [ 2,  4, -3],
+               [ 3,  4, -2],
+               [ 4,  4, -1],
+               [ 5,  4,  0],
+               [ 6,  4,  1],
+               [ 7,  4,  2],
+               [ 8,  4,  3],
+               [ 9,  4,  4]])
+
+    .. seealso:: :func:`unzip` for the reverse.
+
+    This function is similar to :data:`numpy.c_` except that it is not limited
+    to 2D arrays.
+
+    """
+
+    return np.concatenate(
+        [i[..., np.newaxis] for i in np.broadcast_arrays(*axes)], axis=-1)
+
+
+def unzip(points) -> Tuple[np.ndarray, ...]:
+    """Separate each component from an array of points.
+
+    Args:
+        points: Some points.
+    Returns:
+        Each axis separately as a tuple.
+
+    This is the inverse of :func:`zip`.
+
+    """
+    points = np.asarray(points)
+    return tuple(points[..., i] for i in range(points.shape[-1]))

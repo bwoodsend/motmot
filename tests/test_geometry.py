@@ -169,3 +169,36 @@ def test_area():
     g.area(polygon) == .75
 
     polygon[-1][2] = 1
+
+
+def test_zip():
+    """Test geometry.zip()."""
+    zipped = g.zip(0, 1, 2)
+    assert zipped.tolist() == [0, 1, 2]
+    assert zipped.dtype == int
+
+    assert g.zip([1, 2, 3], 0).tolist() == [[1, 0], [2, 0], [3, 0]]
+
+    x = np.random.random((4, 3))
+    y = np.random.random((1, 3))
+    zipped = g.zip(x, y)
+    assert zipped.shape == (4, 3, 2)
+    assert np.array_equal(zipped[..., 0], x)
+    assert np.array_equiv(zipped[..., 1], y)
+
+
+def test_unzip():
+    """Test geometry.unzip()."""
+    assert g.unzip([1, 2]) == (1, 2)
+    data = np.arange(24)
+
+    x, y, z = g.unzip(data.reshape((8, 3)))
+    assert np.array_equal(x, np.arange(0, 24, 3))
+    assert np.array_equal(y, np.arange(1, 24, 3))
+    assert np.array_equal(z, np.arange(2, 24, 3))
+
+    x_, y_, z_ = g.unzip(data.reshape((2, 4, 3)))
+    assert x_.shape == y_.shape == z_.shape == (2, 4)
+    assert np.array_equal(x_.ravel(), x)
+    assert np.array_equal(y_.ravel(), y)
+    assert np.array_equal(z_.ravel(), z)

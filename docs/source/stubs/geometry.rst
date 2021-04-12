@@ -16,5 +16,7 @@ Geometry API reference
 .. autofunction:: magnitude_sqr
 .. autofunction:: normalise
 .. autofunction:: normalised
+.. autofunction:: unzip
+.. autofunction:: zip
 .. autoclass:: UnitVector
     :no-undoc-members:
