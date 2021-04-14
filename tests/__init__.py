@@ -66,3 +66,13 @@ def cylinder(n):
     ids[:, 3] = np.roll(ids[:, 0], 1)
 
     return Mesh(vertices, ids)
+
+
+def square_grid(n):
+    """Create a flat plane of n x n squares."""
+    from motmot.geometry import zip
+    r = np.mgrid
+    top_left = zip(r[:n], r[:n][:, np.newaxis], 0).reshape((-1, 3))
+    vectors = top_left[:, np.newaxis] + \
+              np.array([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]])
+    return Mesh(vectors * .01)

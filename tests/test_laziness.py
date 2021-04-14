@@ -110,6 +110,14 @@ def test_lazy_updates(modifier, attr, use_id_mesh):
         placebo_[geometry.magnitude(placebo._vertex_normals) < 1e-12] = np.nan
         trial_[geometry.magnitude(trial._vertex_normals) < 1e-12] = np.nan
 
+    elif attr == "vertex_map":
+        # This is a RaggedArray which doesn't (yet) support ==.
+        assert np.array_equal(trial_.flat, placebo_.flat)
+        assert np.array_equal(trial_.starts, placebo_.starts)
+        assert np.array_equal(trial_.ends, placebo_.ends)
+        np.seterr(**old)
+        return
+
     if isinstance(placebo_, np.ndarray):
         # ``np.nan == np.nan`` gives False which can cause this test to fail
         # incorrectly. Remove all nans.

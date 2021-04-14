@@ -13,6 +13,7 @@ import numpy as np
 import numpy
 from stl.mesh import Mesh as _Mesh
 from hoatzin import HashTable
+from rockhopper import RaggedArray
 
 from motmot._compat import cached_property
 from motmot._misc import idx, Independency
@@ -675,6 +676,94 @@ class Mesh(object):
         """
         from motmot._curvatures import Curvature
         return Curvature(self)
+
+    @independent.of("rotate", "translate")
+    @cached_property
+    def vertex_map(self) -> RaggedArray:
+        """A mapping from each vertex id to every other vertex that it is
+        directly connected to.
+
+        Each row in this :class:`~rockhopper.RaggedArray` lists all the
+        neighbours of one vertex from :attr:`vertices`.
+        e.g. If :py:`mesh.vertex_map[10]` is :py:`[13, 17, 19, 22]` then that
+        would imply that :py:`mesh.vertices[10]` is connected to each of
+        :py:`mesh.vertices[[13, 17, 19, 22]]` by a single polygon edge.
+
+        This mapping is guaranteed to:
+
+        * Be symmetric. If vertex **A** is connected to vertex **B** then **B**
+          is connected to **A**.
+        * Contain no self references. **A** will never be listed as connected to
+          **A**.
+        * Contains no duplicates. **A** will never be listed as connected to
+          **B** twice.
+
+        The order in which neighbours appear is arbitrary and not guaranteed to
+        be consistent across :mod:`motmot` versions.
+
+        .. seealso::
+
+            :meth:`connected_vertices` if you prefer to work directly with
+            vertices rather than vertex ids.
+
+        """
+        # In a closed mesh each edge is written once going from A to B and once
+        # going from B to A.
+        # In a non closed mesh, edges on boundaries will only be listed one way.
+        # This function must make sure to mirror the *singular* edges on
+        # boundaries (obviously without accidentally duplicating any others).
+
+        # Work out which (if any) edges will need to be copied backwards.
+        singular = np.argwhere(self.polygon_map == -1)
+
+        # To make the map requires an array listing the start of each edge
+        # and an array listing the end of each edge.
+        starts = np.empty(self.ids.size + len(singular), np.intc)
+        ends = np.empty(self.ids.size + len(singular), np.intc)
+
+        for i in range(self.per_polygon):
+            # Add only the counter-clockwise edges.
+            # There is usually no need to add clockwise edges because the
+            # polygon on the opposite side of the edge will add it.
+            s = slice(i * len(self), (1 + i) * len(self))
+            starts[s] = self.ids[:, i]
+            ends[s] = self.ids[:, (i + 1) % self.per_polygon]
+
+        if len(singular):
+            # Add the edges going clockwise for the *singular* edges. i.e
+            # Those which have no polygon on the other side of the edge.
+            s = slice(-len(singular), None)
+            starts[s] = self.ids[singular[:, 0],
+                                 (singular[:, 1] + 1) % self.per_polygon]
+            ends[s] = self.ids[singular[:, 0], singular[:, 1]]
+
+        return RaggedArray.group_by(ends, starts, len(self.vertices))
+
+    def connected_vertices(self, vertex: np.ndarray) -> np.ndarray:
+        """List vertices which are directly connected to **vertex** by one
+        polygon edge.
+
+        Args:
+            vertex:
+                A single point from :attr:`vertices`.
+                A NumPy array with shape ``(3,)``.
+        Returns:
+            An :py:`(n, 3)` array where ``n`` is the number of connected
+            vertices.
+        Raises:
+            KeyError:
+                If **vertex** is not in :attr:`vertices`.
+
+        .. seealso::
+
+            This method uses :attr:`vertex_map` under the hood.
+            Use :attr:`vertex_map` if you're using vertex ids instead of raw
+            vertices.
+
+        """
+        if vertex.shape != (3,):
+            raise NotImplementedError("Must take a single vertex.")
+        return self.vertices[self.vertex_map[self.vertex_table[vertex]]]
 
 
 independent.init(Mesh)
