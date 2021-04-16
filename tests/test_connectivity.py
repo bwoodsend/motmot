@@ -155,3 +155,17 @@ def _check_symmetry_and_duplicity(vertex_map):
         for j in neighbours:
             # Symmetry and uniqueness (1) and (2).
             assert (vertex_map[j] == i).sum() == 1
+
+
+def test_on_boundary():
+    """Test Mesh.on_boundary()."""
+    self = square_grid(3)
+    # The boundaries of the square_grid() mesh are just its extremes.
+    target = np.any(self.min[:2] == self.vertices[:, :2], axis=1) \
+         | np.any(self.vertices[:, :2] == self.max[:2], axis=1)
+
+    on_edge = [self.on_boundary(i) for i in self.vertices]
+    assert on_edge == target.tolist()
+
+    with pytest.raises(ValueError, match="Only single"):
+        self.on_boundary(self.vertices[:2])

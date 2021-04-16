@@ -765,6 +765,46 @@ class Mesh(object):
             raise NotImplementedError("Must take a single vertex.")
         return self.vertices[self.vertex_map[self.vertex_table[vertex]]]
 
+    @cached_property
+    def _reverse_ids(self):
+        """A mapping of which polygons each vertex is in.
+
+        This mapping uses flat indices. i.e. To find all instances of vertex
+        123 use::
+
+            polygon_ids, corners = \\
+                np.divmod(self._reverse_ids[123], self.per_polygon)
+
+        Then ``self.ids[polygon_ids, corners]`` will all equal 123.
+
+        """
+        # I'm keeping this private for now as I'm not convinced that it'll be
+        # that useful.
+        return RaggedArray.group_by(np.arange(self.ids.size), self.ids.ravel())
+
+    def on_boundary(self, vertex: np.ndarray) -> bool:
+        """Test if a **vertex** touches the edge of this mesh.
+
+        Args:
+            vertex:
+                A 3D point in :attr:`vertices`.
+        Returns:
+            True if it touches, false otherwise.
+
+        .. note::
+
+            To check if a polygon touches a mesh edge, simply use::
+
+                any(mesh.polygon_map[polygon_id] == -1)
+
+        """
+        id = self.vertex_table[vertex]
+        if not np.isscalar(id):
+            raise ValueError("Only single vertices are supported.")
+        polygons, sub_ids = np.divmod(self._reverse_ids[id], self.per_polygon)
+        return np.any(self.polygon_map[polygons, sub_ids] == -1) \
+               or np.any(self.polygon_map[polygons, sub_ids - 1] == -1)
+
 
 independent.init(Mesh)
 Mesh._reset_on_rotate = independent.reset_on("rotate")
