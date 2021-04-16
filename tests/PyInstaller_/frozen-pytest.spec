@@ -2,12 +2,15 @@
 
 block_cipher = None
 
+from PyInstaller.utils.hooks import collect_entry_point
+
+datas, hidden = collect_entry_point("pytest11")
 
 a = Analysis(['frozen-pytest.py'],
              pathex=[SPECPATH],
              binaries=[],
-             datas=[],
-             hiddenimports=[],
+             datas=datas,
+             hiddenimports=["meshzoo"] + hidden,
              hookspath=[],
              runtime_hooks=[],
              excludes=[],

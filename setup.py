@@ -29,6 +29,7 @@ setup(
     ],
     description="A sophisticated mesh class for analysing 3D surfaces.",
     install_requires=copy_requirements(),
+    entry_points={"pyinstaller40": "hook-dirs=motmot:_PyInstaller_hook_dir"},
     extras_require={
         "test": [
             'pytest>=3', 'pytest-order', 'coverage', 'pytest-cov',

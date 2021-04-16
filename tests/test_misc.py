@@ -2,6 +2,10 @@
 """
 """
 
+import sys
+import os
+import runpy
+
 import pytest
 
 from motmot._compat import cached_property
@@ -76,3 +80,20 @@ def test():
     assert self.x_mirror == 8
     assert self.y_mirror == 9
     assert self.total == 17
+
+
+def test_PyInstaller_hook():
+    if getattr(sys, "frozen", False):
+        from motmot._slug import slug
+        assert slug.path.exists()
+        assert slug.types_map.json_path.exists()
+
+    else:
+        from motmot import _PyInstaller_hook_dir
+        hook_dir, = _PyInstaller_hook_dir()
+        assert os.path.isdir(hook_dir)
+        hook = os.path.join(hook_dir, "hook-motmot.py")
+        assert os.path.isfile(hook)
+
+        namespace = runpy.run_path(hook)
+        assert len(namespace["datas"]) == 2
