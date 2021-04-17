@@ -39,6 +39,7 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.autosectionlabel',
     'sphinx.ext.intersphinx',
+    'sphinx_rtd_theme_configuration',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
