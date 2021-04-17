@@ -8,6 +8,7 @@ Geometry API reference
 
 .. autofunction:: area
 .. autofunction:: center_of_mass
+.. autofunction:: closest
 .. autofunction:: furthest
 .. autofunction:: get_components
 .. autofunction:: get_components_zipped

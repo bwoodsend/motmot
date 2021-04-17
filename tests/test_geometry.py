@@ -202,3 +202,10 @@ def test_unzip():
     assert np.array_equal(x_.ravel(), x)
     assert np.array_equal(y_.ravel(), y)
     assert np.array_equal(z_.ravel(), z)
+
+
+def test_closest():
+    """Test geometry.closest()."""
+    points = g.zip(np.arange(10), np.arange(10)[:, np.newaxis])
+    assert g.closest(points.reshape((-1, 2)), [4.4, 1.6]).tolist() == [4, 2]
+    assert g.closest(points, [6.6, 9.1]).tolist() == [7, 9]

@@ -5,6 +5,7 @@
 from ._geometry import (
     area,
     center_of_mass,
+    closest,
     furthest,
     get_components,
     get_components_zipped,

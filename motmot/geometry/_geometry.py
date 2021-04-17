@@ -343,3 +343,20 @@ def unzip(points) -> Tuple[np.ndarray, ...]:
     """
     points = np.asarray(points)
     return tuple(points[..., i] for i in range(points.shape[-1]))
+
+
+def closest(points, target):
+    """Select from **points** the point which is closest to **to**.
+
+    Args:
+        points:
+            An array of vertices to choose from.
+        target:
+            A single target vertex to be closest to.
+    Returns:
+        One vertex from **points**.
+
+    """
+    points = np.asarray(points)
+    index = magnitude_sqr(points - target).argmin()
+    return points[np.unravel_index(index, points.shape[:-1])]
