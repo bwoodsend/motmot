@@ -805,6 +805,79 @@ class Mesh(object):
         return np.any(self.polygon_map[polygons, sub_ids] == -1) \
                or np.any(self.polygon_map[polygons, sub_ids - 1] == -1)
 
+    @cached_property
+    def kdtree(self):
+        """A KDTree_ with :attr:`centers` as its input data.
+
+        This object powers all non-exact point lookup operations such as
+        :meth:`closest_point`. Use its ``query_xxx()`` methods for more flexible
+        lookup.
+
+        .. _kdtree: https://github.com/storpipfugl/pykdtree
+
+        """
+        assert np.isfinite(self.centers).all()
+        from pykdtree.kdtree import KDTree
+        return KDTree(self.centers)
+
+    def closest_point(self, target,
+                      distance_upper_bound: Optional[float] = None,
+                      interpolate=True) -> np.ndarray:
+        """Find the nearest point on the surface of the mesh to **target**.
+
+        Args:
+            target:
+                The point(s) to query. A :class:`numpy.ndarray` with
+                :py:`shape[-1] == 3`.
+            distance_upper_bound:
+                A optional maximum allowed distance from **target** before
+                giving up. In this case :py:`nan` is returned.
+            interpolate:
+                If true, the output will be the nearest point on the surface of
+                the nearest polygon. Otherwise, it will only be the center of
+                the nearest polygon.
+        Returns:
+            The nearest point(s) on the surface of the mesh. A
+            :class:`numpy.ndarray` with the same shape as **target**.
+
+        .. note::
+
+            Under extreme circumstances, namely if **point** lies between two
+            very close parallel-ish surfaces with enormous polygons, then the
+            output is not guaranteed to be optimal. It is, however, guaranteed
+            to be better than querying the nearest vertex.
+
+        """
+        target = np.asarray(target, dtype=self.kdtree.data.dtype)
+
+        # PyKDTree only accepts 2D input arrays.
+        # For single points (1D array) or arrays of arrays of points (>2D) we
+        # need to convert inputs to 2D arrays then convert the outputs back
+        # again. Ideally this would be fixed in pykdtree but the project is
+        # borderline abandoned.
+        shape = target.shape
+        target = target.reshape((-1, 3))
+        out = np.empty(target.shape, dtype=self.kdtree.data.dtype)
+
+        # Find the nearest polygon.
+        if distance_upper_bound is None:
+            distances, args = self.kdtree.query(target)
+            mask = slice(None)
+        else:
+            distances, args = self.kdtree.query(
+                target, distance_upper_bound=distance_upper_bound)
+            mask = np.isfinite(distances)
+            out[~mask] = np.nan
+            args = args[mask]
+
+        if interpolate:
+            out[mask] = geometry.snap_to_plane(target[mask], self.centers[args],
+                                               self.units[args])
+        else:
+            out[mask] = self.centers[args]
+
+        return out.reshape(shape)
+
 
 independent.init(Mesh)
 Mesh._reset_on_rotate = independent.reset_on("rotate")

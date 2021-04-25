@@ -118,6 +118,10 @@ def test_lazy_updates(modifier, attr, use_id_mesh):
         np.seterr(**old)
         return
 
+    elif attr == "kdtree":
+        trial_ = trial_.data
+        placebo_ = placebo_.data
+
     if isinstance(placebo_, np.ndarray):
         # ``np.nan == np.nan`` gives False which can cause this test to fail
         # incorrectly. Remove all nans.

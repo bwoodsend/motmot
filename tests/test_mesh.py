@@ -288,3 +288,43 @@ def test_displacements():
             else:
                 assert np.all(self.centers[neighbour] - self.centers[i] \
                               == self.displacements[i, j])
+
+
+def test_closes_point():
+    """Test Mesh.closed_point().
+
+    There are an unfortunate number of permutations involved in this method.
+    This test must cover all combinations of:
+
+        * distance_upper_bound is given or omitted.
+        * interpolate is either true or false.
+
+    PyKDTree is hardcoded to only accept 2D input arrays. Also verify that our
+    workaround for other array shapes works.
+
+    """
+    from tests import square_grid
+    self = square_grid(5)
+    self.translate([0, 0, 5])
+
+    # Single point, no interpolate, no upper bound.
+    assert self.closest_point([.012, .013, 1], interpolate=False) \
+           == pytest.approx([.015, .015, 5])
+    # The same but with interpolation.
+    assert self.closest_point([.012, .013, 1]).tolist() == [.012, .013, 5]
+    # Multiple points.
+    a = self.closest_point([[.016, .09, 2], [.012, .083, 9]])
+    assert np.allclose(a, [[.016, .09, 5], [.012, .083, 5]])
+
+    # Multiple points, interpolation off, with upper bound.
+    a, b = self.closest_point([[.012, .023, 4.8], [.032, .043, 1]],
+                              distance_upper_bound=.5,
+                              interpolate=False).tolist()
+    assert a == pytest.approx([.015, .025, 5])
+    assert np.isnan(b).all()
+
+    # Multiple points, interpolation on, with upper bound.
+    a, b = self.closest_point([[.12, .23, 4.8], [.032, .043, 1]],
+                              distance_upper_bound=.5)
+    assert a == pytest.approx([.12, .23, 5])
+    assert np.isnan(b).all()

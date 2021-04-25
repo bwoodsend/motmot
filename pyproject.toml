@@ -8,4 +8,5 @@ requires = [
   "numpy-stl",
   "hoatzin @ git+ssh://git@github.com/bwoodsend/hoatzin.git@928fc26ad120668084e20c3972d66793a8954d54",
   "rockhopper @ git+ssh://git@github.com/bwoodsend/rockhopper.git@2f336527960619f297e0e80adf4b7a93bb51f043",
+  "pykdtree",
 ]
