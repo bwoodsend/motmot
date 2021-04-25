@@ -360,3 +360,28 @@ def closest(points, target):
     points = np.asarray(points)
     index = magnitude_sqr(points - target).argmin()
     return points[np.unravel_index(index, points.shape[:-1])]
+
+
+def snap_to_plane(point, origin, normal) -> np.ndarray:
+    """Map **point** to its nearest point on a plane.
+
+    Args:
+        point:
+            A vertex or vertices to move.
+        origin:
+            The plane's origin. Or any point already on the plane(s).
+        normal:
+            A unit normal to the plane.
+    Returns:
+        The translated points.
+
+    Alternatively, you may think of this as move **point** along
+    **normal** until the resulting output point satisfies::
+
+        inner_product(normal, output) == inner_product(normal, point)
+
+    """
+    point = np.asarray(point)
+    normal = np.asarray(normal)
+    height_from_plane = inner_product(origin - point, normal, keepdims=True)
+    return point + height_from_plane * normal

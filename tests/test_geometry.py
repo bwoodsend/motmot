@@ -209,3 +209,14 @@ def test_closest():
     points = g.zip(np.arange(10), np.arange(10)[:, np.newaxis])
     assert g.closest(points.reshape((-1, 2)), [4.4, 1.6]).tolist() == [4, 2]
     assert g.closest(points, [6.6, 9.1]).tolist() == [7, 9]
+
+
+def test_snap_to_plane():
+    points = [[1, 2, 3], [10, 11, 12], [0, 5, 3]]
+    normal = [0, -1, 0]
+    origins = [[0, 0, 0], [20, 3, 10], [13, 12, 91]]
+    out = g.snap_to_plane(points, origins, normal).tolist()
+
+    # `out` should be the same x and z values as `points` but same y values as
+    # `origins`.
+    assert out == [[1, 0, 3], [10, 3, 12], [0, 12, 3]]

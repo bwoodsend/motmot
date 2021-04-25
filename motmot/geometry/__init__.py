@@ -15,6 +15,7 @@ from ._geometry import (
     normalise,
     normalised,
     orthogonal_bases,
+    snap_to_plane,
     unzip,
     zip,
 )

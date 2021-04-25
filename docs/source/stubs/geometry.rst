@@ -17,6 +17,7 @@ Geometry API reference
 .. autofunction:: magnitude_sqr
 .. autofunction:: normalise
 .. autofunction:: normalised
+.. autofunction:: snap_to_plane
 .. autofunction:: unzip
 .. autofunction:: zip
 .. autoclass:: UnitVector
