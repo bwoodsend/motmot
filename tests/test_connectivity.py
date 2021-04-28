@@ -166,6 +166,8 @@ def test_on_boundary():
 
     on_edge = [self.on_boundary(i) for i in self.vertices]
     assert on_edge == target.tolist()
+    on_edge = [self.on_boundary(i) for i in range(len(self.vertices))]
+    assert target.tolist() == on_edge
 
     with pytest.raises(ValueError, match="Only single"):
         self.on_boundary(self.vertices[:2])

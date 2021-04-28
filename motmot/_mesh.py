@@ -6,8 +6,9 @@ import os
 from pathlib import Path
 import io
 import warnings
-from typing import Optional
+from typing import Optional, Union
 import copy
+from numbers import Integral
 
 import numpy as np
 import numpy
@@ -782,12 +783,12 @@ class Mesh(object):
         # that useful.
         return RaggedArray.group_by(np.arange(self.ids.size), self.ids.ravel())
 
-    def on_boundary(self, vertex: np.ndarray) -> bool:
+    def on_boundary(self, vertex: Union[np.ndarray, Integral]) -> bool:
         """Test if a **vertex** touches the edge of this mesh.
 
         Args:
             vertex:
-                A 3D point in :attr:`vertices`.
+                A 3D point in :attr:`vertices`. Or a single vertex ID.
         Returns:
             True if it touches, false otherwise.
 
@@ -798,7 +799,10 @@ class Mesh(object):
                 any(mesh.polygon_map[polygon_id] == -1)
 
         """
-        id = self.vertex_table[vertex]
+        if isinstance(vertex, Integral):
+            id = vertex
+        else:
+            id = self.vertex_table[vertex]
         if not np.isscalar(id):
             raise ValueError("Only single vertices are supported.")
         polygons, sub_ids = np.divmod(self._reverse_ids[id], self.per_polygon)
