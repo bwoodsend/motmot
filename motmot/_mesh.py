@@ -9,6 +9,7 @@ import warnings
 from typing import Optional, Union
 import copy
 from numbers import Integral
+import operator
 
 import numpy as np
 import numpy
@@ -881,6 +882,47 @@ class Mesh(object):
             out[mask] = self.centers[args]
 
         return out.reshape(shape)
+
+    def local_maxima(self, heights: np.ndarray, boundaries: bool = True,
+                     strict: bool = True) -> np.ndarray:
+        """Find all :attr:`vertices` whose corresponding value in **heights** is
+        greater than that of all its :meth:`connected_vertices`.
+
+        Args:
+            heights:
+                A per-vertex scalar to rank by.
+            boundaries:
+                If false, ignore any vertices which :meth:`touch the mesh
+                boundary <on_boundary>`.
+            strict:
+                If true, a vertex's value from **heights** must be strictly
+                greater than its neighbours. Otherwise, it may be greater or
+                equal.
+        Returns:
+            The vertex ids of the vertices which are local maxima.
+
+        """
+        mask = np.ones(len(self.vertices), bool)
+
+        heights = np.asarray(heights)
+        if heights.shape != (len(self.vertices),):
+            raise ValueError("`heights` must be a 1D array with the same "
+                             "length as `vertices`.")
+
+        less_than = operator.lt if strict else operator.le
+
+        for i in range(self.per_polygon):
+            this = self.ids[:, i]
+            next = self.ids[:, i - 1]
+            mask[this] &= less_than(heights[next], heights[this])
+            # Strictly speaking, we could skip this line for closed meshes.
+            mask[next] &= less_than(heights[this], heights[next])
+
+        args = np.nonzero(mask)[0]
+        if not boundaries:
+            args = np.array([i for i in args if not self.on_boundary(i)])
+
+        return args
 
 
 independent.init(Mesh)

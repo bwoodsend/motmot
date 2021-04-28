@@ -171,3 +171,46 @@ def test_on_boundary():
 
     with pytest.raises(ValueError, match="Only single"):
         self.on_boundary(self.vertices[:2])
+
+
+@pytest.mark.parametrize("strict", [False, True])
+def test_local_maxima(strict):
+    # Create an egg-box shaped (hilly) surface.
+    self = square_grid(30)
+    self = Mesh(self.vertex_table.destroy(), self.ids)
+    self.vertices[:, 2] = np.round(
+        np.sin(10 * np.pi * (self.vertices[:, 0] + .05)) *
+        np.sin(10 * np.pi * self.vertices[:, 1]), 5) * .1
+
+    # Use geometric height for simplicity.
+    heights = self.vertices[:, 2]
+
+    # This egg-box should have:
+    #   * strict local maxima at the top of each hill,
+    #   * soft local maxima in the saddle between 4 hills,
+    #   * all kinds of nonsense on the boundaries.
+
+    # Find all locally high points, allowing ones on the boundaries.
+    maxima = self.local_maxima(heights, strict=strict)
+
+    # Explicitly check each vertex's height against its neighbours use a more
+    # explicit, brute force approach.
+    for vertex_id in range(len(self.vertices)):
+        neighbours = self.vertex_map[vertex_id]
+        if strict:
+            is_maxima = (heights[neighbours] < heights[vertex_id]).all()
+        else:
+            is_maxima = (heights[neighbours] <= heights[vertex_id]).all()
+        assert is_maxima == (vertex_id in maxima)
+
+    # Find all locally high points, removing ones on the boundaries.
+    maxima_ = self.local_maxima(heights, strict=strict, boundaries=False)
+    for vertex_id in maxima_:
+        assert vertex_id in maxima
+        if strict:
+            assert heights[vertex_id] == .1
+        else:
+            assert heights[vertex_id] in (0, .1)
+
+    with pytest.raises(ValueError):
+        self.local_maxima([1, 2, 3])
