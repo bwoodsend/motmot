@@ -34,6 +34,7 @@ def unique_vertices(n):
 
 
 def ids_mesh(n, d=3):
+    np.random.seed(0)
     vertices = unique_vertices(n * 3 // 2)
     ids = np.append(np.arange(len(vertices)),
                     np.random.randint(0, len(vertices), n * d - len(vertices)))
