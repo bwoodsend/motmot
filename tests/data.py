@@ -25,5 +25,13 @@ def _download_rabbit():
     return path
 
 
+def _compress_rabbit():
+    path = rabbit_path.with_suffix(".stl.xz")
+    if not path.exists():
+        import lzma
+        path.write_bytes(lzma.compress(_download_rabbit().read_bytes()))
+    return path
+
+
 rabbit_path = _download_rabbit()
-rabbit_xz = rabbit_path.with_suffix(".stl.xz")
+rabbit_xz = _compress_rabbit()
