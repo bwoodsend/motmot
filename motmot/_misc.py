@@ -2,6 +2,9 @@
 """Dumping ground for random bits and bobs."""
 
 from collections import defaultdict as _default_dict
+import os
+import io
+
 from motmot._compat import cached_property as _cached_property
 
 idx = type("IDx", (object,), dict(__getitem__=lambda self, x: x))()
@@ -51,3 +54,34 @@ class Independency(_default_dict):
     def reset_all(self, obj):
         for i in self.cached_properties:
             obj.__dict__.pop(i, None)
+
+
+def read_archived(file) -> io.BytesIO:
+    """Read a file which may be ``.xz``, ``.bz2`` or ``.gz`` compressed.
+
+    Args:
+        file:
+            The filename.
+    Returns:
+        The decompressed bytes wrapped in an :class:`io.BytesIO`.
+
+    """
+    assert isinstance(file, (str, os.PathLike))
+    suffix = os.path.splitext(file)[1]
+
+    if suffix == ".xz":
+        from lzma import open
+    elif suffix == ".gz":
+        from gzip import open
+    elif suffix == ".bz2":
+        from bz2 import open
+    else:
+        from builtins import open
+
+    with open(file, "rb") as f:
+        # For some reason, just passing the open compressed file to
+        # numpy-stl causes it to only read some of it.
+        # Create a redundant intermediate io.BytesIO().
+        file = io.BytesIO(f.read())
+
+    return file

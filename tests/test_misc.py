@@ -9,7 +9,9 @@ import runpy
 import pytest
 
 from motmot._compat import cached_property
-from motmot._misc import Independency
+from motmot._misc import Independency, read_archived
+
+from tests.data import HERE
 
 pytestmark = pytest.mark.order(0)
 
@@ -97,3 +99,16 @@ def test_PyInstaller_hook():
 
         namespace = runpy.run_path(hook)
         assert len(namespace["datas"]) == 2
+
+
+compressed_files = list((HERE / "compressed_files").glob("*"))
+
+
+@pytest.mark.parametrize("path", compressed_files,
+                         ids=[i.stem for i in compressed_files])
+def test_read_archived(path):
+    """Decompress each file in tests/compressed_files and check that they say
+     what they're supposed to say."""
+    contents = read_archived(path).read().strip()
+    # Each file contains: "This file is compression-method compressed."
+    assert contents == f"This file is {path.stem} compressed.".encode()

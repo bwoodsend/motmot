@@ -18,7 +18,7 @@ from hoatzin import HashTable
 from rockhopper import RaggedArray
 
 from motmot._compat import cached_property
-from motmot._misc import idx, Independency
+from motmot._misc import idx, Independency, read_archived
 from motmot import geometry
 
 
@@ -74,19 +74,10 @@ class Mesh(object):
         """
         if ids is None:
             if isinstance(vertices, (str, os.PathLike)):
-                if os.path.splitext(vertices)[1] == ".xz":
-                    import lzma
-                    with lzma.open(vertices, "rb") as f:
-                        # For some reason, just passing the open lzma file to
-                        # numpy-stl causes it to only read some of it.
-                        # Create a redundant intermediate io.BytesIO().
-                        file = io.BytesIO(f.read())
-                    self.__init__(file)
-                    self.path = vertices
-                    return
-                mesh = _Mesh.from_file(vertices, calculate_normals=False)
-                self.__vectors__ = np.ascontiguousarray(mesh.vectors)
+                file = read_archived(vertices)
+                self.__init__(file, name=name)
                 self.path = vertices
+                return
             elif isinstance(vertices, io.IOBase):
                 mesh = _Mesh.from_file(None, fh=vertices,
                                        calculate_normals=False)
