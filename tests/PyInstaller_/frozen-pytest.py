@@ -6,4 +6,5 @@ import sys
 import pytest
 import motmot
 
-pytest.main(sys.argv[1:] + ["--no-cov", "--tb=native"])
+status = pytest.main(sys.argv[1:] + ["--no-cov", "--tb=native"])
+assert status.value == 0
