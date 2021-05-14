@@ -94,7 +94,7 @@ with open("rst_prolog.txt") as f:
 intersphinx_mapping = {
     'python': ('http://docs.python.org/3', None),
     'numpy': ('https://numpy.org/doc/stable/', None),
-    'hoatzin': ('/e/notebooks/hoatzin/docs/build/html', None),
+    'hirola': ('https://hirola.readthedocs.io/en/latest/', None),
     'rockhopper': ('/e/notebooks/rockhopper/docs/build/html', None),
 }
 

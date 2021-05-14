@@ -3,7 +3,7 @@
 """
 
 import numpy as np
-import hoatzin
+import hirola
 
 from motmot import Mesh
 
@@ -27,7 +27,7 @@ def assert_mesh_equal(a: Mesh, b: Mesh, ignore_path=False):
 
 def unique_vertices(n):
     n = int(n)
-    table = hoatzin.HashTable(n * 3 // 2, np.dtype(None) * 3)
+    table = hirola.HashTable(n * 3 // 2, np.dtype(None) * 3)
     while len(table) < n:
         table.add(np.random.random((n - len(table), 3)))
     return table.destroy()

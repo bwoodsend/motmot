@@ -14,7 +14,7 @@ import operator
 import numpy as np
 import numpy
 from stl.mesh import Mesh as _Mesh
-from hoatzin import HashTable
+from hirola import HashTable
 from rockhopper import RaggedArray
 
 from motmot._compat import cached_property
@@ -128,7 +128,7 @@ class Mesh(object):
     def vertex_table(self) -> HashTable:
         """The lookup table behind vertex uniquifying and fast vertex lookup.
 
-        This object, a :class:`hoatzin.HashTable`, is similar to a :class:`dict`
+        This object, a :class:`hirola.HashTable`, is similar to a :class:`dict`
         with this mesh's unique vertices as its keys and an enumeration as its
         values.
 
@@ -141,7 +141,7 @@ class Mesh(object):
             points = mesh.vertices[ids]
 
         To quickly test if a vertex or vertices is in :attr:`vertices` use
-        :meth:`mesh.vertex_table.contains() <hoatzin.HashTable.contains>`.
+        :meth:`mesh.vertex_table.contains() <hirola.HashTable.contains>`.
 
         """
         if not self.is_ids_mesh:

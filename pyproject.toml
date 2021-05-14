@@ -6,7 +6,7 @@ requires = [
   "cslug",
   "numpy",
   "numpy-stl",
-  "hoatzin @ git+ssh://git@github.com/bwoodsend/hoatzin.git@15dbffc921bdcb9668967c18f7c28d2c201b13a3",
+  "hirola",
   "rockhopper @ git+ssh://git@github.com/bwoodsend/rockhopper.git@14eb9ec69f8a74eee8fd1ec08254e5611aa37866",
   "pykdtree",
 ]

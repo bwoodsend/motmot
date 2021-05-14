@@ -22,7 +22,7 @@ def test_basics():
     assert mesh.name == "cat"
 
     # Test generating vertices/ids from a vectors mesh.
-    # The work is all handled by hoatzin and therefore doesn't need to be tested
+    # The work is all handled by hirola and therefore doesn't need to be tested
     # extensively here.
     assert np.array_equal(mesh.vectors, mesh.vertices[mesh.ids])
     _assert_first_appearances_are_sorted(mesh.ids.flat, len(mesh.vertices))
