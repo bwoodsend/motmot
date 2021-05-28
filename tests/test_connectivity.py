@@ -6,7 +6,7 @@ import numpy as np
 import pytest
 
 from motmot._polygon_walk import connected, slug
-from motmot import Mesh
+from motmot import Mesh, geometry
 from tests import data, square_grid
 
 pytestmark = pytest.mark.order(4)
@@ -214,3 +214,28 @@ def test_local_maxima(strict):
 
     with pytest.raises(ValueError):
         self.local_maxima([1, 2, 3])
+
+
+@pytest.mark.parametrize("strict", [False, True])
+def test_local_maxima_with_colliding_indices(strict):
+    """Test Mesh().local_maxima() where columns in mesh.ids contain duplicates
+    and those duplicates disagree on whether the duplicated vertex id is a local
+    maxima. Prevents a nastily subtle bug caused by NumPy's buffering."""
+
+    # Create a mesh which is just 2 lines joining 3 vertices of ascending
+    # height.
+    vertices = geometry.zip(0, 0, [1, 2, 3])
+    heights = vertices[:, 2]
+    # The middle vertex id (1) appears in the same column of ids.
+    ids = [[1, 0], [1, 2]]
+
+    # The only local maxima is the 3rd point. But if done wrong, the middle
+    # point may be included too.
+
+    # Try where (1, 0) is seen before (1, 2).
+    self = Mesh(vertices, ids)
+    assert self.local_maxima(heights, boundaries=True).tolist() == [2]
+
+    # Try where (1, 0) is seen after (1, 2).
+    self = Mesh(vertices, ids[::-1])
+    assert self.local_maxima(heights, boundaries=True).tolist() == [2]

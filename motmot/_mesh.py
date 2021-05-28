@@ -905,9 +905,17 @@ class Mesh(object):
         for i in range(self.per_polygon):
             this = self.ids[:, i]
             next = self.ids[:, i - 1]
-            mask[this] &= less_than(heights[next], heights[this])
+            # If the next vertex round is higher, then this is not a local
+            # maxima. Read as:
+            #   mask[this] &= less_than(heights[next], heights[this])
+            np.logical_and.at(mask, this, less_than(heights[next],
+                                                    heights[this]))
             # Strictly speaking, we could skip this line for closed meshes.
-            mask[next] &= less_than(heights[this], heights[next])
+            # If this vertex is higher than the next vertex round, then the next
+            # vertex is not a local maxima. Read as:
+            #   mask[next] &= less_than(heights[this], heights[next])
+            np.logical_and.at(mask, next, less_than(heights[this],
+                                                    heights[next]))
 
         args = np.nonzero(mask)[0]
         if not boundaries:
