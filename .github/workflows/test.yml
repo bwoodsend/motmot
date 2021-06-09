@@ -51,16 +51,7 @@ jobs:
 
       - name: Install
         shell: bash
-        run: |
-          mkdir -p ~/.ssh
-          echo ${{ secrets.SSH }} | base64 -d > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          eval $(ssh-agent)
-          ssh-add ~/.ssh/id_rsa
-          ssh -o StrictHostKeyChecking=no git@github.com ls || echo ''
-          ssh git@github.com || echo ''
-          python -m pip install -U toml pip setuptools wheel
-          pip install --cache-dir=pip-cache -e .[test]
+        run: pip install --cache-dir=pip-cache -e .[test]
 
       - name: Compile
         run: python setup.py build

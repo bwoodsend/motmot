@@ -7,6 +7,6 @@ requires = [
   "numpy",
   "numpy-stl",
   "hirola",
-  "rockhopper @ git+ssh://git@github.com/bwoodsend/rockhopper.git@14eb9ec69f8a74eee8fd1ec08254e5611aa37866",
+  "rockhopper",
   "pykdtree",
 ]

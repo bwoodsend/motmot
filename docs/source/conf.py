@@ -95,7 +95,6 @@ intersphinx_mapping = {
     'python': ('http://docs.python.org/3', None),
     'numpy': ('https://numpy.org/doc/stable/', None),
     'hirola': ('https://hirola.readthedocs.io/en/latest/', None),
-    'rockhopper': ('/e/notebooks/rockhopper/docs/build/html', None),
 }
 
 # Autodoc defaults.
@@ -175,5 +174,9 @@ texinfo_documents = [
      'One line description of project.', 'Miscellaneous'),
 ]
 
-# This is mistakenly used by numpy-stl.
-nitpick_ignore = [("py:class", "numpy.array")]
+nitpick_ignore = [
+    # This is mistakenly used by numpy-stl.
+    ("py:class", "numpy.array"),
+    # This has no intersphinx-able location.
+    ("py:class", "rockhopper.RaggedArray"),
+]
