@@ -65,3 +65,8 @@ jobs:
         run: pyinstaller frozen-pytest.spec
       - working-directory: tests/PyInstaller_
         run: ./dist/frozen-pytest/frozen-pytest ../..
+
+      # Test old versions of dependencies. Should these fail, re-pin to working
+      # versions both here and in the pyproject.toml
+      - run: pip install -r minimum-versions.txt && pytest
+        if: ${{ matrix.python-version == 3.6 }}

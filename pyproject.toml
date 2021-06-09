@@ -4,9 +4,9 @@ requires = [
   "wheel",
   "toml",
   "cslug",
-  "numpy",
-  "numpy-stl",
+  "numpy >= 1.16.0",
+  "numpy-stl >= 2.12.0",
   "hirola",
   "rockhopper",
-  "pykdtree",
+  "pykdtree >= 1.2.0",
 ]
