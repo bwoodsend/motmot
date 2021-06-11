@@ -424,11 +424,7 @@ class Mesh(object):
         # noinspection PyUnresolvedReferences
         self._reset_all(self)
 
-    def __getitem__(self, item):
-        """
-
-        :rtype: Mesh
-        """
+    def __getitem__(self, item) -> 'Mesh':
         if self.is_ids_mesh:
             return type(self)(self.vertices, self.ids[item], name=self.name)
         return type(self)(self.vectors[item], name=self.name)
@@ -438,20 +434,19 @@ class Mesh(object):
         raise TypeError("Meshes can't be converted directly to arrays. Use one "
                         "of `vertices`, `vectors` or `ids` attributes instead.")
 
-    def crop(self, mask, in_place=False):
+    def crop(self, mask: Union[np.ndarray, slice],
+             in_place: bool = False) -> 'Mesh':
         """Return a subsample of the original mesh. Inclusion is defined by
         **mask**.
 
         Args:
-            mask (numpy.ndarray or slice):
+            mask:
                 Polygons to include.
-            in_place (bool):
+            in_place:
                 Modify this mesh instead of making a modified copy, defaults to
                 False.
-
         Returns:
-            Mesh:
-                This mesh if **in_place** or a new cropped one.
+            This mesh if **in_place** or a new cropped one.
 
         A minimal usage example:
 
@@ -503,17 +498,16 @@ class Mesh(object):
         out.__setstate__(state)
         return out
 
-    def copy(self, deep=True):
+    def copy(self, deep=True) -> 'Mesh':
         """Make a shallow or deep copy of the mesh.
 
         Args:
-            deep (bool):
+            deep:
                 If true, copy the underlying :attr:`vectors` or :attr:`vertices`
                 and :attr:`ids` arrays. Otherwise output will share these arrays
                 with this mesh.
-
         Returns:
-            Mesh: Another mesh.
+            Another mesh.
 
         Caches of cached properties are never copied.
 
