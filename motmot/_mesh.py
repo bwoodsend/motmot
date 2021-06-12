@@ -79,7 +79,11 @@ class Mesh(object):
                 self.path = vertices
                 return
             elif isinstance(vertices, io.IOBase):
-                mesh = _Mesh.from_file(None, fh=vertices,
+                # numpy-stl's detection for streams has some holes in it.
+                # Force streams to be BytesIO()s. Note that even ASCII STLs must
+                # be read in binary mode.
+                fh = io.BytesIO(vertices.read())
+                mesh = _Mesh.from_file(None, fh=fh,
                                        calculate_normals=False)
                 self.__vectors__ = np.ascontiguousarray(mesh.vectors)
             else:
