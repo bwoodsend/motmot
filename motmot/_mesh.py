@@ -89,15 +89,13 @@ class Mesh(object):
             else:
                 self.__vectors__ = np.ascontiguousarray(vertices)
             self.is_ids_mesh = False
-            dtype = self.__vectors__.dtype
         else:
             self.__vertices__ = np.ascontiguousarray(vertices)
             self.__ids__ = np.asarray(ids, dtype=np.intp, order="C")
             self.is_ids_mesh = True
-            dtype = self.__vertices__.dtype
         self.name = name
 
-        self._bounds = np.empty((2, 3), dtype)
+        self._bounds = np.empty((2, 3), self.dtype)
 
     _vertex_table: HashTable
 
@@ -172,6 +170,14 @@ class Mesh(object):
             warnings.warn("Duplicate vertices in mesh.vertices.")
 
         return table
+
+    @property
+    def dtype(self):
+        """The :class:`numpy.dtype` of :attr:`vertices` and :attr:`vectors`.
+        """
+        if self.is_ids_mesh:
+            return self.__vertices__.dtype
+        return self.__vectors__.dtype
 
     @property
     def vertices(self) -> np.ndarray:

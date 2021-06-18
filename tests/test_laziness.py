@@ -24,6 +24,7 @@ attrs = cache_ables(Mesh)
 attrs.append("vertex_table")
 attrs.remove("curvature")
 [attrs.append("curvature." + i) for i in cache_ables(Curvature)]
+attrs.remove("dtype")
 
 
 def directly_modify(mesh):
