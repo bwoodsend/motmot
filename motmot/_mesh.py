@@ -42,7 +42,7 @@ class Mesh(object):
     __vectors__: np.ndarray
     __ids__: np.ndarray
     __vertices__: np.ndarray
-    is_ids_mesh: bool
+    is_ids_mesh: bool = False
     """If true, this mesh internally uses :attr:`vertices` and :attr:`ids`.
     Otherwise, it uses :attr:`vectors`."""
 
@@ -83,16 +83,14 @@ class Mesh(object):
                 # Force streams to be BytesIO()s. Note that even ASCII STLs must
                 # be read in binary mode.
                 fh = io.BytesIO(vertices.read())
-                mesh = _Mesh.from_file(None, fh=fh,
-                                       calculate_normals=False)
-                self.__vectors__ = np.ascontiguousarray(mesh.vectors)
+                mesh = _Mesh.from_file(None, fh=fh, calculate_normals=False)
+                self.vectors = mesh.vectors
             else:
-                self.__vectors__ = np.ascontiguousarray(vertices)
-            self.is_ids_mesh = False
+                self.vectors = vertices
         else:
-            self.__vertices__ = np.ascontiguousarray(vertices)
-            self.__ids__ = np.asarray(ids, dtype=np.intp, order="C")
             self.is_ids_mesh = True
+            self.vertices = vertices
+            self.ids = ids
         self.name = name
 
         self._bounds = np.empty((2, 3), self.dtype)
@@ -191,6 +189,14 @@ class Mesh(object):
             return self.__vertices__
         return self.vertex_table.keys
 
+    @vertices.setter
+    def vertices(self, x):
+        if not self.is_ids_mesh:
+            raise ValueError("A vectors mesh's vertices are readonly. "
+                             "Write to mesh.vectors instead.")
+        self.__vertices__ = np.ascontiguousarray(x)
+        self.reset()
+
     @property
     def ids(self) -> np.ndarray:
         """Indices of vertices used to construct each polygon.
@@ -202,6 +208,14 @@ class Mesh(object):
         if self.is_ids_mesh:
             return self.__ids__
         return self._ids_from_vectors
+
+    @ids.setter
+    def ids(self, x):
+        if not self.is_ids_mesh:
+            raise ValueError("A vectors mesh's ids are readonly. "
+                             "Write to mesh.vectors instead.")
+        self.__ids__ = np.asarray(x, dtype=np.intp, order="C")
+        self.reset()
 
     @independent.of("translate", "rotate")
     @cached_property
@@ -225,6 +239,15 @@ class Mesh(object):
         if self.is_ids_mesh:
             return self._vectors_from_ids
         return self.__vectors__
+
+    @vectors.setter
+    def vectors(self, x):
+        if self.is_ids_mesh:
+            raise ValueError("An ids mesh's vectors are readonly. "
+                             "Write to mesh.vertices instead.")
+        self.__vectors__ = np.ascontiguousarray(x)
+        self.reset()
+        self._bounds = np.empty((2, 3), self.__vectors__.dtype)
 
     x = _subsample(
         "x", idx[:, :, 0], "The x coordinate of each vertex of each polygon. "

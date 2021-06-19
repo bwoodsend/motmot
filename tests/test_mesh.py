@@ -328,3 +328,69 @@ def test_closes_point():
                               distance_upper_bound=.5)
     assert a == pytest.approx([.12, .23, 5])
     assert np.isnan(b).all()
+
+
+def test_writing_core_attributes_of_vectors_mesh():
+    """Tests writing to the vectors, vertices and ids attributes of an ids mesh.
+
+    - `vectors` should not be writeable.
+    - `vertices` should be writeable, resizable, allow changes of dtypes but
+      always silently enforce C contiguous arrays.
+    - `ids` should be writeable and resizable but silently enforce C contiguity
+      and numpy.intp dtype.
+
+    After any modifications, all lazy attributes should be reset.
+
+    """
+    self = ids_mesh(5, 4)
+    assert self.vertices.flags.writeable
+
+    old_vertices = self.vertices
+    old_normals = self.normals
+    old_ids = self.ids
+
+    self.vertices = np.asarray(np.append([[9, 9, 9]], self.vertices, axis=0),
+                               dtype=np.float32, order="f")
+    assert self.vertices is not old_vertices
+    assert self.normals is not old_normals
+    assert self.ids is old_ids
+    assert self.vertices.flags.c_contiguous
+    assert self.vertices.dtype == np.float32
+
+    self.ids = np.asarray(self.ids + 1, dtype=np.uint8, order="f")
+    assert self.ids.dtype == np.intp
+    assert self.ids.dtype
+
+    with pytest.raises(ValueError, match="ids mesh's vectors .* readonly"):
+        self.vectors += 1
+
+
+def test_writing_core_attributes_of_ids_mesh():
+    """Tests writing to the vectors, vertices and ids attributes of a vectors
+     mesh.
+
+    - `vectors` should be writeable, resizable, allow changes of dtypes but
+      always silently enforce C contiguous arrays.
+    - `vertices` should not be writeable.
+    - `ids` should not be writeable.
+
+    After any modifications, all lazy attributes should be reset.
+
+    """
+    self = vectors_mesh(5, 4)
+    assert self.vectors.flags.writeable
+    assert not self.vertices.flags.writeable
+
+    old_vertices = self.vertices
+    self.vectors += [1, 2, 3]
+    assert np.all(self.vertices != old_vertices)
+
+    with pytest.raises(ValueError, match="vectors mesh's vertices .*"):
+        self.vertices = 8
+
+    with pytest.raises(ValueError, match="vectors mesh's ids .*"):
+        self.ids += 1
+
+    self.vectors = np.asarray(self.vectors[:-2], order="f", dtype=np.float32)
+    assert self.dtype == np.float32
+    assert self.vectors.flags.c_contiguous
