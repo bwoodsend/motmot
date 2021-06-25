@@ -22,6 +22,10 @@ jobs:
             os: windows-latest
             python-version: 3.9
             architecture: 'x64'
+          - name: Windows-32bit
+            os: windows-latest
+            python-version: 3.7
+            architecture: 'x86'
 
       fail-fast: false
 
@@ -48,6 +52,12 @@ jobs:
           path: pip-cache
           key: restore-key
           restore-keys: restore-key
+
+      - name: Install a 32 bit compiler
+        if: ${{ matrix.architecture == 'x86' }}
+        uses: bwoodsend/setup-winlibs-action@v1
+        with:
+          architecture: 32
 
       - name: Install
         shell: bash
