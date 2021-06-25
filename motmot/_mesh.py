@@ -18,7 +18,7 @@ from hirola import HashTable
 from rockhopper import RaggedArray
 
 from motmot._compat import cached_property
-from motmot._misc import idx, Independency, read_archived
+from motmot._misc import idx, Independency, read_archived, as_nD
 from motmot import geometry
 
 
@@ -194,7 +194,20 @@ class Mesh(object):
         if not self.is_ids_mesh:
             raise ValueError("A vectors mesh's vertices are readonly. "
                              "Write to mesh.vectors instead.")
-        self.__vertices__ = np.ascontiguousarray(x)
+        # Vertices must be C contiguous for hirola.HashTable.
+        x = np.ascontiguousarray(x)
+
+        # If given an empty array:
+        if x.size == 0:
+            # Make it valid by default.
+            x = np.empty((0, 3), x.dtype)
+
+        elif x.shape[-1] != 3:
+            raise ValueError("The last axis of vertices must be of length 3. "
+                             f"Received an array with shape {x.shape}.")
+
+        # Implicitly promote a single vertex [x, y, z] to [[x, y, z]]
+        self.__vertices__ = as_nD(x, 2, "vertices")
         self.reset()
 
     @property
@@ -214,7 +227,16 @@ class Mesh(object):
         if not self.is_ids_mesh:
             raise ValueError("A vectors mesh's ids are readonly. "
                              "Write to mesh.vectors instead.")
-        self.__ids__ = np.asarray(x, dtype=np.intp, order="C")
+
+        # ids must be C contiguous and of a fixed dtype for the various C
+        # functions to work.
+        x = np.asarray(x, dtype=np.intp, order="C")
+
+        # Set empty input `[]` to something sane. Namely 0 triangles.
+        if x.size == 0 and x.ndim == 1:
+            x = np.empty((0, 3), np.intp)
+
+        self.__ids__ = as_nD(x, 2, "ids")
         self.reset()
 
     @independent.of("translate", "rotate")
@@ -245,7 +267,12 @@ class Mesh(object):
         if self.is_ids_mesh:
             raise ValueError("An ids mesh's vectors are readonly. "
                              "Write to mesh.vertices instead.")
-        self.__vectors__ = np.ascontiguousarray(x)
+        x = np.ascontiguousarray(x)
+        if x.ndim != 3 or x.shape[-1] != 3:
+            raise ValueError(
+                "Vectors must be a 3D array with last axis of length 3. "
+                f"Received an array with shape {x.shape}.")
+        self.__vectors__ = x
         self.reset()
         self._bounds = np.empty((2, 3), self.__vectors__.dtype)
 

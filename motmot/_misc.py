@@ -4,6 +4,7 @@
 from collections import defaultdict as _default_dict
 import os
 import io
+import numpy as np
 
 from motmot._compat import cached_property as _cached_property
 
@@ -85,3 +86,15 @@ def read_archived(file) -> io.BytesIO:
         file = io.BytesIO(f.read())
 
     return file
+
+
+def as_nD(x: np.ndarray, n: int, name: str) -> np.ndarray:
+    """Prepend new axes until **x** is **n** dimensional. Raise an error if
+    **x** has too many dimensions."""
+    if x.ndim > n:
+        raise ValueError(
+            f"'{name}' has too many dimensions. "
+            f"A {n}D array was expected but got an array with shape {x.shape}.")
+    while x.ndim < n:
+        x = x[np.newaxis]
+    return x

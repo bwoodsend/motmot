@@ -394,3 +394,86 @@ def test_writing_core_attributes_of_ids_mesh():
     self.vectors = np.asarray(self.vectors[:-2], order="f", dtype=np.float32)
     assert self.dtype == np.float32
     assert self.vectors.flags.c_contiguous
+
+
+def test_invalid_core_inputs():
+    """Test setting vectors, vertices or ids to arrays with invalid shapes.
+    This can be done either on construction or later by setting attributes.
+    """
+
+    # --- Vectors ---
+
+    # Anything not 3D is invalid.
+    with pytest.raises(ValueError,
+                       match=r"Vectors .* a 3D .* Received .* \(1,\)"):
+        Mesh([1])
+    with pytest.raises(ValueError, match=r".* \(3,\)"):
+        Mesh([1, 2, 3])
+    with pytest.raises(ValueError, match=r".* \(1, 3\)"):
+        Mesh([[1, 2, 3]])
+
+    # Test setting the attribute.
+    self = Mesh([[[1, 2, 3]]])
+    with pytest.raises(ValueError):
+        self.vectors = [[1, 2, 3]]
+
+    # Non C contiguous arrays must become contiguous.
+    self.vectors = np.zeros((3, 3, 3), order="f")
+    assert self.vectors.flags.c_contiguous
+
+    # --- Vertices ---
+
+    # An empty vertices array should be normalised to shape (0, 3)
+    # i.e. Zero 3D vertices.
+    self = Mesh([], [[1, 2, 3]])
+    assert self.vertices.shape == (0, 3)
+
+    # A single vertex should become a length 1 array of vertices.
+    self.vertices = [1, 2, 3]
+    assert self.vertices.shape == (1, 3)
+    # The data type should be preserved.
+    assert self.dtype == int
+
+    with pytest.raises(
+            ValueError,
+            match=r".* vertices .* 3\. Received .* shape \(1, 4\)\."):
+        self.vertices = [[1, 2, 3, 4]]
+
+    with pytest.raises(
+            ValueError,
+            match=r"'vertices' .* too many .* A 2D .* shape \(5, 4, 3\)\."):
+        self.vertices = np.zeros((5, 4, 3))
+
+    # Non C contiguous arrays must become contiguous.
+    self.vertices = np.zeros((4, 3), order="f")
+    assert self.vertices.flags.c_contiguous
+
+    # --- IDs ---
+
+    # IDs follows almost the same rules as Vertices.
+    self = Mesh([], [])
+    # Assume zero triangular polygons by default.
+    assert self.ids.shape == (0, 3)
+
+    # Again, a single polygon should be promoted to a 2D array with length 1.
+    self.ids = np.array([1, 2, 3], np.int8)
+    assert self.ids.shape == (1, 3)
+    # But the integer type must be normalised to ptrdiff_t.
+    assert self.ids.dtype == np.intp
+
+    # C contiguity must be enforced.
+    self.ids = np.zeros((10, 3), order="f")
+    assert self.ids.flags.c_contiguous
+
+    # Arbitrary shapes are allowed...
+    self.ids = [[1, 2, 3, 4]]
+    assert self.ids.shape == (1, 4)
+    self.ids = np.empty((0, 12))
+    assert self.ids.shape == (0, 12)
+    assert (len(self), self.per_polygon) == (0, 12)
+
+    # ... unless they are 3D.
+    with pytest.raises(
+            ValueError,
+            match=r"'ids' .* too many .* A 2D .* shape \(5, 4, 3\)\."):
+        self.ids = np.zeros((5, 4, 3))
