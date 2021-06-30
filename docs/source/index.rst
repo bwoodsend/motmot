@@ -1,5 +1,5 @@
 .. automodule:: motmot
-.. include:: ../../README.rst
+.. mdinclude:: ../../README.md
 
 .. toctree::
     :maxdepth: 2

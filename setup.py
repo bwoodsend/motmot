@@ -11,7 +11,7 @@ from cslug.building import (build_slugs, bdist_wheel, CSLUG_SUFFIX,
 
 HERE = Path(__file__).resolve().parent
 
-readme = (HERE / 'README.rst').read_text("utf-8")
+readme = (HERE / 'README.md').read_text("utf-8")
 
 setup(
     author="Brénainn Woodsend",
@@ -38,6 +38,7 @@ setup(
     },
     license="MIT license",
     long_description=readme,
+    long_description_content_type='text/markdown',
     package_data={
         "motmot": ["*" + CSLUG_SUFFIX, "*.json", "geometry/_unit_vector.pyi"]
     },
