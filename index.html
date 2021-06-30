@@ -425,7 +425,7 @@ for more information on each property.</p>
     <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
 <span class="p">])</span>
 
-<span class="c1"># If you prefer to use raw vertices rather than vertex ids then</span>
+<span class="c1"># If you prefer to use raw vertices rather than vertex IDs then</span>
 <span class="c1"># use the connected_vertices() method.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">mesh</span><span class="o">.</span><span class="n">connected_vertices</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span>
@@ -449,8 +449,8 @@ for more information on each property.</p>
 <h3>Vertex Lookup<a class="headerlink" href="#vertex-lookup" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">motmot</span></code> leverages two libraries for looking up vertices.</p>
 <ul class="simple">
-<li><p>hirola.HashTable for <a class="reference external" href="#exact-lookup">exact lookup</a></p></li>
-<li><p>pykdtree.kdtree.KDTree for <a class="reference external" href="#approximate-lookup">fuzzy lookup</a></p></li>
+<li><p><a class="reference external" href="https://hirola.readthedocs.io/en/latest/">hirola.HashTable</a> for <a class="reference external" href="#exact-lookup">exact lookup</a></p></li>
+<li><p><a class="reference external" href="https://github.com/storpipfugl/pykdtree">pykdtree.kdtree.KDTree</a> for <a class="reference external" href="#approximate-lookup">fuzzy lookup</a></p></li>
 </ul>
 <div class="section" id="id4">
 <h4>Exact lookup<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>

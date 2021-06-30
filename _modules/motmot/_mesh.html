@@ -265,7 +265,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_faces_mesh</span><span class="p">:</span>
             <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;Vectors </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> at </span><span class="si">{</span><span class="nb">hex</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span><span class="si">}</span><span class="s2"> | &quot;</span> \
                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">vectors</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">-sided polygons&gt;&quot;</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;IDs </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> at </span><span class="si">{</span><span class="nb">hex</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span><span class="si">}</span><span class="s2"> | &quot;</span> \
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;Faces </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> at </span><span class="si">{</span><span class="nb">hex</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span><span class="si">}</span><span class="s2"> | &quot;</span> \
                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">)</span><span class="si">}</span><span class="s2"> vertices | &quot;</span> \
                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">-sided polygons&gt;&quot;</span>
 
@@ -345,8 +345,8 @@
     <span class="k">def</span> <span class="nf">vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;All points in the mesh with duplicity removed.</span>
 
-<span class="sd">        If this mesh is not originally an IDs mesh, i.e. :attr:`vertices` had to</span>
-<span class="sd">        be calculated from :attr:`vectors`, then this array is read-only.</span>
+<span class="sd">        If this mesh is not originally an faces mesh, i.e. :attr:`vertices` had</span>
+<span class="sd">        to be calculated from :attr:`vectors`, then this array is read-only.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_faces_mesh</span><span class="p">:</span>
@@ -681,7 +681,7 @@
 <span class="sd">            # Get only polygons with non-negative average Z-values.</span>
 <span class="sd">            cropped = mesh.crop(mesh.centers[:, 2] &gt;= 0)</span>
 
-<span class="sd">        For an IDs based mesh this samples :attr:`faces` and leaves</span>
+<span class="sd">        For a faces mesh this samples :attr:`faces` and leaves</span>
 <span class="sd">        :attr:`vertices` untouched without copying and is equivalent to::</span>
 
 <span class="sd">            cropped = Mesh(mesh.vertices, mesh.faces[mask], name=mesh.name)</span>

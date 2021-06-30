@@ -384,7 +384,7 @@ False.</p></li>
 <span class="n">cropped</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">crop</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">centers</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>For an IDs based mesh this samples <a class="reference internal" href="#motmot.Mesh.faces" title="motmot.Mesh.faces"><code class="xref py py-attr docutils literal notranslate"><span class="pre">faces</span></code></a> and leaves
+<p>For a faces mesh this samples <a class="reference internal" href="#motmot.Mesh.faces" title="motmot.Mesh.faces"><code class="xref py py-attr docutils literal notranslate"><span class="pre">faces</span></code></a> and leaves
 <a class="reference internal" href="#motmot.Mesh.vertices" title="motmot.Mesh.vertices"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vertices</span></code></a> untouched without copying and is equivalent to:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cropped</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">mesh</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 </pre></div>
@@ -806,8 +806,8 @@ values.</p>
 <dt class="sig sig-object py" id="motmot.Mesh.vertices">
 <em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">vertices</span></span><em class="property"><span class="pre">:</span> <span class="pre">numpy.ndarray</span></em><a class="headerlink" href="#motmot.Mesh.vertices" title="Permalink to this definition">¶</a></dt>
 <dd><p>All points in the mesh with duplicity removed.</p>
-<p>If this mesh is not originally an IDs mesh, i.e. <a class="reference internal" href="#motmot.Mesh.vertices" title="motmot.Mesh.vertices"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vertices</span></code></a> had to
-be calculated from <a class="reference internal" href="#motmot.Mesh.vectors" title="motmot.Mesh.vectors"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vectors</span></code></a>, then this array is read-only.</p>
+<p>If this mesh is not originally an faces mesh, i.e. <a class="reference internal" href="#motmot.Mesh.vertices" title="motmot.Mesh.vertices"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vertices</span></code></a> had
+to be calculated from <a class="reference internal" href="#motmot.Mesh.vectors" title="motmot.Mesh.vectors"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vectors</span></code></a>, then this array is read-only.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
