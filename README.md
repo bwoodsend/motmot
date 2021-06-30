@@ -15,6 +15,9 @@ providing a seamless abstraction between raw *vectors* meshes or the more
 efficient *vertices + faces* (a.k.a *vertices + polygons*) form.
 
 * Free software: MIT license
+* Source code: https://github.com/bwoodsend/motmot/
+* Releases: https://pypi.org/project/motmot/
+* Documentation: https://bwoodsend.github.io/motmot/index.html
 
 
 ### Related projects
