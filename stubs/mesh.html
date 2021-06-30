@@ -1,0 +1,960 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Mesh API reference &mdash; Motmot 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/more-theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/theme-overrides.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/motmot-favicon.jpg"/>
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Geometry API reference" href="geometry.html" />
+    <link rel="prev" title="Motmot" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Motmot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Mesh API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="geometry.html">Geometry API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="connectivity.html">Connectivity API reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Motmot</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Mesh API reference</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/stubs/mesh.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="mesh-api-reference">
+<h1>Mesh API reference<a class="headerlink" href="#mesh-api-reference" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="motmot.Mesh">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">motmot.</span></span><span class="sig-name descname"><span class="pre">Mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">faces</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/_mesh.html#Mesh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.Mesh" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="motmot.Mesh.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">faces</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/_mesh.html#Mesh.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.Mesh.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <a class="reference internal" href="#motmot.Mesh" title="motmot.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code></a> can be constructed in three different ways:</p>
+<ol class="arabic">
+<li><p>From a filename or file-like binary stream:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">(</span><span class="s2">&quot;my-mesh.stl&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>From a 3D <a class="reference internal" href="#motmot.Mesh.vectors" title="motmot.Mesh.vectors"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vectors</span></code></a> array. It should have shape <code class="code highlight python docutils literal notranslate"><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">,</span></span> <span class="n"><span class="pre">d</span></span><span class="p"><span class="pre">,</span></span> <span class="mi"><span class="pre">3</span></span><span class="p"><span class="pre">)</span></span></code>
+where <code class="docutils literal notranslate"><span class="pre">n</span></code> is the number of polygons and <code class="docutils literal notranslate"><span class="pre">d</span></code> is the number of
+vertices per polygon.</p></li>
+<li><p>From <a class="reference internal" href="#motmot.Mesh.vertices" title="motmot.Mesh.vertices"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vertices</span></code></a> and polygon <a class="reference internal" href="#motmot.Mesh.faces" title="motmot.Mesh.faces"><code class="xref py py-attr docutils literal notranslate"><span class="pre">faces</span></code></a>.</p></li>
+</ol>
+<p>Currently only STL files can be read directly. For other 3D files, read
+using <a class="reference external" href="https://github.com/nschloe/meshio">meshio</a> then convert to <a class="reference internal" href="#motmot.Mesh" title="motmot.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">motmot.Mesh</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">meshio</span>
+<span class="n">_mesh</span> <span class="o">=</span> <span class="n">meshio</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;my-mesh.ply&quot;</span><span class="p">)</span>
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">(</span><span class="n">_mesh</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="n">_mesh</span><span class="o">.</span><span class="n">cells</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Beware however that this assumes that the mesh uses a fixed number of
+vertices per polygon. <a class="reference internal" href="../index.html#module-motmot" title="motmot"><code class="xref py py-mod docutils literal notranslate"><span class="pre">motmot</span></code></a> doesn’t support mixed polygon types.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="motmot.Mesh.area">
+<span class="sig-name descname"><span class="pre">area</span></span><a class="headerlink" href="#motmot.Mesh.area" title="Permalink to this definition">¶</a></dt>
+<dd><p>The total surface area. This is simply the sum of <a class="reference internal" href="#motmot.Mesh.areas" title="motmot.Mesh.areas"><code class="xref py py-attr docutils literal notranslate"><span class="pre">areas</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="motmot.Mesh.areas">
+<span class="sig-name descname"><span class="pre">areas</span></span><a class="headerlink" href="#motmot.Mesh.areas" title="Permalink to this definition">¶</a></dt>
+<dd><p>Surface area of each polygon.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>1D array with length <code class="code highlight python docutils literal notranslate"><span class="nb"><span class="pre">len</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">mesh</span></span><span class="p"><span class="pre">)</span></span></code>.</p>
+</dd>
+</dl>
+<p>Note that for non co-planer (not flat) polygons, this definition becomes
+progressively more arbitrary as the polygons become more complicated.
+Different areas can be obtained for identical polygons simply by
+<em>rolling</em> a polygon’s corners so that a different corner is listed
+first.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="motmot.Mesh.bounds">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">bounds</span></span><em class="property"><span class="pre">:</span> <span class="pre">numpy.ndarray</span></em><a class="headerlink" href="#motmot.Mesh.bounds" title="Permalink to this definition">¶</a></dt>
+<dd><p>The minimum and maximum <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y,</span> <span class="pre">z)</span></code> values. Equivalent to
+<code class="code highlight python docutils literal notranslate"><span class="n"><span class="pre">array</span></span><span class="p"><span class="pre">([</span></span><span class="n"><span class="pre">mesh</span></span><span class="o"><span class="pre">.</span></span><span class="n"><span class="pre">min</span></span><span class="p"><span class="pre">,</span></span> <span class="n"><span class="pre">mesh</span></span><span class="o"><span class="pre">.</span></span><span class="n"><span class="pre">max</span></span><span class="p"><span class="pre">])</span></span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>2D array with shape <code class="code highlight python docutils literal notranslate"><span class="p"><span class="pre">(</span></span><span class="mi"><span class="pre">2</span></span><span class="p"><span class="pre">,</span></span> <span class="mi"><span class="pre">3</span></span><span class="p"><span class="pre">)</span></span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="motmot.Mesh.centers">
+<span class="sig-name descname"><span class="pre">centers</span></span><a class="headerlink" href="#motmot.Mesh.centers" title="Permalink to this definition">¶</a></dt>
+<dd><p>The center of each polygon, defined as the mean of each polygon’s
+corners.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>2D array with shape <code class="code highlight python docutils literal notranslate"><span class="p"><span class="pre">(</span></span><span class="nb"><span class="pre">len</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">mesh</span></span><span class="p"><span class="pre">),</span></span> <span class="mi"><span class="pre">3</span></span><span class="p"><span class="pre">)</span></span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motmot.Mesh.closest_point">
+<span class="sig-name descname"><span class="pre">closest_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance_upper_bound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/_mesh.html#Mesh.closest_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.Mesh.closest_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the nearest point on the surface of the mesh to <strong>target</strong>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>target</strong> – The point(s) to query. A <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> with
+<code class="code highlight python docutils literal notranslate"><span class="n"><span class="pre">shape</span></span><span class="p"><span class="pre">[</span></span><span class="o"><span class="pre">-</span></span><span class="mi"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span> <span class="o"><span class="pre">==</span></span> <span class="mi"><span class="pre">3</span></span></code>.</p></li>
+<li><p><strong>distance_upper_bound</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>]) – A optional maximum allowed distance from <strong>target</strong> before
+giving up. In this case <code class="code highlight python docutils literal notranslate"><span class="n"><span class="pre">nan</span></span></code> is returned.</p></li>
+<li><p><strong>interpolate</strong> – If true, the output will be the nearest point on the surface of
+the nearest polygon. Otherwise, it will only be the center of
+the nearest polygon.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The nearest point(s) on the surface of the mesh. A
+<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> with the same shape as <strong>target</strong>.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Under extreme circumstances, namely if <strong>point</strong> lies between two
+very close parallel-ish surfaces with enormous polygons, then the
+output is not guaranteed to be optimal. It is, however, guaranteed
+to be better than querying the nearest vertex.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motmot.Mesh.connected_polygons">
+<span class="sig-name descname"><span class="pre">connected_polygons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polygon_map</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/_mesh.html#Mesh.connected_polygons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.Mesh.connected_polygons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recursively walk connected polygons.</p>
+<p>Finds the whole connected region containing the triangle <cite>arg</cite> where
+<cite>whole connected region</cite> here means that all triangles within that region
+are joined indirectly by at least one triangle.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>initial</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em> or </em><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><em>numpy.ndarray</em></a>) – The polygon id(s) to start at.</p></li>
+<li><p><strong>mask</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><em>numpy.ndarray</em></a>) – Only include regions covered by <cite>mask</cite> if specified.</p></li>
+<li><p><strong>polygon_map</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><em>numpy.ndarray</em></a>) – An alternative polygon map to use. Defaults to
+<a class="reference internal" href="#motmot.Mesh.polygon_map" title="motmot.Mesh.polygon_map"><code class="xref py py-attr docutils literal notranslate"><span class="pre">polygon_map</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A connected region as a 1D bool array.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)">numpy.ndarray</a></p>
+</dd>
+</dl>
+<p>This is implemented by navigating the <a class="reference internal" href="#motmot.Mesh.polygon_map" title="motmot.Mesh.polygon_map"><code class="xref py py-attr docutils literal notranslate"><span class="pre">polygon_map</span></code></a>.
+Restrictions on connectivity can be given either with the <strong>mask</strong>
+parameter, which mimics removing polygons, or by overriding
+<strong>polygon_map</strong> and replacing values with <code class="docutils literal notranslate"><span class="pre">-1</span></code> to block edges between
+polygons. Note that the <strong>mask</strong> only prevents the algorithm from
+traversing <strong>onto</strong> unmasked polygons. If a polygon is in <strong>initial</strong>
+then it will still be included in the output.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motmot.Mesh.connected_vertices">
+<span class="sig-name descname"><span class="pre">connected_vertices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertex</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/_mesh.html#Mesh.connected_vertices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.Mesh.connected_vertices" title="Permalink to this definition">¶</a></dt>
+<dd><p>List vertices which are directly connected to <strong>vertex</strong> by one
+polygon edge.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>vertex</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – A single point from <a class="reference internal" href="#motmot.Mesh.vertices" title="motmot.Mesh.vertices"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vertices</span></code></a>.
+A NumPy array with shape <code class="docutils literal notranslate"><span class="pre">(3,)</span></code>.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>An <code class="code highlight python docutils literal notranslate"><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">,</span></span> <span class="mi"><span class="pre">3</span></span><span class="p"><span class="pre">)</span></span></code> array where <code class="docutils literal notranslate"><span class="pre">n</span></code> is the number of connected
+vertices.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#KeyError" title="(in Python v3.9)"><strong>KeyError</strong></a> – If <strong>vertex</strong> is not in <a class="reference internal" href="#motmot.Mesh.vertices" title="motmot.Mesh.vertices"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vertices</span></code></a>.</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>This method uses <a class="reference internal" href="#motmot.Mesh.vertex_map" title="motmot.Mesh.vertex_map"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vertex_map</span></code></a> under the hood.
+Use <a class="reference internal" href="#motmot.Mesh.vertex_map" title="motmot.Mesh.vertex_map"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vertex_map</span></code></a> if you’re using vertex ids instead of raw
+vertices.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motmot.Mesh.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/_mesh.html#Mesh.copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.Mesh.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a shallow or deep copy of the mesh.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>deep</strong> – If true, copy the underlying <a class="reference internal" href="#motmot.Mesh.vectors" title="motmot.Mesh.vectors"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vectors</span></code></a> or <a class="reference internal" href="#motmot.Mesh.vertices" title="motmot.Mesh.vertices"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vertices</span></code></a>
+and <a class="reference internal" href="#motmot.Mesh.faces" title="motmot.Mesh.faces"><code class="xref py py-attr docutils literal notranslate"><span class="pre">faces</span></code></a> arrays. Otherwise output will share these
+arrays with this mesh.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#motmot.Mesh" title="motmot._mesh.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Another mesh.</p>
+</dd>
+</dl>
+<p>Caches of cached properties are never copied.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motmot.Mesh.crop">
+<span class="sig-name descname"><span class="pre">crop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mask</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/_mesh.html#Mesh.crop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.Mesh.crop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a subsample of the original mesh. Inclusion is defined by
+<strong>mask</strong>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mask</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#slice" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">slice</span></code></a>]) – Polygons to include.</p></li>
+<li><p><strong>in_place</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – Modify this mesh instead of making a modified copy, defaults to
+False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#motmot.Mesh" title="motmot._mesh.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>This mesh if <strong>in_place</strong> or a new cropped one.</p>
+</dd>
+</dl>
+<p>A minimal usage example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get only polygons with non-negative average Z-values.</span>
+<span class="n">cropped</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">crop</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">centers</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For an IDs based mesh this samples <a class="reference internal" href="#motmot.Mesh.faces" title="motmot.Mesh.faces"><code class="xref py py-attr docutils literal notranslate"><span class="pre">faces</span></code></a> and leaves
+<a class="reference internal" href="#motmot.Mesh.vertices" title="motmot.Mesh.vertices"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vertices</span></code></a> untouched without copying and is equivalent to:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cropped</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">mesh</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For a vectors based mesh this function simply samples <a class="reference internal" href="#motmot.Mesh.vectors" title="motmot.Mesh.vectors"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vectors</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cropped</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vectors</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">mesh</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Please ensure you are aware of <a class="reference external" href="https://numpy.org/doc/stable/reference/arrays.indexing.html#advanced-indexing">when indexing copies in numpy</a> if you
+intend to modify either the cropped or the original mesh afterwards.</p>
+<p>When <strong>inplace</strong> is false (default), cropping can also be achieved by
+indexing the mesh directly:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cropped</span> <span class="o">=</span> <span class="n">mesh</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="motmot.Mesh.curvature">
+<span class="sig-name descname"><span class="pre">curvature</span></span><a class="headerlink" href="#motmot.Mesh.curvature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Everything curvature related. See <a class="reference internal" href="#motmot.Curvature" title="motmot.Curvature"><code class="xref py py-class docutils literal notranslate"><span class="pre">motmot.Curvature</span></code></a>.
+Different <em>flavours</em> of curvature are accessible via different
+sub-attributes of this property such as
+<a class="reference internal" href="#motmot.Curvature.scaleless" title="motmot.Curvature.scaleless"><code class="xref py py-attr docutils literal notranslate"><span class="pre">mesh.curvature.scaleless</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="motmot.Mesh.dims">
+<span class="sig-name descname"><span class="pre">dims</span></span><a class="headerlink" href="#motmot.Mesh.dims" title="Permalink to this definition">¶</a></dt>
+<dd><p>The overall length, width and height of the mesh. Or the difference
+between <a class="reference internal" href="#motmot.Mesh.max" title="motmot.Mesh.max"><code class="xref py py-attr docutils literal notranslate"><span class="pre">max</span></code></a> and <a class="reference internal" href="#motmot.Mesh.min" title="motmot.Mesh.min"><code class="xref py py-attr docutils literal notranslate"><span class="pre">min</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="motmot.Mesh.displacements">
+<span class="sig-name descname"><span class="pre">displacements</span></span><a class="headerlink" href="#motmot.Mesh.displacements" title="Permalink to this definition">¶</a></dt>
+<dd><p>The displacement from each polygon’s center to each of its
+neighbours’ centers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A <code class="code highlight python docutils literal notranslate"><span class="p"><span class="pre">(</span></span><span class="nb"><span class="pre">len</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">mesh</span></span><span class="p"><span class="pre">),</span></span> <span class="n"><span class="pre">mesh</span></span><span class="o"><span class="pre">.</span></span><span class="n"><span class="pre">per_polygon</span></span><span class="p"><span class="pre">,</span></span> <span class="mi"><span class="pre">3</span></span><span class="p"><span class="pre">)</span></span></code> numpy array.</p>
+</dd>
+</dl>
+<p>Defaults to <code class="docutils literal notranslate"><span class="pre">nan</span></code> when a neighbour is missing.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="motmot.Mesh.dtype">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dtype</span></span><a class="headerlink" href="#motmot.Mesh.dtype" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.21)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.dtype</span></code></a> of <a class="reference internal" href="#motmot.Mesh.vertices" title="motmot.Mesh.vertices"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vertices</span></code></a> and <a class="reference internal" href="#motmot.Mesh.vectors" title="motmot.Mesh.vectors"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vectors</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="motmot.Mesh.faces">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">faces</span></span><em class="property"><span class="pre">:</span> <span class="pre">numpy.ndarray</span></em><a class="headerlink" href="#motmot.Mesh.faces" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indices of vertices used to construct each polygon.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Integer array with shape <code class="code highlight python docutils literal notranslate"><span class="p"><span class="pre">(</span></span><span class="nb"><span class="pre">len</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">mesh</span></span><span class="p"><span class="pre">),</span></span> <span class="n"><span class="pre">mesh</span></span><span class="o"><span class="pre">.</span></span><span class="n"><span class="pre">per_polygon</span></span><span class="p"><span class="pre">)</span></span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motmot.Mesh.group_connected_polygons">
+<span class="sig-name descname"><span class="pre">group_connected_polygons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polygon_map</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/_mesh.html#Mesh.group_connected_polygons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.Mesh.group_connected_polygons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Group and enumerate all polygons which are indirectly connected.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A <code class="code highlight python docutils literal notranslate"><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">group_ids</span></span><span class="p"><span class="pre">,</span></span> <span class="n"><span class="pre">group_count</span></span><span class="p"><span class="pre">)</span></span></code> pair.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>(<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)">numpy.ndarray</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a>)</p>
+</dd>
+</dl>
+<p>Functionally, this is equivalent to calling <a class="reference internal" href="#motmot.Mesh.connected_polygons" title="motmot.Mesh.connected_polygons"><code class="xref py py-meth docutils literal notranslate"><span class="pre">connected_polygons()</span></code></a>
+repeatedly until every polygon is assigned a group.</p>
+<p>To convert the output to a list of meshes use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rockhopper</span> <span class="kn">import</span> <span class="n">RaggedArray</span>
+<span class="n">ragged</span> <span class="o">=</span> <span class="n">RaggedArray</span><span class="o">.</span><span class="n">group_by</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vectors</span><span class="p">,</span> <span class="o">*</span><span class="n">mesh</span><span class="o">.</span><span class="n">group_connected_polygons</span><span class="p">())</span>
+<span class="n">sub_meshes</span> <span class="o">=</span> <span class="p">[</span><span class="n">Mesh</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ragged</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Or if your using vertices/faces meshes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rockhopper</span> <span class="kn">import</span> <span class="n">RaggedArray</span>
+<span class="n">ragged</span> <span class="o">=</span> <span class="n">RaggedArray</span><span class="o">.</span><span class="n">group_by</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">,</span> <span class="o">*</span><span class="n">mesh</span><span class="o">.</span><span class="n">group_connected_polygons</span><span class="p">())</span>
+<span class="n">sub_meshes</span> <span class="o">=</span> <span class="p">[</span><span class="n">Mesh</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span> <span class="k">for</span> <span class="n">faces</span> <span class="ow">in</span> <span class="n">ragged</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Note that both will work irregardless of <a class="reference internal" href="#motmot.Mesh.is_faces_mesh" title="motmot.Mesh.is_faces_mesh"><code class="xref py py-attr docutils literal notranslate"><span class="pre">is_faces_mesh</span></code></a>, however
+the mismatched implementation will be slower.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="motmot.Mesh.is_faces_mesh">
+<span class="sig-name descname"><span class="pre">is_faces_mesh</span></span><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></em><em class="property"> <span class="pre">=</span> <span class="pre">False</span></em><a class="headerlink" href="#motmot.Mesh.is_faces_mesh" title="Permalink to this definition">¶</a></dt>
+<dd><p>If true, this mesh internally uses <a class="reference internal" href="#motmot.Mesh.vertices" title="motmot.Mesh.vertices"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vertices</span></code></a> and <a class="reference internal" href="#motmot.Mesh.faces" title="motmot.Mesh.faces"><code class="xref py py-attr docutils literal notranslate"><span class="pre">faces</span></code></a>.
+Otherwise, it uses <a class="reference internal" href="#motmot.Mesh.vectors" title="motmot.Mesh.vectors"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vectors</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="motmot.Mesh.kdtree">
+<span class="sig-name descname"><span class="pre">kdtree</span></span><a class="headerlink" href="#motmot.Mesh.kdtree" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <a class="reference external" href="https://github.com/storpipfugl/pykdtree">KDTree</a> with <a class="reference internal" href="#motmot.Mesh.centers" title="motmot.Mesh.centers"><code class="xref py py-attr docutils literal notranslate"><span class="pre">centers</span></code></a> as its input data.</p>
+<p>This object powers all non-exact point lookup operations such as
+<a class="reference internal" href="#motmot.Mesh.closest_point" title="motmot.Mesh.closest_point"><code class="xref py py-meth docutils literal notranslate"><span class="pre">closest_point()</span></code></a>. Use its <code class="docutils literal notranslate"><span class="pre">query_xxx()</span></code> methods for more flexible
+lookup.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motmot.Mesh.local_maxima">
+<span class="sig-name descname"><span class="pre">local_maxima</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">heights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundaries</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/_mesh.html#Mesh.local_maxima"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.Mesh.local_maxima" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find all <a class="reference internal" href="#motmot.Mesh.vertices" title="motmot.Mesh.vertices"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vertices</span></code></a> whose corresponding value in <strong>heights</strong> is
+greater than that of all its <a class="reference internal" href="#motmot.Mesh.connected_vertices" title="motmot.Mesh.connected_vertices"><code class="xref py py-meth docutils literal notranslate"><span class="pre">connected_vertices()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>heights</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – A per-vertex scalar to rank by.</p></li>
+<li><p><strong>boundaries</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – If false, ignore any vertices which <a class="reference internal" href="#motmot.Mesh.on_boundary" title="motmot.Mesh.on_boundary"><code class="xref py py-meth docutils literal notranslate"><span class="pre">touch</span> <span class="pre">the</span> <span class="pre">mesh</span>
+<span class="pre">boundary</span></code></a>.</p></li>
+<li><p><strong>strict</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – If true, a vertex’s value from <strong>heights</strong> must be strictly
+greater than its neighbours. Otherwise, it may be greater or
+equal.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The vertex ids of the vertices which are local maxima.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="motmot.Mesh.max">
+<span class="sig-name descname"><span class="pre">max</span></span><a class="headerlink" href="#motmot.Mesh.max" title="Permalink to this definition">¶</a></dt>
+<dd><p>The maximum <code class="docutils literal notranslate"><span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code> and <code class="docutils literal notranslate"><span class="pre">z</span></code> value. Shares memory with
+<a class="reference internal" href="#motmot.Mesh.bounds" title="motmot.Mesh.bounds"><code class="xref py py-attr docutils literal notranslate"><span class="pre">bounds</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="motmot.Mesh.min">
+<span class="sig-name descname"><span class="pre">min</span></span><a class="headerlink" href="#motmot.Mesh.min" title="Permalink to this definition">¶</a></dt>
+<dd><p>The minimum <code class="docutils literal notranslate"><span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code> and <code class="docutils literal notranslate"><span class="pre">z</span></code> value. Shares memory with
+<a class="reference internal" href="#motmot.Mesh.bounds" title="motmot.Mesh.bounds"><code class="xref py py-attr docutils literal notranslate"><span class="pre">bounds</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="motmot.Mesh.normals">
+<span class="sig-name descname"><span class="pre">normals</span></span><a class="headerlink" href="#motmot.Mesh.normals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normals to each polygon.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>2D array with shape <code class="code highlight python docutils literal notranslate"><span class="p"><span class="pre">(</span></span><span class="nb"><span class="pre">len</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">mesh</span></span><span class="p"><span class="pre">),</span></span> <span class="mi"><span class="pre">3</span></span><span class="p"><span class="pre">)</span></span></code>.</p>
+</dd>
+</dl>
+<p>Normals point outwards provided that the polygons corners are listed in
+counter-clockwise order (which is the usual convention).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motmot.Mesh.on_boundary">
+<span class="sig-name descname"><span class="pre">on_boundary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertex</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/_mesh.html#Mesh.on_boundary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.Mesh.on_boundary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test if a <strong>vertex</strong> touches the edge of this mesh.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>vertex</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/numbers.html#numbers.Integral" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Integral</span></code></a>]) – A 3D point in <a class="reference internal" href="#motmot.Mesh.vertices" title="motmot.Mesh.vertices"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vertices</span></code></a>. Or a single vertex ID.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if it touches, false otherwise.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To check if a polygon touches a mesh edge, simply use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">any</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">polygon_map</span><span class="p">[</span><span class="n">polygon_id</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="motmot.Mesh.path">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">path</span></span><em class="property"><span class="pre">:</span> <span class="pre">Optional[pathlib.Path]</span></em><a class="headerlink" href="#motmot.Mesh.path" title="Permalink to this definition">¶</a></dt>
+<dd><p>The filename used to open this mesh. This is set to none if this mesh
+was not read directly from a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a>]</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Either a <a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pathlib.Path</span></code></a> filename or <code class="code highlight python docutils literal notranslate"><span class="kc"><span class="pre">None</span></span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="motmot.Mesh.per_polygon">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">per_polygon</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#motmot.Mesh.per_polygon" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of corners each polygon has.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="motmot.Mesh.polygon_map">
+<span class="sig-name descname"><span class="pre">polygon_map</span></span><a class="headerlink" href="#motmot.Mesh.polygon_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maps each polygon to its adjacent (shares a common edge) polygons.</p>
+<p>The format is an numpy int array with the same shape as
+<a class="reference internal" href="#motmot.Mesh.faces" title="motmot.Mesh.faces"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Mesh.faces</span></code></a>. A polygon is referenced by its position in
+<a class="reference internal" href="#motmot.Mesh.faces" title="motmot.Mesh.faces"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Mesh.faces</span></code></a> (or <a class="reference internal" href="#motmot.Mesh.vectors" title="motmot.Mesh.vectors"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Mesh.vectors</span></code></a>).</p>
+<p>For example, assume a triangular mesh is called  <code class="docutils literal notranslate"><span class="pre">mesh</span></code>. And suppose
+<code class="code highlight python docutils literal notranslate"><span class="n"><span class="pre">mesh</span></span><span class="o"><span class="pre">.</span></span><span class="n"><span class="pre">polygon_map</span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">]</span></span></code> is <code class="code highlight python docutils literal notranslate"><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">i</span></span><span class="p"><span class="pre">,</span></span> <span class="n"><span class="pre">j</span></span><span class="p"><span class="pre">,</span></span> <span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">]</span></span></code>, then:</p>
+<ul class="simple">
+<li><p>The edge going from vertex <em>0</em> to vertex <em>1</em> of the triangle
+<code class="code highlight python docutils literal notranslate"><span class="n"><span class="pre">mesh</span></span><span class="o"><span class="pre">.</span></span><span class="n"><span class="pre">vectors</span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">]</span></span></code> would be shared with the triangle
+<code class="code highlight python docutils literal notranslate"><span class="n"><span class="pre">mesh</span></span><span class="o"><span class="pre">.</span></span><span class="n"><span class="pre">vectors</span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">i</span></span><span class="p"><span class="pre">]</span></span></code>,</p></li>
+<li><p>The edge going from vertex <em>1</em> to vertex <em>2</em> of the triangle
+<code class="code highlight python docutils literal notranslate"><span class="n"><span class="pre">mesh</span></span><span class="o"><span class="pre">.</span></span><span class="n"><span class="pre">vectors</span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">]</span></span></code> would be shared with the triangle
+<code class="code highlight python docutils literal notranslate"><span class="n"><span class="pre">mesh</span></span><span class="o"><span class="pre">.</span></span><span class="n"><span class="pre">vectors</span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">j</span></span><span class="p"><span class="pre">]</span></span></code>,</p></li>
+<li><p>And the edge going from vertex <em>2</em> to vertex <strong>0</strong> of the triangle
+<code class="code highlight python docutils literal notranslate"><span class="n"><span class="pre">mesh</span></span><span class="o"><span class="pre">.</span></span><span class="n"><span class="pre">vectors</span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">]</span></span></code> would be shared with the triangle
+<code class="code highlight python docutils literal notranslate"><span class="n"><span class="pre">mesh</span></span><span class="o"><span class="pre">.</span></span><span class="n"><span class="pre">vectors</span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">]</span></span></code>,</p></li>
+</ul>
+<p>Any polygons which are missing a neighbour on a particular edge (i.e.
+on the boundary of a non-closed mesh) use <code class="code highlight python docutils literal notranslate"><span class="o"><span class="pre">-</span></span><span class="mi"><span class="pre">1</span></span></code> as a placeholder.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motmot.Mesh.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/_mesh.html#Mesh.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.Mesh.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invalidate all cached properties.</p>
+<p>Use after directly writing or setting one of this mesh’s array
+attributes.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motmot.Mesh.rotate">
+<span class="sig-name descname"><span class="pre">rotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motmot.Mesh.rotate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rotate the matrix over the given axis by the given theta (angle)</p>
+<p>Uses the <a class="reference internal" href="#motmot.Mesh.rotation_matrix" title="motmot.Mesh.rotation_matrix"><code class="xref py py-func docutils literal notranslate"><span class="pre">rotation_matrix()</span></code></a> in the background.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Note that the <cite>point</cite> was accidentaly inverted with the
+old version of the code. To get the old and incorrect behaviour
+simply pass <cite>-point</cite> instead of <cite>point</cite> or <cite>-numpy.array(point)</cite> if
+you’re passing along an array.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>axis</strong> (<em>numpy.array</em>) – Axis to rotate over (x, y, z)</p></li>
+<li><p><strong>theta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Rotation angle in radians, use <cite>math.radians</cite> to
+convert degrees to radians if needed.</p></li>
+<li><p><strong>point</strong> (<em>numpy.array</em>) – Rotation point so manual translation is not
+required</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motmot.Mesh.rotate_using_matrix">
+<span class="sig-name descname"><span class="pre">rotate_using_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rotation_matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/_mesh.html#Mesh.rotate_using_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.Mesh.rotate_using_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rotate inplace, the mesh using a <strong>rotation_matrix</strong>.</p>
+<p>Internally this is just a matrix multiplication where the mesh’s
+vertices are <em>post-multiplied</em> by <strong>rotation_matrix</strong>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motmot.Mesh.rotation_matrix">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">rotation_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motmot.Mesh.rotation_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a rotation matrix to Rotate the matrix over the given axis by
+the given theta (angle)</p>
+<p>Uses the <a class="reference external" href="https://en.wikipedia.org/wiki/Euler%E2%80%93Rodrigues_formula">Euler-Rodrigues</a>
+formula for fast rotations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>axis</strong> (<em>numpy.array</em>) – Axis to rotate over (x, y, z)</p></li>
+<li><p><strong>theta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Rotation angle in radians, use <cite>math.radians</cite> to
+convert degrees to radians if needed.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motmot.Mesh.translate">
+<span class="sig-name descname"><span class="pre">translate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">translation</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/_mesh.html#Mesh.translate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.Mesh.translate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move this mesh without rotating.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="motmot.Mesh.units">
+<span class="sig-name descname"><span class="pre">units</span></span><a class="headerlink" href="#motmot.Mesh.units" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalised outward <a class="reference internal" href="#motmot.Mesh.normals" title="motmot.Mesh.normals"><code class="xref py py-attr docutils literal notranslate"><span class="pre">normals</span></code></a> for each polygon.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>2D array with shape <code class="code highlight python docutils literal notranslate"><span class="p"><span class="pre">(</span></span><span class="nb"><span class="pre">len</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">mesh</span></span><span class="p"><span class="pre">),</span></span> <span class="mi"><span class="pre">3</span></span><span class="p"><span class="pre">)</span></span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="motmot.Mesh.v0">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">v0</span></span><a class="headerlink" href="#motmot.Mesh.v0" title="Permalink to this definition">¶</a></dt>
+<dd><p>The 1<sup>st</sup> corner of each polygon. Equivalent to <code class="code highlight python docutils literal notranslate"><span class="n"><span class="pre">mesh</span></span><span class="o"><span class="pre">.</span></span><span class="n"><span class="pre">vectors</span></span><span class="p"><span class="pre">[:,</span></span> <span class="mi"><span class="pre">0</span></span><span class="p"><span class="pre">]</span></span></code>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="motmot.Mesh.v1">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">v1</span></span><a class="headerlink" href="#motmot.Mesh.v1" title="Permalink to this definition">¶</a></dt>
+<dd><p>The 2<sup>nd</sup> corner of each polygon. Equivalent to <code class="code highlight python docutils literal notranslate"><span class="n"><span class="pre">mesh</span></span><span class="o"><span class="pre">.</span></span><span class="n"><span class="pre">vectors</span></span><span class="p"><span class="pre">[:,</span></span> <span class="mi"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span></code>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="motmot.Mesh.v2">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">v2</span></span><a class="headerlink" href="#motmot.Mesh.v2" title="Permalink to this definition">¶</a></dt>
+<dd><p>The 3<sup>rd</sup> corner of each polygon. Equivalent to <code class="code highlight python docutils literal notranslate"><span class="n"><span class="pre">mesh</span></span><span class="o"><span class="pre">.</span></span><span class="n"><span class="pre">vectors</span></span><span class="p"><span class="pre">[:,</span></span> <span class="mi"><span class="pre">2</span></span><span class="p"><span class="pre">]</span></span></code>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="motmot.Mesh.vectors">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">vectors</span></span><em class="property"><span class="pre">:</span> <span class="pre">numpy.ndarray</span></em><a class="headerlink" href="#motmot.Mesh.vectors" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="code highlight python docutils literal notranslate"><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">,</span></span> <span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">,</span></span> <span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">)</span></span></code> coordinates of each corner of each polygon.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An <code class="code highlight python docutils literal notranslate"><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">number</span></span> <span class="n"><span class="pre">of</span></span> <span class="n"><span class="pre">polygons</span></span><span class="p"><span class="pre">,</span></span> <span class="n"><span class="pre">mesh</span></span><span class="o"><span class="pre">.</span></span><span class="n"><span class="pre">per_polygon</span></span><span class="p"><span class="pre">,</span></span> <span class="mi"><span class="pre">3</span></span><span class="p"><span class="pre">)</span></span></code> shaped array.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="motmot.Mesh.vertex_counts">
+<span class="sig-name descname"><span class="pre">vertex_counts</span></span><a class="headerlink" href="#motmot.Mesh.vertex_counts" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of times each vertex id appears in <a class="reference internal" href="#motmot.Mesh.faces" title="motmot.Mesh.faces"><code class="xref py py-attr docutils literal notranslate"><span class="pre">faces</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>1D integer array with the same length as <a class="reference internal" href="#motmot.Mesh.vertices" title="motmot.Mesh.vertices"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vertices</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="motmot.Mesh.vertex_map">
+<span class="sig-name descname"><span class="pre">vertex_map</span></span><a class="headerlink" href="#motmot.Mesh.vertex_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>A mapping from each vertex id to every other vertex that it is
+directly connected to.</p>
+<p>Each row in this <code class="xref py py-class docutils literal notranslate"><span class="pre">RaggedArray</span></code> lists all the
+neighbours of one vertex from <a class="reference internal" href="#motmot.Mesh.vertices" title="motmot.Mesh.vertices"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vertices</span></code></a>.
+e.g. If <code class="code highlight python docutils literal notranslate"><span class="n"><span class="pre">mesh</span></span><span class="o"><span class="pre">.</span></span><span class="n"><span class="pre">vertex_map</span></span><span class="p"><span class="pre">[</span></span><span class="mi"><span class="pre">10</span></span><span class="p"><span class="pre">]</span></span></code> is <code class="code highlight python docutils literal notranslate"><span class="p"><span class="pre">[</span></span><span class="mi"><span class="pre">13</span></span><span class="p"><span class="pre">,</span></span> <span class="mi"><span class="pre">17</span></span><span class="p"><span class="pre">,</span></span> <span class="mi"><span class="pre">19</span></span><span class="p"><span class="pre">,</span></span> <span class="mi"><span class="pre">22</span></span><span class="p"><span class="pre">]</span></span></code> then that
+would imply that <code class="code highlight python docutils literal notranslate"><span class="n"><span class="pre">mesh</span></span><span class="o"><span class="pre">.</span></span><span class="n"><span class="pre">vertices</span></span><span class="p"><span class="pre">[</span></span><span class="mi"><span class="pre">10</span></span><span class="p"><span class="pre">]</span></span></code> is connected to each of
+<code class="code highlight python docutils literal notranslate"><span class="n"><span class="pre">mesh</span></span><span class="o"><span class="pre">.</span></span><span class="n"><span class="pre">vertices</span></span><span class="p"><span class="pre">[[</span></span><span class="mi"><span class="pre">13</span></span><span class="p"><span class="pre">,</span></span> <span class="mi"><span class="pre">17</span></span><span class="p"><span class="pre">,</span></span> <span class="mi"><span class="pre">19</span></span><span class="p"><span class="pre">,</span></span> <span class="mi"><span class="pre">22</span></span><span class="p"><span class="pre">]]</span></span></code> by a single polygon edge.</p>
+<p>This mapping is guaranteed to:</p>
+<ul class="simple">
+<li><p>Be symmetric. If vertex <strong>A</strong> is connected to vertex <strong>B</strong> then <strong>B</strong>
+is connected to <strong>A</strong>.</p></li>
+<li><p>Contain no self references. <strong>A</strong> will never be listed as connected to
+<strong>A</strong>.</p></li>
+<li><p>Contains no duplicates. <strong>A</strong> will never be listed as connected to
+<strong>B</strong> twice.</p></li>
+</ul>
+<p>The order in which neighbours appear is arbitrary and not guaranteed to
+be consistent across <a class="reference internal" href="../index.html#module-motmot" title="motmot"><code class="xref py py-mod docutils literal notranslate"><span class="pre">motmot</span></code></a> versions.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#motmot.Mesh.connected_vertices" title="motmot.Mesh.connected_vertices"><code class="xref py py-meth docutils literal notranslate"><span class="pre">connected_vertices()</span></code></a> if you prefer to work directly with
+vertices rather than vertex faces.</p>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="motmot.Mesh.vertex_normals">
+<span class="sig-name descname"><span class="pre">vertex_normals</span></span><a class="headerlink" href="#motmot.Mesh.vertex_normals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Weighted outward normal for each vertex in <a class="reference internal" href="#motmot.Mesh.vertices" title="motmot.Mesh.vertices"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vertices</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>2D array with shape <code class="code highlight python docutils literal notranslate"><span class="p"><span class="pre">(</span></span><span class="nb"><span class="pre">len</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">mesh</span></span><span class="o"><span class="pre">.</span></span><span class="n"><span class="pre">vertices</span></span><span class="p"><span class="pre">),</span></span> <span class="mi"><span class="pre">3</span></span><span class="p"><span class="pre">)</span></span></code>.</p>
+</dd>
+</dl>
+<p>Computed as the normalised average of the surface <a class="reference internal" href="#motmot.Mesh.normals" title="motmot.Mesh.normals"><code class="xref py py-attr docutils literal notranslate"><span class="pre">normals</span></code></a> of the
+faces that contain that vertex. Averages are weighted by <a class="reference internal" href="#motmot.Mesh.areas" title="motmot.Mesh.areas"><code class="xref py py-attr docutils literal notranslate"><span class="pre">areas</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="motmot.Mesh.vertex_table">
+<span class="sig-name descname"><span class="pre">vertex_table</span></span><a class="headerlink" href="#motmot.Mesh.vertex_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>The lookup table behind vertex uniquifying and fast vertex lookup.</p>
+<p>This object, a <a class="reference external" href="https://hirola.readthedocs.io/en/latest/reference/hash_table.html#hirola.HashTable" title="(in Hirola v0.2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">hirola.HashTable</span></code></a>, is similar to a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>
+with this mesh’s unique vertices as its keys and an enumeration as its
+values.</p>
+<p>To get a vertex ID (or IDs) for a given point(s) use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ids</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_table</span><span class="p">[</span><span class="n">points</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>This is the reciprocal of:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">points</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">ids</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>To quickly test if a vertex or vertices is in <a class="reference internal" href="#motmot.Mesh.vertices" title="motmot.Mesh.vertices"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vertices</span></code></a> use
+<a class="reference external" href="https://hirola.readthedocs.io/en/latest/reference/hash_table.html#hirola.HashTable.contains" title="(in Hirola v0.2.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">mesh.vertex_table.contains()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="motmot.Mesh.vertices">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">vertices</span></span><em class="property"><span class="pre">:</span> <span class="pre">numpy.ndarray</span></em><a class="headerlink" href="#motmot.Mesh.vertices" title="Permalink to this definition">¶</a></dt>
+<dd><p>All points in the mesh with duplicity removed.</p>
+<p>If this mesh is not originally an IDs mesh, i.e. <a class="reference internal" href="#motmot.Mesh.vertices" title="motmot.Mesh.vertices"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vertices</span></code></a> had to
+be calculated from <a class="reference internal" href="#motmot.Mesh.vectors" title="motmot.Mesh.vectors"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vectors</span></code></a>, then this array is read-only.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="motmot.Mesh.x">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">x</span></span><a class="headerlink" href="#motmot.Mesh.x" title="Permalink to this definition">¶</a></dt>
+<dd><p>The x coordinate of each vertex of each polygon. Equivalent to <code class="code highlight python docutils literal notranslate"><span class="n"><span class="pre">mesh</span></span><span class="o"><span class="pre">.</span></span><span class="n"><span class="pre">vectors</span></span><span class="p"><span class="pre">[:,</span></span> <span class="p"><span class="pre">:,</span></span> <span class="mi"><span class="pre">0</span></span><span class="p"><span class="pre">]</span></span></code>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="motmot.Mesh.y">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">y</span></span><a class="headerlink" href="#motmot.Mesh.y" title="Permalink to this definition">¶</a></dt>
+<dd><p>The y coordinate of each vertex of each polygon. Equivalent to <code class="code highlight python docutils literal notranslate"><span class="n"><span class="pre">mesh</span></span><span class="o"><span class="pre">.</span></span><span class="n"><span class="pre">vectors</span></span><span class="p"><span class="pre">[:,</span></span> <span class="p"><span class="pre">:,</span></span> <span class="mi"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span></code>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="motmot.Mesh.z">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">z</span></span><a class="headerlink" href="#motmot.Mesh.z" title="Permalink to this definition">¶</a></dt>
+<dd><p>The z coordinate of each vertex of each polygon. Equivalent to <code class="code highlight python docutils literal notranslate"><span class="n"><span class="pre">mesh</span></span><span class="o"><span class="pre">.</span></span><span class="n"><span class="pre">vectors</span></span><span class="p"><span class="pre">[:,</span></span> <span class="p"><span class="pre">:,</span></span> <span class="mi"><span class="pre">2</span></span><span class="p"><span class="pre">]</span></span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="motmot.Curvature">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">motmot.</span></span><span class="sig-name descname"><span class="pre">Curvature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/_curvatures.html#Curvature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.Curvature" title="Permalink to this definition">¶</a></dt>
+<dd><p>A bucket for everything curvature related.</p>
+<p>Unlike the more traditional definition of curvature, this is defined per
+polygon edge rather than per vertex. Edges are defined as the shared two
+vertices between a polygon and a neighbour from <a class="reference internal" href="#motmot.Mesh.polygon_map" title="motmot.Mesh.polygon_map"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Mesh.polygon_map</span></code></a>.</p>
+<p>Curvature can have several similar forms. In most cases you will want
+<a class="reference internal" href="#motmot.Curvature.scaleless" title="motmot.Curvature.scaleless"><code class="xref py py-attr docutils literal notranslate"><span class="pre">scaleless</span></code></a> or <a class="reference internal" href="#motmot.Curvature.signed" title="motmot.Curvature.signed"><code class="xref py py-attr docutils literal notranslate"><span class="pre">signed</span></code></a> for an orientation and resolution
+independent measurement. <a class="reference internal" href="#motmot.Curvature.directional" title="motmot.Curvature.directional"><code class="xref py py-attr docutils literal notranslate"><span class="pre">directional</span></code></a> combined with
+<a class="reference internal" href="geometry.html#motmot.geometry.inner_product" title="motmot.geometry.inner_product"><code class="xref py py-func docutils literal notranslate"><span class="pre">geometry.inner_product()</span></code></a> can be useful for searching for very specific
+shapes with a predefined orientation.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="motmot.Curvature.directional">
+<span class="sig-name descname"><span class="pre">directional</span></span><a class="headerlink" href="#motmot.Curvature.directional" title="Permalink to this definition">¶</a></dt>
+<dd><p>Curvature’s rawest form - the cross product of each triangle’s unit
+normal with each of its adjacent triangles’ unit normals.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A <code class="code highlight python docutils literal notranslate"><span class="p"><span class="pre">(</span></span><span class="nb"><span class="pre">len</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">mesh</span></span><span class="p"><span class="pre">),</span></span> <span class="n"><span class="pre">mesh</span></span><span class="o"><span class="pre">.</span></span><span class="n"><span class="pre">per_polygon</span></span><span class="p"><span class="pre">,</span></span> <span class="mi"><span class="pre">3</span></span><span class="p"><span class="pre">)</span></span></code> numpy array.</p>
+</dd>
+</dl>
+<p>This form gives a vector rather than a scalar value for each edge.
+The magnitude of this vector is the <code class="docutils literal notranslate"><span class="pre">sin()</span></code> of the angle between the
+two polygons and the direction is tangential to the edge between them.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="motmot.Curvature.magnitude">
+<span class="sig-name descname"><span class="pre">magnitude</span></span><a class="headerlink" href="#motmot.Curvature.magnitude" title="Permalink to this definition">¶</a></dt>
+<dd><p>Curvature magnitudes about polygons’ edges.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A <code class="code highlight python docutils literal notranslate"><span class="p"><span class="pre">(</span></span><span class="nb"><span class="pre">len</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">mesh</span></span><span class="p"><span class="pre">),</span></span> <span class="n"><span class="pre">mesh</span></span><span class="o"><span class="pre">.</span></span><span class="n"><span class="pre">per_polygon</span></span><span class="p"><span class="pre">)</span></span></code> numpy array.</p>
+</dd>
+</dl>
+<p>Given by taking magnitudes of <a class="reference internal" href="#motmot.Curvature.directional" title="motmot.Curvature.directional"><code class="xref py py-attr docutils literal notranslate"><span class="pre">directional</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="motmot.Curvature.scaleless">
+<span class="sig-name descname"><span class="pre">scaleless</span></span><a class="headerlink" href="#motmot.Curvature.scaleless" title="Permalink to this definition">¶</a></dt>
+<dd><p>The reciprocal of the radius of curvature. Or in pig’s English, a
+sphere with radius <code class="docutils literal notranslate"><span class="pre">10</span></code> will have scaleless curvature <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">/</span> <span class="pre">10</span> <span class="pre">=</span> <span class="pre">0.1</span></code>
+throughout.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A <code class="code highlight python docutils literal notranslate"><span class="p"><span class="pre">(</span></span><span class="nb"><span class="pre">len</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">mesh</span></span><span class="p"><span class="pre">),</span></span> <span class="n"><span class="pre">mesh</span></span><span class="o"><span class="pre">.</span></span><span class="n"><span class="pre">per_polygon</span></span><span class="p"><span class="pre">)</span></span></code> numpy array.</p>
+</dd>
+</dl>
+<p>This property is independent of mesh resolution. Given by
+<a class="reference internal" href="#motmot.Curvature.magnitude" title="motmot.Curvature.magnitude"><code class="xref py py-attr docutils literal notranslate"><span class="pre">magnitude</span></code></a> / <a class="reference internal" href="#motmot.Mesh.displacements" title="motmot.Mesh.displacements"><code class="xref py py-attr docutils literal notranslate"><span class="pre">magnitude(displacements)</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="motmot.Curvature.signed">
+<span class="sig-name descname"><span class="pre">signed</span></span><a class="headerlink" href="#motmot.Curvature.signed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Signed <a class="reference internal" href="#motmot.Curvature.scaleless" title="motmot.Curvature.scaleless"><code class="xref py py-attr docutils literal notranslate"><span class="pre">scaleless</span></code></a> curvature magnitudes.</p>
+<p>Like <a class="reference internal" href="#motmot.Curvature.scaleless" title="motmot.Curvature.scaleless"><code class="xref py py-attr docutils literal notranslate"><span class="pre">scaleless</span></code></a> but signed so that bumps or bulges have positive
+values and slots or grooves or creases have negative values.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="geometry.html" class="btn btn-neutral float-right" title="Geometry API reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-neutral float-left" title="Motmot" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2021, Brénainn Woodsend
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

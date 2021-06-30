@@ -1,0 +1,640 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Geometry API reference &mdash; Motmot 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/more-theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/theme-overrides.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/motmot-favicon.jpg"/>
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Connectivity API reference" href="connectivity.html" />
+    <link rel="prev" title="Mesh API reference" href="mesh.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Motmot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="mesh.html">Mesh API reference</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Geometry API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="connectivity.html">Connectivity API reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Motmot</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Geometry API reference</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/stubs/geometry.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-motmot.geometry">
+<span id="geometry-api-reference"></span><h1>Geometry API reference<a class="headerlink" href="#module-motmot.geometry" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="motmot.geometry.area">
+<span class="sig-prename descclassname"><span class="pre">motmot.geometry.</span></span><span class="sig-name descname"><span class="pre">area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polygon</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/geometry/_geometry.html#area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.geometry.area" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the area of arbitrary polygons.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="motmot.geometry.center_of_mass">
+<span class="sig-prename descclassname"><span class="pre">motmot.geometry.</span></span><span class="sig-name descname"><span class="pre">center_of_mass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/geometry/_geometry.html#center_of_mass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.geometry.center_of_mass" title="Permalink to this definition">¶</a></dt>
+<dd><p>The (weighted) mean of <strong>points</strong>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="motmot.geometry.closest">
+<span class="sig-prename descclassname"><span class="pre">motmot.geometry.</span></span><span class="sig-name descname"><span class="pre">closest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/geometry/_geometry.html#closest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.geometry.closest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select from <strong>points</strong> the point which is closest to <strong>to</strong>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>points</strong> – An array of vertices to choose from.</p></li>
+<li><p><strong>target</strong> – A single target vertex to be closest to.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>One vertex from <strong>points</strong>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="motmot.geometry.furthest">
+<span class="sig-prename descclassname"><span class="pre">motmot.geometry.</span></span><span class="sig-name descname"><span class="pre">furthest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_projection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/geometry/_geometry.html#furthest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.geometry.furthest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select the point the furthest in <strong>direction</strong>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>points</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><em>numpy.ndarray</em></a>) – Some points.</p></li>
+<li><p><strong>direction</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><em>numpy.ndarray</em></a><em> or </em><a class="reference internal" href="#motmot.geometry.UnitVector" title="motmot.geometry.UnitVector"><em>UnitVector</em></a>) – A direction.</p></li>
+<li><p><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – Specify the furthest <strong>n</strong> points instead of just one.</p></li>
+<li><p><strong>return_projection</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – If true, also return the projection of the furthest point(s).</p></li>
+<li><p><strong>return_args</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – If true, also return the index(es) similar to <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.argmax.html#numpy.argmax" title="(in NumPy v1.21)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.argmax()</span></code></a>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="motmot.geometry.get_components">
+<span class="sig-prename descclassname"><span class="pre">motmot.geometry.</span></span><span class="sig-name descname"><span class="pre">get_components</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">unit_vectors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/geometry/_geometry.html#get_components"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.geometry.get_components" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the inner product for each unit vector as separate arrays.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>points</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><em>numpy.ndarray</em></a>) – </p></li>
+<li><p><strong>*unit_vectors</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><em>numpy.ndarray</em></a><em> or </em><a class="reference internal" href="#motmot.geometry.UnitVector" title="motmot.geometry.UnitVector"><em>UnitVector</em></a>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Projections for each unit vector.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)">tuple</a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)">numpy.ndarray</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="motmot.geometry.get_components_zipped">
+<span class="sig-prename descclassname"><span class="pre">motmot.geometry.</span></span><span class="sig-name descname"><span class="pre">get_components_zipped</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">unit_vectors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/geometry/_geometry.html#get_components_zipped"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.geometry.get_components_zipped" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the inner product for each unit vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>points</strong> – </p></li>
+<li><p><strong>*unit_vectors</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><em>numpy.ndarray</em></a><em> or </em><a class="reference internal" href="#motmot.geometry.UnitVector" title="motmot.geometry.UnitVector"><em>UnitVector</em></a>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Projections as one array.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)">numpy.ndarray</a></p>
+</dd>
+</dl>
+<p>The unit-vector iteration corresponds to the last axis of the output. i.e</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">out</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">inner_product</span><span class="p">(</span><span class="n">unit_vectors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">points</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The more linear-algebra savvy developer will know that this is just a matrix
+multiplication. This function is purely to reduce confusion for those (like
+me) who can never remember if you pre or post multiply and when to
+transpose.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="motmot.geometry.inner_product">
+<span class="sig-prename descclassname"><span class="pre">motmot.geometry.</span></span><span class="sig-name descname"><span class="pre">inner_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/geometry/_geometry.html#inner_product"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.geometry.inner_product" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the scalar/inner/interior/dot/”whatever you want to call it”
+product of vectors <strong>a</strong> and <strong>b</strong>, returning a scalar.</p>
+<p>Arguments <strong>a</strong> and <strong>b</strong> must be numpy-broadcastable.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>The <a class="reference internal" href="#motmot.geometry.UnitVector" title="motmot.geometry.UnitVector"><code class="xref py py-class docutils literal notranslate"><span class="pre">UnitVector</span></code></a> class for a more convenient way to perform
+multiple <a class="reference internal" href="#motmot.geometry.inner_product" title="motmot.geometry.inner_product"><code class="xref py py-meth docutils literal notranslate"><span class="pre">inner_product()</span></code></a> calls.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="motmot.geometry.magnitude">
+<span class="sig-prename descclassname"><span class="pre">motmot.geometry.</span></span><span class="sig-name descname"><span class="pre">magnitude</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/geometry/_geometry.html#magnitude"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.geometry.magnitude" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the hypotenuse/magnitude/length  of a <strong>vector</strong>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="motmot.geometry.magnitude_sqr">
+<span class="sig-prename descclassname"><span class="pre">motmot.geometry.</span></span><span class="sig-name descname"><span class="pre">magnitude_sqr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/geometry/_geometry.html#magnitude_sqr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.geometry.magnitude_sqr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the square of the hypotenuse of a <strong>vector</strong>.</p>
+<p>This is faster than <a class="reference internal" href="#motmot.geometry.magnitude" title="motmot.geometry.magnitude"><code class="xref py py-func docutils literal notranslate"><span class="pre">magnitude()</span></code></a> because it skips taking the square
+root and can be used to compare or sort distances.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="motmot.geometry.normalise">
+<span class="sig-prename descclassname"><span class="pre">motmot.geometry.</span></span><span class="sig-name descname"><span class="pre">normalise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/geometry/_geometry.html#normalise"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.geometry.normalise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modify in-place <strong>vector</strong> so that it has magnitude <code class="docutils literal notranslate"><span class="pre">1.0</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>vector</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><em>numpy.ndarray</em></a>) – Vector(s) to normalise.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The original magnitudes of <strong>vector</strong>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)">numpy.ndarray</a></p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#motmot.geometry.normalised" title="motmot.geometry.normalised"><code class="xref py py-func docutils literal notranslate"><span class="pre">normalised()</span></code></a> which leaves the original as-is.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="motmot.geometry.normalised">
+<span class="sig-prename descclassname"><span class="pre">motmot.geometry.</span></span><span class="sig-name descname"><span class="pre">normalised</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/geometry/_geometry.html#normalised"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.geometry.normalised" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a normalised copy of <strong>vector</strong>.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#motmot.geometry.normalise" title="motmot.geometry.normalise"><code class="xref py py-func docutils literal notranslate"><span class="pre">normalise()</span></code></a> to modify in-place.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="motmot.geometry.snap_to_plane">
+<span class="sig-prename descclassname"><span class="pre">motmot.geometry.</span></span><span class="sig-name descname"><span class="pre">snap_to_plane</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normal</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/geometry/_geometry.html#snap_to_plane"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.geometry.snap_to_plane" title="Permalink to this definition">¶</a></dt>
+<dd><p>Map <strong>point</strong> to its nearest point on a plane.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – A vertex or vertices to move.</p></li>
+<li><p><strong>origin</strong> – The plane’s origin. Or any point already on the plane(s).</p></li>
+<li><p><strong>normal</strong> – A unit normal to the plane.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The translated points.</p>
+</dd>
+</dl>
+<p>Alternatively, you may think of this as move <strong>point</strong> along
+<strong>normal</strong> until the resulting output point satisfies:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">inner_product</span><span class="p">(</span><span class="n">normal</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span> <span class="o">==</span> <span class="n">inner_product</span><span class="p">(</span><span class="n">normal</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="motmot.geometry.unzip">
+<span class="sig-prename descclassname"><span class="pre">motmot.geometry.</span></span><span class="sig-name descname"><span class="pre">unzip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/geometry/_geometry.html#unzip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.geometry.unzip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Separate each component from an array of points.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>points</strong> – Some points.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>, …]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Each axis separately as a tuple.</p>
+</dd>
+</dl>
+<p>This is the inverse of <a class="reference internal" href="#motmot.geometry.zip" title="motmot.geometry.zip"><code class="xref py py-func docutils literal notranslate"><span class="pre">zip()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="motmot.geometry.zip">
+<span class="sig-prename descclassname"><span class="pre">motmot.geometry.</span></span><span class="sig-name descname"><span class="pre">zip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">axes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/geometry/_geometry.html#zip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.geometry.zip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Combine separate x, y, z arrays into a single <em>points</em> array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>axes</strong> – Each separate axis to combine.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A single array with <code class="code highlight python docutils literal notranslate"><span class="n"><span class="pre">shape</span></span><span class="p"><span class="pre">[</span></span><span class="o"><span class="pre">-</span></span><span class="mi"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span> <span class="o"><span class="pre">==</span></span> <span class="nb"><span class="pre">len</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">axes</span></span><span class="p"><span class="pre">)</span></span></code>.</p>
+</dd>
+</dl>
+<p>All <cite>axes</cite> must have the matching or broadcast-able shapes. The number of
+axes doesn’t have to be 3.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">zip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="go">array([[ 0, -2],</span>
+<span class="go">       [ 1, -1],</span>
+<span class="go">       [ 2,  0],</span>
+<span class="go">       [ 3,  1],</span>
+<span class="go">       [ 4,  2]])</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">zip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="mi">4</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="go">array([[ 0,  4, -5],</span>
+<span class="go">       [ 1,  4, -4],</span>
+<span class="go">       [ 2,  4, -3],</span>
+<span class="go">       [ 3,  4, -2],</span>
+<span class="go">       [ 4,  4, -1],</span>
+<span class="go">       [ 5,  4,  0],</span>
+<span class="go">       [ 6,  4,  1],</span>
+<span class="go">       [ 7,  4,  2],</span>
+<span class="go">       [ 8,  4,  3],</span>
+<span class="go">       [ 9,  4,  4]])</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#motmot.geometry.unzip" title="motmot.geometry.unzip"><code class="xref py py-func docutils literal notranslate"><span class="pre">unzip()</span></code></a> for the reverse.</p>
+</div>
+<p>This function is similar to <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.c_.html#numpy.c_" title="(in NumPy v1.21)"><code class="xref py py-data docutils literal notranslate"><span class="pre">numpy.c_</span></code></a> except that it is not limited
+to 2D arrays.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="motmot.geometry.UnitVector">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">motmot.geometry.</span></span><span class="sig-name descname"><span class="pre">UnitVector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/geometry/_unit_vector.html#UnitVector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.geometry.UnitVector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unit vectors symbolise directions.</p>
+<p>A <a class="reference internal" href="#motmot.geometry.UnitVector" title="motmot.geometry.UnitVector"><code class="xref py py-class docutils literal notranslate"><span class="pre">UnitVector</span></code></a> wraps around an numpy array, stored in the
+<a class="reference internal" href="#motmot.geometry.UnitVector.vector" title="motmot.geometry.UnitVector.vector"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vector</span></code></a> attribute, which contains the actual data. It behaves
+exactly like an array but with extra methods.</p>
+<p>It is also callable, which applies the inner-product.</p>
+<p><strong>Usage Example</strong>:</p>
+<p>Suppose we have a point cloud of <code class="docutils literal notranslate"><span class="pre">100</span></code> points called <code class="docutils literal notranslate"><span class="pre">points</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">motmot</span> <span class="kn">import</span> <span class="n">geometry</span>
+
+<span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>In a wonky coordinate system that has been so that <cite>up</cite> is actually the
+diagonal unit-vector below.</p>
+<div class="math notranslate nohighlight">
+\[\begin{bmatrix}
+\frac{3}{5}\quad
+\frac{4}{5}\quad
+0
+\end{bmatrix}\]</div>
+<p>Which is passed to Python using the following. Note that the vector is
+normalised automatically.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">up</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">UnitVector</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">up</span>
+<span class="go">UnitVector([0.6 0.8 0. ])</span>
+</pre></div>
+</div>
+<p>This can do everything a numpy array can do. Any outputs produced are of
+type <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">up</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="go">array([1.2, 1.6, 0. ])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">up</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="go">array([1.6, 1.8, 1. ])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">up</span> <span class="o">+</span> <span class="n">up</span>
+<span class="go">array([1.2, 1.6, 0. ])</span>
+</pre></div>
+</div>
+<p>There is one exception to the above: Negating it
+returns another <a class="reference internal" href="#motmot.geometry.UnitVector" title="motmot.geometry.UnitVector"><code class="xref py py-class docutils literal notranslate"><span class="pre">UnitVector</span></code></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="o">-</span><span class="n">up</span>
+<span class="go">UnitVector([-0.6 -0.8 -0. ])</span>
+</pre></div>
+</div>
+<p>To get the heights of <strong>points</strong> use the inner product.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">heights</span> <span class="o">=</span> <span class="n">up</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>A typical 3D analysis will involve lots of inner-product calls so the above
+gets combersome pretty quickly. For convenience, you may instead call the
+vector directly.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">heights</span> <span class="o">=</span> <span class="n">up</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Once you have your heights, the following numpy functions are your friends:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">heights</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>   <span class="c1"># minimum height</span>
+<span class="n">heights</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>   <span class="c1"># maximum height</span>
+<span class="n">heights</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>  <span class="c1"># average height</span>
+<span class="n">heights</span><span class="o">.</span><span class="n">ptp</span><span class="p">()</span>   <span class="c1"># `peak to peak` equivalent to max - min</span>
+</pre></div>
+</div>
+<p>Get the highest point using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">highest</span> <span class="o">=</span> <span class="n">up</span><span class="o">.</span><span class="n">furthest</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Or:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">highest</span><span class="p">,</span> <span class="n">max_height</span> <span class="o">=</span> <span class="n">up</span><span class="o">.</span><span class="n">furthest</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">return_projection</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If you actually want the lowest then invert <code class="docutils literal notranslate"><span class="pre">up</span></code> to get a <code class="docutils literal notranslate"><span class="pre">down</span></code> vector.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">lowest</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">up</span><span class="p">)</span><span class="o">.</span><span class="n">furthest</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Methods <a class="reference internal" href="#motmot.geometry.UnitVector.get_component" title="motmot.geometry.UnitVector.get_component"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_component()</span></code></a> and <a class="reference internal" href="#motmot.geometry.UnitVector.remove_component" title="motmot.geometry.UnitVector.remove_component"><code class="xref py py-meth docutils literal notranslate"><span class="pre">remove_component()</span></code></a> split a point
+into parts parallel and perpendicular to <code class="docutils literal notranslate"><span class="pre">up</span></code>.</p>
+<p>Methods <a class="reference internal" href="#motmot.geometry.UnitVector.with_" title="motmot.geometry.UnitVector.with_"><code class="xref py py-meth docutils literal notranslate"><span class="pre">with_()</span></code></a> and <a class="reference internal" href="#motmot.geometry.UnitVector.match" title="motmot.geometry.UnitVector.match"><code class="xref py py-meth docutils literal notranslate"><span class="pre">match()</span></code></a> return points
+modified to have specified heights. They both have the effect of mapping
+the input onto a plane with <code class="docutils literal notranslate"><span class="pre">up</span></code> as the plane normal.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get `points` but with a height of 10.</span>
+<span class="n">up</span><span class="o">.</span><span class="n">with_projection</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="c1"># Get `points` but with the same height as ``points[0]``.</span>
+<span class="n">up</span><span class="o">.</span><span class="n">match_projection</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="motmot.geometry.UnitVector.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/geometry/_unit_vector.html#UnitVector.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.geometry.UnitVector.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>vector</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><em>numpy.ndarray</em></a><em> or </em><a class="reference internal" href="#motmot.geometry.UnitVector" title="motmot.geometry.UnitVector"><em>UnitVector</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><em>tuple</em></a>) – The direction as a vector, or an axis name as a string.</p>
+</dd>
+</dl>
+<p><strong>vector</strong> is normalised automatically.</p>
+<p>The str axis name format is an optional sign (+-) followed by any of
+<code class="docutils literal notranslate"><span class="pre">'ijkxyz'</span></code>. Whitespaces and case are ignored.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">UnitVector</span><span class="p">(</span><span class="s2">&quot;Z&quot;</span><span class="p">)</span>
+<span class="go">UnitVector([0. 0. 1.])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">UnitVector</span><span class="p">(</span><span class="s2">&quot;+x&quot;</span><span class="p">)</span>
+<span class="go">UnitVector([1. 0. 0.])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">UnitVector</span><span class="p">(</span><span class="s2">&quot;-y&quot;</span><span class="p">)</span>
+<span class="go">UnitVector([ 0. -1.  0.])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">UnitVector</span><span class="p">(</span><span class="s2">&quot;-j&quot;</span><span class="p">)</span>
+<span class="go">UnitVector([ 0. -1.  0.])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motmot.geometry.UnitVector.furthest">
+<span class="sig-name descname"><span class="pre">furthest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_projection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/geometry/_unit_vector.html#UnitVector.furthest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.geometry.UnitVector.furthest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select, from <strong>points</strong>, the point with the highest projection in
+<em>this</em> direction.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motmot.geometry.UnitVector.get_component">
+<span class="sig-name descname"><span class="pre">get_component</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/geometry/_unit_vector.html#UnitVector.get_component"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.geometry.UnitVector.get_component" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the component of <strong>vector</strong> parallel to <em>this</em> direction.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motmot.geometry.UnitVector.inner_product">
+<span class="sig-name descname"><span class="pre">inner_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motmot.geometry.UnitVector.inner_product" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call self as a function.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motmot.geometry.UnitVector.match">
+<span class="sig-name descname"><span class="pre">match</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_point</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/geometry/_unit_vector.html#UnitVector.match"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.geometry.UnitVector.match" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translate <strong>point</strong> so that <code class="docutils literal notranslate"><span class="pre">self(point)</span> <span class="pre">==</span> <span class="pre">self(target_point)</span></code></p>
+<p>Or the returned point is inline with <strong>target_point</strong>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motmot.geometry.UnitVector.matched_sign">
+<span class="sig-name descname"><span class="pre">matched_sign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/geometry/_unit_vector.html#UnitVector.matched_sign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.geometry.UnitVector.matched_sign" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a reversed copy of <strong>vector</strong> if <code class="docutils literal notranslate"><span class="pre">self(vector)</span> <span class="pre">&lt;</span> <span class="pre">0</span></code>. i.e if
+the angle between <em>this</em> vector and <strong>vector</strong> is more than 180°.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motmot.geometry.UnitVector.remove_component">
+<span class="sig-name descname"><span class="pre">remove_component</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/geometry/_unit_vector.html#UnitVector.remove_component"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.geometry.UnitVector.remove_component" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the components of <strong>vector</strong> perpendicular to <em>this</em> direction.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="motmot.geometry.UnitVector.vector">
+<span class="sig-name descname"><span class="pre">vector</span></span><em class="property"><span class="pre">:</span> <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><span class="pre">numpy.ndarray</span></a></em><a class="headerlink" href="#motmot.geometry.UnitVector.vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>The raw numpy vector.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motmot.geometry.UnitVector.with_">
+<span class="sig-name descname"><span class="pre">with_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projection</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/geometry/_unit_vector.html#UnitVector.with_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.geometry.UnitVector.with_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translate <strong>point</strong> along <em>this</em> direction so that
+<code class="docutils literal notranslate"><span class="pre">self(point)</span> <span class="pre">==</span> <span class="pre">projection</span></code>.</p>
+<p>The output is a modified copy.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="connectivity.html" class="btn btn-neutral float-right" title="Connectivity API reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="mesh.html" class="btn btn-neutral float-left" title="Mesh API reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2021, Brénainn Woodsend
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

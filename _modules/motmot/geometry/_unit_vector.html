@@ -1,0 +1,478 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>motmot.geometry._unit_vector &mdash; Motmot 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/more-theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/theme-overrides.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/motmot-favicon.jpg"/>
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/clipboard.min.js"></script>
+        <script src="../../../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Motmot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../stubs/mesh.html">Mesh API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../stubs/geometry.html">Geometry API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../stubs/connectivity.html">Connectivity API reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Motmot</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>motmot.geometry._unit_vector</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for motmot.geometry._unit_vector</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">motmot.geometry</span> <span class="kn">import</span> <span class="n">inner_product</span><span class="p">,</span> <span class="n">furthest</span><span class="p">,</span> <span class="n">normalised</span>
+
+
+<div class="viewcode-block" id="UnitVector"><a class="viewcode-back" href="../../../stubs/geometry.html#motmot.geometry.UnitVector">[docs]</a><span class="k">class</span> <span class="nc">UnitVector</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Unit vectors symbolise directions.</span>
+
+<span class="sd">    A :class:`UnitVector` wraps around an numpy array, stored in the</span>
+<span class="sd">    :attr:`vector` attribute, which contains the actual data. It behaves</span>
+<span class="sd">    exactly like an array but with extra methods.</span>
+
+<span class="sd">    It is also callable, which applies the inner-product.</span>
+
+<span class="sd">    **Usage Example**:</span>
+
+<span class="sd">    Suppose we have a point cloud of ``100`` points called ``points``.</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        import numpy as np</span>
+<span class="sd">        from motmot import geometry</span>
+
+<span class="sd">        points = np.random.uniform(-30, 30, (100, 3))</span>
+
+<span class="sd">    In a wonky coordinate system that has been so that `up` is actually the</span>
+<span class="sd">    diagonal unit-vector below.</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \\begin{bmatrix}</span>
+<span class="sd">        \\frac{3}{5}\\quad</span>
+<span class="sd">        \\frac{4}{5}\\quad</span>
+<span class="sd">        0</span>
+<span class="sd">        \\end{bmatrix}</span>
+
+<span class="sd">    Which is passed to Python using the following. Note that the vector is</span>
+<span class="sd">    normalised automatically.</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        &gt;&gt;&gt; up = geometry.UnitVector([3, 4, 0])</span>
+<span class="sd">        &gt;&gt;&gt; up</span>
+<span class="sd">        UnitVector([0.6 0.8 0. ])</span>
+
+<span class="sd">    This can do everything a numpy array can do. Any outputs produced are of</span>
+<span class="sd">    type :class:`numpy.ndarray`.</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        &gt;&gt;&gt; up * 2</span>
+<span class="sd">        array([1.2, 1.6, 0. ])</span>
+<span class="sd">        &gt;&gt;&gt; up + 1</span>
+<span class="sd">        array([1.6, 1.8, 1. ])</span>
+<span class="sd">        &gt;&gt;&gt; up + up</span>
+<span class="sd">        array([1.2, 1.6, 0. ])</span>
+
+<span class="sd">    There is one exception to the above: Negating it</span>
+<span class="sd">    returns another :class:`UnitVector`. ::</span>
+
+<span class="sd">        &gt;&gt;&gt; -up</span>
+<span class="sd">        UnitVector([-0.6 -0.8 -0. ])</span>
+
+<span class="sd">    To get the heights of **points** use the inner product. ::</span>
+
+<span class="sd">        heights = up.inner_product(points)</span>
+
+<span class="sd">    A typical 3D analysis will involve lots of inner-product calls so the above</span>
+<span class="sd">    gets combersome pretty quickly. For convenience, you may instead call the</span>
+<span class="sd">    vector directly. ::</span>
+
+<span class="sd">        heights = up(points)</span>
+
+<span class="sd">    Once you have your heights, the following numpy functions are your friends::</span>
+
+<span class="sd">        heights.min()   # minimum height</span>
+<span class="sd">        heights.max()   # maximum height</span>
+<span class="sd">        heights.mean()  # average height</span>
+<span class="sd">        heights.ptp()   # `peak to peak` equivalent to max - min</span>
+
+<span class="sd">    Get the highest point using::</span>
+
+<span class="sd">        highest = up.furthest(points)</span>
+
+<span class="sd">    Or::</span>
+
+<span class="sd">        highest, max_height = up.furthest(points, return_projection=True)</span>
+
+<span class="sd">    If you actually want the lowest then invert ``up`` to get a ``down`` vector.</span>
+<span class="sd">    ::</span>
+
+<span class="sd">        lowest = (-up).furthest(points)</span>
+
+<span class="sd">    Methods :meth:`get_component` and :meth:`remove_component` split a point</span>
+<span class="sd">    into parts parallel and perpendicular to ``up``.</span>
+
+<span class="sd">    Methods :meth:`with_` and :meth:`match` return points</span>
+<span class="sd">    modified to have specified heights. They both have the effect of mapping</span>
+<span class="sd">    the input onto a plane with ``up`` as the plane normal.</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # Get `points` but with a height of 10.</span>
+<span class="sd">        up.with_projection(points, 10)</span>
+<span class="sd">        # Get `points` but with the same height as ``points[0]``.</span>
+<span class="sd">        up.match_projection(points, points[0])</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="UnitVector.__init__"><a class="viewcode-back" href="../../../stubs/geometry.html#motmot.geometry.UnitVector.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            vector(numpy.ndarray or UnitVector or str or list or tuple):</span>
+
+<span class="sd">                The direction as a vector, or an axis name as a string.</span>
+
+<span class="sd">        **vector** is normalised automatically.</span>
+
+<span class="sd">        The str axis name format is an optional sign (+-) followed by any of</span>
+<span class="sd">        ``&#39;ijkxyz&#39;``. Whitespaces and case are ignored. ::</span>
+
+<span class="sd">            &gt;&gt;&gt; UnitVector(&quot;Z&quot;)</span>
+<span class="sd">            UnitVector([0. 0. 1.])</span>
+<span class="sd">            &gt;&gt;&gt; UnitVector(&quot;+x&quot;)</span>
+<span class="sd">            UnitVector([1. 0. 0.])</span>
+<span class="sd">            &gt;&gt;&gt; UnitVector(&quot;-y&quot;)</span>
+<span class="sd">            UnitVector([ 0. -1.  0.])</span>
+<span class="sd">            &gt;&gt;&gt; UnitVector(&quot;-j&quot;)</span>
+<span class="sd">            UnitVector([ 0. -1.  0.])</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">vector</span> <span class="o">=</span> <span class="n">_str_to_vector</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vector</span> <span class="o">=</span> <span class="n">normalised</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">vector</span><span class="p">))</span></div>
+
+    <span class="n">vector</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="sd">&quot;&quot;&quot;The raw numpy vector.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">+</span> <span class="s2">&quot;(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vector</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">inner_product</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vector</span><span class="p">,</span> <span class="n">vector</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="n">keepdims</span><span class="p">)</span>
+
+    <span class="n">inner_product</span> <span class="o">=</span> <span class="fm">__call__</span>
+
+<div class="viewcode-block" id="UnitVector.matched_sign"><a class="viewcode-back" href="../../../stubs/geometry.html#motmot.geometry.UnitVector.matched_sign">[docs]</a>    <span class="k">def</span> <span class="nf">matched_sign</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a reversed copy of **vector** if ``self(vector) &lt; 0``. i.e if</span>
+<span class="sd">        the angle between *this* vector and **vector** is more than 180°.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">vector</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__neg__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">vector</span><span class="p">)</span>
+
+<div class="viewcode-block" id="UnitVector.remove_component"><a class="viewcode-back" href="../../../stubs/geometry.html#motmot.geometry.UnitVector.remove_component">[docs]</a>    <span class="k">def</span> <span class="nf">remove_component</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the components of **vector** perpendicular to *this* direction.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">vector</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_component</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UnitVector.get_component"><a class="viewcode-back" href="../../../stubs/geometry.html#motmot.geometry.UnitVector.get_component">[docs]</a>    <span class="k">def</span> <span class="nf">get_component</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the component of **vector** parallel to *this* direction.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">vector</span></div>
+
+<div class="viewcode-block" id="UnitVector.furthest"><a class="viewcode-back" href="../../../stubs/geometry.html#motmot.geometry.UnitVector.furthest">[docs]</a>    <span class="k">def</span> <span class="nf">furthest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_projection</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">return_args</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Select, from **points**, the point with the highest projection in</span>
+<span class="sd">        *this* direction.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">furthest</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">vector</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">return_projection</span><span class="p">,</span> <span class="n">return_args</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UnitVector.with_"><a class="viewcode-back" href="../../../stubs/geometry.html#motmot.geometry.UnitVector.with_">[docs]</a>    <span class="k">def</span> <span class="nf">with_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">projection</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Translate **point** along *this* direction so that</span>
+<span class="sd">        ``self(point) == projection``.</span>
+
+<span class="sd">        The output is a modified copy.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">projection</span><span class="p">)[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">-</span>
+                <span class="bp">self</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span> <span class="o">*</span> <span class="bp">self</span> <span class="o">+</span> <span class="n">point</span></div>
+
+<div class="viewcode-block" id="UnitVector.match"><a class="viewcode-back" href="../../../stubs/geometry.html#motmot.geometry.UnitVector.match">[docs]</a>    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">target_point</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Translate **point** so that ``self(point) == self(target_point)``</span>
+
+<span class="sd">        Or the returned point is inline with **target_point**.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">with_</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="bp">self</span><span class="p">(</span><span class="n">target_point</span><span class="p">))</span></div></div>
+
+
+<span class="n">_EXCLUDES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;__array_finalize__&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;__array_function__&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;__array_interface__&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;__array_prepare__&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;__array_priority__&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;__array_struct__&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;__array_ufunc__&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;__array_wrap__&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;__neg__&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;__reduce__&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;__getattr__&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;__getattribute__&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;__class__&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;__copy__&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;__deepcopy__&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;__reduce_ex__&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;__prepare__&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;__setstate__&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;__new__&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;__setattr__&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;__setattribute__&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;__dir__&quot;</span><span class="p">,</span>
+<span class="p">}</span>  <span class="c1"># | set(dir(UnitVector)) - {&quot;__eq__&quot;}</span>
+
+<span class="n">_METHOD_SOURCE</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="c1"># _METHOD_SOURCE.update(dict.fromkeys(dir(object), object))</span>
+<span class="n">_METHOD_SOURCE</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+    <span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">dir</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">))</span> <span class="o">-</span> <span class="n">_EXCLUDES</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">))</span>
+<span class="n">_METHOD_SOURCE</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+    <span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span>
+        <span class="nb">set</span><span class="p">(</span><span class="nb">dir</span><span class="p">(</span><span class="n">UnitVector</span><span class="p">))</span> <span class="o">-</span>
+        <span class="nb">set</span><span class="p">(</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">UnitVector</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="nb">object</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">UnitVector</span><span class="p">,</span> <span class="n">i</span><span class="p">)),</span>
+        <span class="n">UnitVector</span><span class="p">,</span>
+    <span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">_unitvector_proxy_wrap</span><span class="p">(</span><span class="n">attr</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="c1">#print(attr)</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vector</span><span class="p">,</span> <span class="n">attr</span><span class="p">)(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">f</span>
+
+
+<span class="k">for</span> <span class="p">(</span><span class="n">_attr</span><span class="p">,</span> <span class="n">_value</span><span class="p">)</span> <span class="ow">in</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">callable</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">_METHOD_SOURCE</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">_attr</span><span class="p">)</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">UnitVector</span><span class="p">,</span> <span class="n">_attr</span><span class="p">,</span> <span class="n">_unitvector_proxy_wrap</span><span class="p">(</span><span class="n">_attr</span><span class="p">))</span>
+
+<span class="n">_AXES</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="s2">&quot;ijk&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)))</span>
+<span class="n">_AXES</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="s2">&quot;xyz&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)))</span>
+<span class="n">_SIGNS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;+&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">}</span>
+<span class="n">_str_vector_re</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\s*([+-])?\s*(?:([i-k])|([x-z]))&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_str_to_vector</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert an axis name, such as &#39;Z&#39; to a unit vector [0, 0, 1].&quot;&quot;&quot;</span>
+    <span class="n">match</span> <span class="o">=</span> <span class="n">_str_vector_re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">match</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{!r}</span><span class="s2"> is not a valid unit-vector.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="n">sign</span><span class="p">,</span> <span class="n">ijk</span><span class="p">,</span> <span class="n">xyz</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">ijk</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">axis</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span> <span class="o">-</span> <span class="nb">ord</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">axis</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">ijk</span><span class="p">)</span> <span class="o">-</span> <span class="nb">ord</span><span class="p">(</span><span class="s2">&quot;i&quot;</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">out</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="n">_SIGNS</span><span class="p">[</span><span class="n">sign</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">out</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2021, Brénainn Woodsend
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

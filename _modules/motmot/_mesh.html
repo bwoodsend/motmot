@@ -1,0 +1,1201 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>motmot._mesh &mdash; Motmot 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/more-theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/theme-overrides.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/motmot-favicon.jpg"/>
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> Motmot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../stubs/mesh.html">Mesh API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stubs/geometry.html">Geometry API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stubs/connectivity.html">Connectivity API reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Motmot</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>motmot._mesh</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for motmot._mesh</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span>
+<span class="kn">import</span> <span class="nn">operator</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">stl.mesh</span> <span class="kn">import</span> <span class="n">Mesh</span> <span class="k">as</span> <span class="n">_Mesh</span>
+<span class="kn">from</span> <span class="nn">hirola</span> <span class="kn">import</span> <span class="n">HashTable</span>
+<span class="kn">from</span> <span class="nn">rockhopper</span> <span class="kn">import</span> <span class="n">RaggedArray</span>
+
+<span class="kn">from</span> <span class="nn">motmot._compat</span> <span class="kn">import</span> <span class="n">cached_property</span>
+<span class="kn">from</span> <span class="nn">motmot._misc</span> <span class="kn">import</span> <span class="n">idx</span><span class="p">,</span> <span class="n">Independency</span><span class="p">,</span> <span class="n">read_archived</span><span class="p">,</span> <span class="n">as_nD</span>
+<span class="kn">from</span> <span class="nn">motmot</span> <span class="kn">import</span> <span class="n">geometry</span>
+
+
+<span class="k">def</span> <span class="nf">_subsample</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create an alias property for slices of mesh data.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vectors</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vectors</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="n">get</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="k">return</span> <span class="nb">property</span><span class="p">(</span><span class="n">get</span><span class="p">,</span> <span class="nb">set</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">doc</span><span class="p">)</span>
+
+
+<span class="n">independent</span> <span class="o">=</span> <span class="n">Independency</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="Mesh"><a class="viewcode-back" href="../../stubs/mesh.html#motmot.Mesh">[docs]</a><span class="k">class</span> <span class="nc">Mesh</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">__vectors__</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">__faces__</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">__vertices__</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">is_faces_mesh</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="sd">&quot;&quot;&quot;If true, this mesh internally uses :attr:`vertices` and :attr:`faces`.</span>
+<span class="sd">    Otherwise, it uses :attr:`vectors`.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Mesh.__init__"><a class="viewcode-back" href="../../stubs/mesh.html#motmot.Mesh.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A :class:`Mesh` can be constructed in three different ways:</span>
+
+<span class="sd">        1. From a filename or file-like binary stream::</span>
+
+<span class="sd">            mesh = Mesh(&quot;my-mesh.stl&quot;)</span>
+
+<span class="sd">        2. From a 3D :attr:`vectors` array. It should have shape :py:`(n, d, 3)`</span>
+<span class="sd">           where ``n`` is the number of polygons and ``d`` is the number of</span>
+<span class="sd">           vertices per polygon.</span>
+
+<span class="sd">        3. From :attr:`vertices` and polygon :attr:`faces`.</span>
+
+<span class="sd">        Currently only STL files can be read directly. For other 3D files, read</span>
+<span class="sd">        using meshio_ then convert to :class:`motmot.Mesh`::</span>
+
+<span class="sd">            import meshio</span>
+<span class="sd">            _mesh = meshio.Mesh.read(&quot;my-mesh.ply&quot;)</span>
+<span class="sd">            mesh = Mesh(_mesh.points, _mesh.cells[0].data)</span>
+
+<span class="sd">        Beware however that this assumes that the mesh uses a fixed number of</span>
+<span class="sd">        vertices per polygon. :mod:`motmot` doesn&#39;t support mixed polygon types.</span>
+
+<span class="sd">        .. _meshio: https://github.com/nschloe/meshio</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">faces</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">)):</span>
+                <span class="n">file</span> <span class="o">=</span> <span class="n">read_archived</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">vertices</span>
+                <span class="k">return</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">io</span><span class="o">.</span><span class="n">IOBase</span><span class="p">):</span>
+                <span class="c1"># numpy-stl&#39;s detection for streams has some holes in it.</span>
+                <span class="c1"># Force streams to be BytesIO()s. Note that even ASCII STLs must</span>
+                <span class="c1"># be read in binary mode.</span>
+                <span class="n">fh</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">vertices</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+                <span class="n">mesh</span> <span class="o">=</span> <span class="n">_Mesh</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">fh</span><span class="o">=</span><span class="n">fh</span><span class="p">,</span> <span class="n">calculate_normals</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">vectors</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vectors</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">vectors</span> <span class="o">=</span> <span class="n">vertices</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_faces_mesh</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="n">vertices</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">faces</span> <span class="o">=</span> <span class="n">faces</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span></div>
+
+    <span class="n">_vertex_table</span><span class="p">:</span> <span class="n">HashTable</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_faces_mesh</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;Vectors </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> at </span><span class="si">{</span><span class="nb">hex</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span><span class="si">}</span><span class="s2"> | &quot;</span> \
+                   <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">vectors</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">-sided polygons&gt;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;IDs </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> at </span><span class="si">{</span><span class="nb">hex</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span><span class="si">}</span><span class="s2"> | &quot;</span> \
+               <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">)</span><span class="si">}</span><span class="s2"> vertices | &quot;</span> \
+               <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">-sided polygons&gt;&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;The filename used to open this mesh. This is set to none if this mesh</span>
+<span class="sd">        was not read directly from a file.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Either a :class:`pathlib.Path` filename or :py:`None`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_path&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="nd">@path</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">if</span> <span class="n">path</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="nd">@path</span><span class="o">.</span><span class="n">deleter</span>
+    <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">vertex_table</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HashTable</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;The lookup table behind vertex uniquifying and fast vertex lookup.</span>
+
+<span class="sd">        This object, a :class:`hirola.HashTable`, is similar to a :class:`dict`</span>
+<span class="sd">        with this mesh&#39;s unique vertices as its keys and an enumeration as its</span>
+<span class="sd">        values.</span>
+
+<span class="sd">        To get a vertex ID (or IDs) for a given point(s) use::</span>
+
+<span class="sd">            ids = mesh.vertex_table[points]</span>
+
+<span class="sd">        This is the reciprocal of::</span>
+
+<span class="sd">            points = mesh.vertices[ids]</span>
+
+<span class="sd">        To quickly test if a vertex or vertices is in :attr:`vertices` use</span>
+<span class="sd">        :meth:`mesh.vertex_table.contains() &lt;hirola.HashTable.contains&gt;`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_faces_mesh</span><span class="p">:</span>
+            <span class="n">points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__vectors__</span>
+            <span class="n">length</span> <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">points</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__vertices__</span>
+            <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+
+        <span class="c1"># Create a hash table with enough space to fit all points (assuming the</span>
+        <span class="c1"># worst case where all points are unique) plus 25% padding for speed,</span>
+        <span class="c1"># and a key dtype of 3 numbers (probably floats).</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">HashTable</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mf">1.25</span> <span class="o">*</span> <span class="n">length</span><span class="p">),</span> <span class="n">points</span><span class="o">.</span><span class="n">dtype</span> <span class="o">*</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="c1"># Add all points to the table logging the vertex ID for each point.</span>
+        <span class="n">faces</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_faces_mesh</span><span class="p">:</span>
+            <span class="c1"># For vectors meshes, set faces attribute.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__faces__</span> <span class="o">=</span> <span class="n">faces</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__vertices__</span><span class="p">):</span>
+            <span class="c1"># For faces meshes, `self.faces` should already be set and be</span>
+            <span class="c1"># identical to the `faces` found above unless there were duplicates</span>
+            <span class="c1"># in `self.vertices`. These can cause some algorithms to break.</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Duplicate vertices in mesh.vertices.&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">table</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">dtype</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The :class:`numpy.dtype` of :attr:`vertices` and :attr:`vectors`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_faces_mesh</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__vertices__</span><span class="o">.</span><span class="n">dtype</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__vectors__</span><span class="o">.</span><span class="n">dtype</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;All points in the mesh with duplicity removed.</span>
+
+<span class="sd">        If this mesh is not originally an IDs mesh, i.e. :attr:`vertices` had to</span>
+<span class="sd">        be calculated from :attr:`vectors`, then this array is read-only.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_faces_mesh</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__vertices__</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_table</span><span class="o">.</span><span class="n">keys</span>
+
+    <span class="nd">@vertices</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_faces_mesh</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;A vectors mesh&#39;s vertices are readonly. &quot;</span>
+                             <span class="s2">&quot;Write to mesh.vectors instead.&quot;</span><span class="p">)</span>
+        <span class="c1"># Vertices must be C contiguous for hirola.HashTable.</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="c1"># If given an empty array:</span>
+        <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># Make it valid by default.</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The last axis of vertices must be of length 3. &quot;</span>
+                             <span class="sa">f</span><span class="s2">&quot;Received an array with shape </span><span class="si">{</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Implicitly promote a single vertex [x, y, z] to [[x, y, z]]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__vertices__</span> <span class="o">=</span> <span class="n">as_nD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;vertices&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">faces</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Indices of vertices used to construct each polygon.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Integer array with shape :py:`(len(mesh), mesh.per_polygon)`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_faces_mesh</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__faces__</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_faces_from_vectors</span>
+
+    <span class="nd">@faces</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_faces_mesh</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;A vectors mesh&#39;s faces are readonly. &quot;</span>
+                             <span class="s2">&quot;Write to mesh.vectors instead.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># faces must be C contiguous and of a fixed dtype for the various C</span>
+        <span class="c1"># functions to work.</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">intp</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Set empty input `[]` to something sane. Namely 0 triangles.</span>
+        <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">x</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">intp</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__faces__</span> <span class="o">=</span> <span class="n">as_nD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;faces&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+
+    <span class="nd">@independent</span><span class="o">.</span><span class="n">of</span><span class="p">(</span><span class="s2">&quot;translate&quot;</span><span class="p">,</span> <span class="s2">&quot;rotate&quot;</span><span class="p">)</span>
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">_faces_from_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vertex_table</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__faces__</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">_vectors_from_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_faces_mesh</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__vertices__</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__faces__</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;The :py:`(x, y, z)` coordinates of each corner of each polygon.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            An :py:`(number of polygons, mesh.per_polygon, 3)` shaped array.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_faces_mesh</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vectors_from_faces</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__vectors__</span>
+
+    <span class="nd">@vectors</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_faces_mesh</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;A faces mesh&#39;s vectors are readonly. &quot;</span>
+                             <span class="s2">&quot;Write to mesh.vertices instead.&quot;</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">3</span> <span class="ow">or</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Vectors must be a 3D array with last axis of length 3. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Received an array with shape </span><span class="si">{</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__vectors__</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__vectors__</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">_subsample</span><span class="p">(</span>
+        <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">idx</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;The x coordinate of each vertex of each polygon. &quot;</span>
+        <span class="s2">&quot;Equivalent to :py:`mesh.vectors[:, :, 0]`.&quot;</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">_subsample</span><span class="p">(</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">idx</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;The y coordinate of each vertex of each polygon. &quot;</span>
+        <span class="s2">&quot;Equivalent to :py:`mesh.vectors[:, :, 1]`.&quot;</span><span class="p">)</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">_subsample</span><span class="p">(</span>
+        <span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="n">idx</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;The z coordinate of each vertex of each polygon. &quot;</span>
+        <span class="s2">&quot;Equivalent to :py:`mesh.vectors[:, :, 2]`.&quot;</span><span class="p">)</span>
+    <span class="n">v0</span> <span class="o">=</span> <span class="n">_subsample</span><span class="p">(</span>
+        <span class="s2">&quot;v0&quot;</span><span class="p">,</span> <span class="n">idx</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;The 1</span><span class="se">\\</span><span class="s2"> :superscript:`st` corner of each polygon. &quot;</span>
+        <span class="s2">&quot;Equivalent to :py:`mesh.vectors[:, 0]`.&quot;</span><span class="p">)</span>
+    <span class="n">v1</span> <span class="o">=</span> <span class="n">_subsample</span><span class="p">(</span>
+        <span class="s2">&quot;v1&quot;</span><span class="p">,</span> <span class="n">idx</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;The 2</span><span class="se">\\</span><span class="s2"> :superscript:`nd` corner of each polygon. &quot;</span>
+        <span class="s2">&quot;Equivalent to :py:`mesh.vectors[:, 1]`.&quot;</span><span class="p">)</span>
+    <span class="n">v2</span> <span class="o">=</span> <span class="n">_subsample</span><span class="p">(</span>
+        <span class="s2">&quot;v2&quot;</span><span class="p">,</span> <span class="n">idx</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;The 3</span><span class="se">\\</span><span class="s2"> :superscript:`rd` corner of each polygon. &quot;</span>
+        <span class="s2">&quot;Equivalent to :py:`mesh.vectors[:, 2]`.&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Length is defined as the number of polygons.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__faces__</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_faces_mesh</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">__vectors__</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">per_polygon</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;The number of corners each polygon has.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__faces__</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_faces_mesh</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">__vectors__</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="nd">@independent</span><span class="o">.</span><span class="n">of</span><span class="p">(</span><span class="s2">&quot;translate&quot;</span><span class="p">,</span> <span class="s2">&quot;rotate&quot;</span><span class="p">)</span>
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">vertex_counts</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;The number of times each vertex id appears in :attr:`faces`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            1D integer array with the same length as :attr:`vertices`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">intc</span><span class="p">)</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">counts</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">counts</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">max</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;The maximum ``x``, ``y`` and ``z`` value. Shares memory with</span>
+<span class="sd">        :attr:`bounds`.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">min</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;The minimum ``x``, ``y`` and ``z`` value. Shares memory with</span>
+<span class="sd">        :attr:`bounds`.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="nd">@independent</span><span class="o">.</span><span class="n">of</span><span class="p">(</span><span class="s2">&quot;translate&quot;</span><span class="p">)</span>
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">dims</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;The overall length, width and height of the mesh. Or the difference</span>
+<span class="sd">        between :attr:`max` and :attr:`min`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;The minimum and maximum ``(x, y, z)`` values. Equivalent to</span>
+<span class="sd">        :py:`array([mesh.min, mesh.max])`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            2D array with shape :py:`(2, 3)`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span>
+
+    <span class="nd">@independent</span><span class="o">.</span><span class="n">of</span><span class="p">(</span><span class="s2">&quot;translate&quot;</span><span class="p">)</span>
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">normals</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Normals to each polygon.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            2D array with shape :py:`(len(mesh), 3)`.</span>
+
+<span class="sd">        Normals point outwards provided that the polygons corners are listed in</span>
+<span class="sd">        counter-clockwise order (which is the usual convention).</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v0</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">v1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">v1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">v2</span><span class="p">)</span>
+
+    <span class="nd">@independent</span><span class="o">.</span><span class="n">of</span><span class="p">(</span><span class="s2">&quot;transform&quot;</span><span class="p">)</span>
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">areas</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Surface area of each polygon.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            1D array with length :py:`len(mesh)`.</span>
+
+<span class="sd">        Note that for non co-planer (not flat) polygons, this definition becomes</span>
+<span class="sd">        progressively more arbitrary as the polygons become more complicated.</span>
+<span class="sd">        Different areas can be obtained for identical polygons simply by</span>
+<span class="sd">        *rolling* a polygon&#39;s corners so that a different corner is listed</span>
+<span class="sd">        first.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">per_polygon</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="c1"># Triangles are much simpler than other shapes and can therefore</span>
+            <span class="c1"># take the simpler/faster approach.</span>
+            <span class="k">return</span> <span class="n">geometry</span><span class="o">.</span><span class="n">magnitude</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">normals</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="k">return</span> <span class="n">geometry</span><span class="o">.</span><span class="n">area</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vectors</span><span class="p">)</span>
+
+    <span class="nd">@independent</span><span class="o">.</span><span class="n">of</span><span class="p">(</span><span class="s2">&quot;translate&quot;</span><span class="p">,</span> <span class="s2">&quot;rotate&quot;</span><span class="p">)</span>
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;The total surface area. This is simply the sum of :attr:`areas`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">areas</span><span class="p">)</span>
+
+    <span class="nd">@independent</span><span class="o">.</span><span class="n">of</span><span class="p">(</span><span class="s2">&quot;translate&quot;</span><span class="p">)</span>
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">units</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Normalised outward :attr:`normals` for each polygon.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            2D array with shape :py:`(len(mesh), 3)`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">old</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">seterr</span><span class="p">(</span><span class="n">invalid</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">divide</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">per_polygon</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="c1"># Again, this is marginally faster but only works for triangular</span>
+            <span class="c1"># meshes.</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normals</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">areas</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">normalised</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">normals</span><span class="p">)</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">seterr</span><span class="p">(</span><span class="o">**</span><span class="n">old</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">out</span>
+
+    <span class="nd">@independent</span><span class="o">.</span><span class="n">of</span><span class="p">(</span><span class="s2">&quot;translate&quot;</span><span class="p">)</span>
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">vertex_normals</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Weighted outward normal for each vertex in :attr:`vertices`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            2D array with shape :py:`(len(mesh.vertices), 3)`.</span>
+
+<span class="sd">        Computed as the normalised average of the surface :attr:`normals` of the</span>
+<span class="sd">        faces that contain that vertex. Averages are weighted by :attr:`areas`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">old</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">seterr</span><span class="p">(</span><span class="n">invalid</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">divide</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+        <span class="n">normals</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">normalised</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vertex_normals</span><span class="p">)</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">seterr</span><span class="p">(</span><span class="o">**</span><span class="n">old</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">normals</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_vertex_normals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Raw un-normalised vertex normals.&quot;&quot;&quot;</span>
+        <span class="n">normals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">faces</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="o">.</span><span class="n">T</span><span class="p">:</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">normals</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">normals</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">normals</span>
+
+<div class="viewcode-block" id="Mesh.translate"><a class="viewcode-back" href="../../stubs/mesh.html#motmot.Mesh.translate">[docs]</a>    <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">translation</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Move this mesh without rotating.&quot;&quot;&quot;</span>
+        <span class="c1"># Avoid inplace array modification because it either breaks or loses</span>
+        <span class="c1"># precision if the dtypes don&#39;t match.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_faces_mesh</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__vertices__</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__vertices__</span> <span class="o">+</span> <span class="n">translation</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__vectors__</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__vectors__</span> <span class="o">+</span> <span class="n">translation</span>
+
+        <span class="c1"># noinspection PyUnresolvedReferences</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reset_on_translate</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Mesh.rotate_using_matrix"><a class="viewcode-back" href="../../stubs/mesh.html#motmot.Mesh.rotate_using_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">rotate_using_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rotation_matrix</span><span class="p">,</span> <span class="n">point</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Rotate inplace, the mesh using a **rotation_matrix**.</span>
+
+<span class="sd">        Internally this is just a matrix multiplication where the mesh&#39;s</span>
+<span class="sd">        vertices are *post-multiplied* by **rotation_matrix**.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">point</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">point</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="o">-</span><span class="n">point</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rotate_using_matrix</span><span class="p">(</span><span class="n">rotation_matrix</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="c1"># Inplace matrix multiplication (i.e. ``@=``) is not allowed.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_faces_mesh</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__vertices__</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__vertices__</span> <span class="o">@</span> <span class="n">rotation_matrix</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__vectors__</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__vectors__</span> <span class="o">@</span> <span class="n">rotation_matrix</span>
+
+        <span class="c1"># noinspection PyUnresolvedReferences</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reset_on_rotate</span><span class="p">()</span></div>
+
+    <span class="c1"># Shamelessly nick this from numpy-stl.</span>
+    <span class="n">rotation_matrix</span> <span class="o">=</span> <span class="nb">staticmethod</span><span class="p">(</span><span class="n">_Mesh</span><span class="o">.</span><span class="n">rotation_matrix</span><span class="p">)</span>
+    <span class="n">rotate</span> <span class="o">=</span> <span class="n">_Mesh</span><span class="o">.</span><span class="n">rotate</span>
+
+<div class="viewcode-block" id="Mesh.reset"><a class="viewcode-back" href="../../stubs/mesh.html#motmot.Mesh.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Invalidate all cached properties.</span>
+
+<span class="sd">        Use after directly writing or setting one of this mesh&#39;s array</span>
+<span class="sd">        attributes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># noinspection PyUnresolvedReferences</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reset_all</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Mesh&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_faces_mesh</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">[</span><span class="n">item</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span><span class="bp">self</span><span class="o">.</span><span class="n">vectors</span><span class="p">[</span><span class="n">item</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__array__</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="s2">&quot;Meshes can&#39;t be converted directly to arrays. Use one &quot;</span>
+            <span class="s2">&quot;of `vertices`, `vectors` or `faces` attributes instead.&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Mesh.crop"><a class="viewcode-back" href="../../stubs/mesh.html#motmot.Mesh.crop">[docs]</a>    <span class="k">def</span> <span class="nf">crop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mask</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">slice</span><span class="p">],</span>
+             <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Mesh&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Return a subsample of the original mesh. Inclusion is defined by</span>
+<span class="sd">        **mask**.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            mask:</span>
+<span class="sd">                Polygons to include.</span>
+<span class="sd">            in_place:</span>
+<span class="sd">                Modify this mesh instead of making a modified copy, defaults to</span>
+<span class="sd">                False.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            This mesh if **in_place** or a new cropped one.</span>
+
+<span class="sd">        A minimal usage example:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            # Get only polygons with non-negative average Z-values.</span>
+<span class="sd">            cropped = mesh.crop(mesh.centers[:, 2] &gt;= 0)</span>
+
+<span class="sd">        For an IDs based mesh this samples :attr:`faces` and leaves</span>
+<span class="sd">        :attr:`vertices` untouched without copying and is equivalent to::</span>
+
+<span class="sd">            cropped = Mesh(mesh.vertices, mesh.faces[mask], name=mesh.name)</span>
+
+<span class="sd">        For a vectors based mesh this function simply samples :attr:`vectors`::</span>
+
+<span class="sd">            cropped = Mesh(mesh.vectors[mask], name=mesh.name)</span>
+
+<span class="sd">        Please ensure you are aware of `when indexing copies in numpy`_ if you</span>
+<span class="sd">        intend to modify either the cropped or the original mesh afterwards.</span>
+
+<span class="sd">        .. _`when indexing copies in numpy`: https://numpy.org/doc/stable/reference/arrays.indexing.html#advanced-indexing</span>
+
+<span class="sd">        When **inplace** is false (default), cropping can also be achieved by</span>
+<span class="sd">        indexing the mesh directly::</span>
+
+<span class="sd">            cropped = mesh[mask]</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">in_place</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_faces_mesh</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__faces__</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__faces__</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__vectors__</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__vectors__</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+    <span class="k">def</span> <span class="nf">__copy__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">cls</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__getstate__</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">out</span>
+
+    <span class="k">def</span> <span class="nf">__deepcopy__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">memo</span><span class="p">):</span>
+        <span class="bp">cls</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getstate__</span><span class="p">()</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="ow">in</span> <span class="n">state</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">__setstate__</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">out</span>
+
+<div class="viewcode-block" id="Mesh.copy"><a class="viewcode-back" href="../../stubs/mesh.html#motmot.Mesh.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Mesh&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Make a shallow or deep copy of the mesh.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            deep:</span>
+<span class="sd">                If true, copy the underlying :attr:`vectors` or :attr:`vertices`</span>
+<span class="sd">                and :attr:`faces` arrays. Otherwise output will share these</span>
+<span class="sd">                arrays with this mesh.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Another mesh.</span>
+
+<span class="sd">        Caches of cached properties are never copied.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__deepcopy__</span><span class="p">({})</span> <span class="k">if</span> <span class="n">deep</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">__copy__</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">__getstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_faces_mesh</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;vertices&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__vertices__</span><span class="p">,</span>
+                <span class="s2">&quot;faces&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__faces__</span><span class="p">,</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;vectors&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vectors</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dic</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">dic</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;vectors&quot;</span><span class="p">,</span> <span class="n">dic</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;vertices&quot;</span><span class="p">)),</span> <span class="n">dic</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;faces&quot;</span><span class="p">),</span>
+                      <span class="n">dic</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">dic</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">]</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">centers</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;The center of each polygon, defined as the mean of each polygon&#39;s</span>
+<span class="sd">        corners.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            2D array with shape :py:`(len(mesh), 3)`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># This could just be `self.vectors.mean(axis=1)` but</span>
+        <span class="c1"># numpy.ufunc.reduce() with axis != None is much slower than pure</span>
+        <span class="c1"># Python.</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vectors</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">vectors</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">out</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">vectors</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">out</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">vectors</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="nd">@independent</span><span class="o">.</span><span class="n">of</span><span class="p">(</span><span class="s2">&quot;translate&quot;</span><span class="p">,</span> <span class="s2">&quot;rotate&quot;</span><span class="p">)</span>
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">polygon_map</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Maps each polygon to its adjacent (shares a common edge) polygons.</span>
+
+<span class="sd">        The format is an numpy int array with the same shape as</span>
+<span class="sd">        :attr:`Mesh.faces`. A polygon is referenced by its position in</span>
+<span class="sd">        :attr:`Mesh.faces` (or :attr:`Mesh.vectors`).</span>
+
+<span class="sd">        For example, assume a triangular mesh is called  ``mesh``. And suppose</span>
+<span class="sd">        :py:`mesh.polygon_map[n]` is :py:`[i, j, k]`, then:</span>
+
+<span class="sd">        - The edge going from vertex *0* to vertex *1* of the triangle</span>
+<span class="sd">          :py:`mesh.vectors[n]` would be shared with the triangle</span>
+<span class="sd">          :py:`mesh.vectors[i]`,</span>
+<span class="sd">        - The edge going from vertex *1* to vertex *2* of the triangle</span>
+<span class="sd">          :py:`mesh.vectors[n]` would be shared with the triangle</span>
+<span class="sd">          :py:`mesh.vectors[j]`,</span>
+<span class="sd">        - And the edge going from vertex *2* to vertex **0** of the triangle</span>
+<span class="sd">          :py:`mesh.vectors[n]` would be shared with the triangle</span>
+<span class="sd">          :py:`mesh.vectors[k]`,</span>
+
+<span class="sd">        Any polygons which are missing a neighbour on a particular edge (i.e.</span>
+<span class="sd">        on the boundary of a non-closed mesh) use :py:`-1` as a placeholder.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">motmot._polygon_map</span> <span class="kn">import</span> <span class="n">make_polygon_map</span>
+        <span class="k">return</span> <span class="n">make_polygon_map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">))</span>
+
+<div class="viewcode-block" id="Mesh.connected_polygons"><a class="viewcode-back" href="../../stubs/mesh.html#motmot.Mesh.connected_polygons">[docs]</a>    <span class="k">def</span> <span class="nf">connected_polygons</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">polygon_map</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Recursively walk connected polygons.</span>
+
+<span class="sd">        Finds the whole connected region containing the triangle `arg` where</span>
+<span class="sd">        `whole connected region` here means that all triangles within that region</span>
+<span class="sd">        are joined indirectly by at least one triangle.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            initial (int or numpy.ndarray):</span>
+<span class="sd">                The polygon id(s) to start at.</span>
+<span class="sd">            mask (numpy.ndarray):</span>
+<span class="sd">                Only include regions covered by `mask` if specified.</span>
+<span class="sd">            polygon_map (numpy.ndarray):</span>
+<span class="sd">                An alternative polygon map to use. Defaults to</span>
+<span class="sd">                :attr:`polygon_map`.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            numpy.ndarray:</span>
+<span class="sd">                A connected region as a 1D bool array.</span>
+
+<span class="sd">        This is implemented by navigating the :attr:`polygon_map`.</span>
+<span class="sd">        Restrictions on connectivity can be given either with the **mask**</span>
+<span class="sd">        parameter, which mimics removing polygons, or by overriding</span>
+<span class="sd">        **polygon_map** and replacing values with ``-1`` to block edges between</span>
+<span class="sd">        polygons. Note that the **mask** only prevents the algorithm from</span>
+<span class="sd">        traversing **onto** unmasked polygons. If a polygon is in **initial**</span>
+<span class="sd">        then it will still be included in the output.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">motmot._polygon_walk</span> <span class="kn">import</span> <span class="n">connected</span>
+        <span class="n">polygon_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">polygon_map</span> <span class="k">if</span> <span class="n">polygon_map</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">polygon_map</span>
+        <span class="k">return</span> <span class="n">connected</span><span class="p">(</span><span class="n">polygon_map</span><span class="p">,</span> <span class="n">initial</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Mesh.group_connected_polygons"><a class="viewcode-back" href="../../stubs/mesh.html#motmot.Mesh.group_connected_polygons">[docs]</a>    <span class="k">def</span> <span class="nf">group_connected_polygons</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">polygon_map</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Group and enumerate all polygons which are indirectly connected.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (numpy.ndarray, int):</span>
+<span class="sd">                A :py:`(group_ids, group_count)` pair.</span>
+
+<span class="sd">        Functionally, this is equivalent to calling :meth:`connected_polygons`</span>
+<span class="sd">        repeatedly until every polygon is assigned a group.</span>
+
+<span class="sd">        To convert the output to a list of meshes use::</span>
+
+<span class="sd">            from rockhopper import RaggedArray</span>
+<span class="sd">            ragged = RaggedArray.group_by(mesh.vectors, *mesh.group_connected_polygons())</span>
+<span class="sd">            sub_meshes = [Mesh(i) for i in ragged]</span>
+
+<span class="sd">        Or if your using vertices/faces meshes::</span>
+
+<span class="sd">            from rockhopper import RaggedArray</span>
+<span class="sd">            ragged = RaggedArray.group_by(mesh.faces, *mesh.group_connected_polygons())</span>
+<span class="sd">            sub_meshes = [Mesh(mesh.vertices, faces) for faces in ragged]</span>
+
+<span class="sd">        Note that both will work irregardless of :attr:`is_faces_mesh`, however</span>
+<span class="sd">        the mismatched implementation will be slower.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">motmot._polygon_walk</span> <span class="kn">import</span> <span class="n">group_connected</span>
+        <span class="n">polygon_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">polygon_map</span> <span class="k">if</span> <span class="n">polygon_map</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">polygon_map</span>
+        <span class="k">return</span> <span class="n">group_connected</span><span class="p">(</span><span class="n">polygon_map</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span></div>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">displacements</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;The displacement from each polygon&#39;s center to each of its</span>
+<span class="sd">        neighbours&#39; centers.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :py:`(len(mesh), mesh.per_polygon, 3)` numpy array.</span>
+
+<span class="sd">        Defaults to ``nan`` when a neighbour is missing.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">polygon_map</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)[:,</span> <span class="p">:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">centers</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">polygon_map</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">centers</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]]],</span> <span class="bp">self</span><span class="o">.</span><span class="n">centers</span><span class="o">.</span><span class="n">dtype</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">curvature</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Everything curvature related. See :class:`motmot.Curvature`.</span>
+<span class="sd">        Different *flavours* of curvature are accessible via different</span>
+<span class="sd">        sub-attributes of this property such as</span>
+<span class="sd">        :attr:`mesh.curvature.scaleless &lt;Curvature.scaleless&gt;`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">motmot._curvatures</span> <span class="kn">import</span> <span class="n">Curvature</span>
+        <span class="k">return</span> <span class="n">Curvature</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@independent</span><span class="o">.</span><span class="n">of</span><span class="p">(</span><span class="s2">&quot;rotate&quot;</span><span class="p">,</span> <span class="s2">&quot;translate&quot;</span><span class="p">)</span>
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">vertex_map</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RaggedArray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;A mapping from each vertex id to every other vertex that it is</span>
+<span class="sd">        directly connected to.</span>
+
+<span class="sd">        Each row in this :class:`~rockhopper.RaggedArray` lists all the</span>
+<span class="sd">        neighbours of one vertex from :attr:`vertices`.</span>
+<span class="sd">        e.g. If :py:`mesh.vertex_map[10]` is :py:`[13, 17, 19, 22]` then that</span>
+<span class="sd">        would imply that :py:`mesh.vertices[10]` is connected to each of</span>
+<span class="sd">        :py:`mesh.vertices[[13, 17, 19, 22]]` by a single polygon edge.</span>
+
+<span class="sd">        This mapping is guaranteed to:</span>
+
+<span class="sd">        * Be symmetric. If vertex **A** is connected to vertex **B** then **B**</span>
+<span class="sd">          is connected to **A**.</span>
+<span class="sd">        * Contain no self references. **A** will never be listed as connected to</span>
+<span class="sd">          **A**.</span>
+<span class="sd">        * Contains no duplicates. **A** will never be listed as connected to</span>
+<span class="sd">          **B** twice.</span>
+
+<span class="sd">        The order in which neighbours appear is arbitrary and not guaranteed to</span>
+<span class="sd">        be consistent across :mod:`motmot` versions.</span>
+
+<span class="sd">        .. seealso::</span>
+
+<span class="sd">            :meth:`connected_vertices` if you prefer to work directly with</span>
+<span class="sd">            vertices rather than vertex faces.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># In a closed mesh each edge is written once going from A to B and once</span>
+        <span class="c1"># going from B to A.</span>
+        <span class="c1"># In a non closed mesh, edges on boundaries will only be listed one way.</span>
+        <span class="c1"># This function must make sure to mirror the *singular* edges on</span>
+        <span class="c1"># boundaries (obviously without accidentally duplicating any others).</span>
+
+        <span class="c1"># Work out which (if any) edges will need to be copied backwards.</span>
+        <span class="n">singular</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">polygon_map</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># To make the map requires an array listing the start of each edge</span>
+        <span class="c1"># and an array listing the end of each edge.</span>
+        <span class="n">starts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="o">.</span><span class="n">size</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">singular</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">intc</span><span class="p">)</span>
+        <span class="n">ends</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="o">.</span><span class="n">size</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">singular</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">intc</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">per_polygon</span><span class="p">):</span>
+            <span class="c1"># Add only the counter-clockwise edges.</span>
+            <span class="c1"># There is usually no need to add clockwise edges because the</span>
+            <span class="c1"># polygon on the opposite side of the edge will add it.</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">i</span><span class="p">)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+            <span class="n">starts</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>
+            <span class="n">ends</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">[:,</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">per_polygon</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">singular</span><span class="p">):</span>
+            <span class="c1"># Add the edges going clockwise for the *singular* edges. i.e</span>
+            <span class="c1"># Those which have no polygon on the other side of the edge.</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">singular</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">starts</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">[</span><span class="n">singular</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+                                   <span class="p">(</span><span class="n">singular</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">per_polygon</span><span class="p">]</span>
+            <span class="n">ends</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">[</span><span class="n">singular</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">singular</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]]</span>
+
+        <span class="k">return</span> <span class="n">RaggedArray</span><span class="o">.</span><span class="n">group_by</span><span class="p">(</span><span class="n">ends</span><span class="p">,</span> <span class="n">starts</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">))</span>
+
+<div class="viewcode-block" id="Mesh.connected_vertices"><a class="viewcode-back" href="../../stubs/mesh.html#motmot.Mesh.connected_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">connected_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;List vertices which are directly connected to **vertex** by one</span>
+<span class="sd">        polygon edge.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            vertex:</span>
+<span class="sd">                A single point from :attr:`vertices`.</span>
+<span class="sd">                A NumPy array with shape ``(3,)``.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            An :py:`(n, 3)` array where ``n`` is the number of connected</span>
+<span class="sd">            vertices.</span>
+<span class="sd">        Raises:</span>
+<span class="sd">            KeyError:</span>
+<span class="sd">                If **vertex** is not in :attr:`vertices`.</span>
+
+<span class="sd">        .. seealso::</span>
+
+<span class="sd">            This method uses :attr:`vertex_map` under the hood.</span>
+<span class="sd">            Use :attr:`vertex_map` if you&#39;re using vertex ids instead of raw</span>
+<span class="sd">            vertices.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">vertex</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,):</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Must take a single vertex.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_map</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_table</span><span class="p">[</span><span class="n">vertex</span><span class="p">]]]</span></div>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">_reverse_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A mapping of which polygons each vertex is in.</span>
+
+<span class="sd">        This mapping uses flat indices. i.e. To find all instances of vertex</span>
+<span class="sd">        123 use::</span>
+
+<span class="sd">            polygon_ids, corners = \\</span>
+<span class="sd">                np.divmod(self._reverse_ids[123], self.per_polygon)</span>
+
+<span class="sd">        Then ``self.faces[polygon_ids, corners]`` will all equal 123.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># I&#39;m keeping this private for now as I&#39;m not convinced that it&#39;ll be</span>
+        <span class="c1"># that useful.</span>
+        <span class="k">return</span> <span class="n">RaggedArray</span><span class="o">.</span><span class="n">group_by</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="o">.</span><span class="n">size</span><span class="p">),</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+
+<div class="viewcode-block" id="Mesh.on_boundary"><a class="viewcode-back" href="../../stubs/mesh.html#motmot.Mesh.on_boundary">[docs]</a>    <span class="k">def</span> <span class="nf">on_boundary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Integral</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Test if a **vertex** touches the edge of this mesh.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            vertex:</span>
+<span class="sd">                A 3D point in :attr:`vertices`. Or a single vertex ID.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            True if it touches, false otherwise.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">            To check if a polygon touches a mesh edge, simply use::</span>
+
+<span class="sd">                any(mesh.polygon_map[polygon_id] == -1)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">vertex</span><span class="p">,</span> <span class="n">Integral</span><span class="p">):</span>
+            <span class="nb">id</span> <span class="o">=</span> <span class="n">vertex</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_table</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Only single vertices are supported.&quot;</span><span class="p">)</span>
+        <span class="n">polygons</span><span class="p">,</span> <span class="n">sub_faces</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">divmod</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_reverse_faces</span><span class="p">[</span><span class="nb">id</span><span class="p">],</span>
+                                        <span class="bp">self</span><span class="o">.</span><span class="n">per_polygon</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">polygon_map</span><span class="p">[</span><span class="n">polygons</span><span class="p">,</span> <span class="n">sub_faces</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> \
+               <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">polygon_map</span><span class="p">[</span><span class="n">polygons</span><span class="p">,</span> <span class="n">sub_faces</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span></div>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">kdtree</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A KDTree_ with :attr:`centers` as its input data.</span>
+
+<span class="sd">        This object powers all non-exact point lookup operations such as</span>
+<span class="sd">        :meth:`closest_point`. Use its ``query_xxx()`` methods for more flexible</span>
+<span class="sd">        lookup.</span>
+
+<span class="sd">        .. _kdtree: https://github.com/storpipfugl/pykdtree</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">centers</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="kn">from</span> <span class="nn">pykdtree.kdtree</span> <span class="kn">import</span> <span class="n">KDTree</span>
+        <span class="k">return</span> <span class="n">KDTree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">centers</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Mesh.closest_point"><a class="viewcode-back" href="../../stubs/mesh.html#motmot.Mesh.closest_point">[docs]</a>    <span class="k">def</span> <span class="nf">closest_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span>
+                      <span class="n">distance_upper_bound</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                      <span class="n">interpolate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Find the nearest point on the surface of the mesh to **target**.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            target:</span>
+<span class="sd">                The point(s) to query. A :class:`numpy.ndarray` with</span>
+<span class="sd">                :py:`shape[-1] == 3`.</span>
+<span class="sd">            distance_upper_bound:</span>
+<span class="sd">                A optional maximum allowed distance from **target** before</span>
+<span class="sd">                giving up. In this case :py:`nan` is returned.</span>
+<span class="sd">            interpolate:</span>
+<span class="sd">                If true, the output will be the nearest point on the surface of</span>
+<span class="sd">                the nearest polygon. Otherwise, it will only be the center of</span>
+<span class="sd">                the nearest polygon.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            The nearest point(s) on the surface of the mesh. A</span>
+<span class="sd">            :class:`numpy.ndarray` with the same shape as **target**.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">            Under extreme circumstances, namely if **point** lies between two</span>
+<span class="sd">            very close parallel-ish surfaces with enormous polygons, then the</span>
+<span class="sd">            output is not guaranteed to be optimal. It is, however, guaranteed</span>
+<span class="sd">            to be better than querying the nearest vertex.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">kdtree</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+        <span class="c1"># PyKDTree only accepts 2D input arrays.</span>
+        <span class="c1"># For single points (1D array) or arrays of arrays of points (&gt;2D) we</span>
+        <span class="c1"># need to convert inputs to 2D arrays then convert the outputs back</span>
+        <span class="c1"># again. Ideally this would be fixed in pykdtree but the project is</span>
+        <span class="c1"># borderline abandoned.</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">kdtree</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+        <span class="c1"># Find the nearest polygon.</span>
+        <span class="k">if</span> <span class="n">distance_upper_bound</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">distances</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kdtree</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">distances</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kdtree</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
+                <span class="n">target</span><span class="p">,</span> <span class="n">distance_upper_bound</span><span class="o">=</span><span class="n">distance_upper_bound</span><span class="p">)</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">distances</span><span class="p">)</span>
+            <span class="n">out</span><span class="p">[</span><span class="o">~</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">interpolate</span><span class="p">:</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">snap_to_plane</span><span class="p">(</span><span class="n">target</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">centers</span><span class="p">[</span><span class="n">args</span><span class="p">],</span>
+                                               <span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">[</span><span class="n">args</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">centers</span><span class="p">[</span><span class="n">args</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">out</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Mesh.local_maxima"><a class="viewcode-back" href="../../stubs/mesh.html#motmot.Mesh.local_maxima">[docs]</a>    <span class="k">def</span> <span class="nf">local_maxima</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">heights</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">boundaries</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                     <span class="n">strict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Find all :attr:`vertices` whose corresponding value in **heights** is</span>
+<span class="sd">        greater than that of all its :meth:`connected_vertices`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            heights:</span>
+<span class="sd">                A per-vertex scalar to rank by.</span>
+<span class="sd">            boundaries:</span>
+<span class="sd">                If false, ignore any vertices which :meth:`touch the mesh</span>
+<span class="sd">                boundary &lt;on_boundary&gt;`.</span>
+<span class="sd">            strict:</span>
+<span class="sd">                If true, a vertex&#39;s value from **heights** must be strictly</span>
+<span class="sd">                greater than its neighbours. Otherwise, it may be greater or</span>
+<span class="sd">                equal.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            The vertex ids of the vertices which are local maxima.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">),</span> <span class="nb">bool</span><span class="p">)</span>
+
+        <span class="n">heights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">heights</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">heights</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">),):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`heights` must be a 1D array with the same &quot;</span>
+                             <span class="s2">&quot;length as `vertices`.&quot;</span><span class="p">)</span>
+
+        <span class="n">less_than</span> <span class="o">=</span> <span class="n">operator</span><span class="o">.</span><span class="n">lt</span> <span class="k">if</span> <span class="n">strict</span> <span class="k">else</span> <span class="n">operator</span><span class="o">.</span><span class="n">le</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">per_polygon</span><span class="p">):</span>
+            <span class="n">this</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>
+            <span class="nb">next</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">[:,</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="c1"># If the next vertex round is higher, then this is not a local</span>
+            <span class="c1"># maxima. Read as:</span>
+            <span class="c1">#   mask[this] &amp;= less_than(heights[next], heights[this])</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">this</span><span class="p">,</span> <span class="n">less_than</span><span class="p">(</span><span class="n">heights</span><span class="p">[</span><span class="nb">next</span><span class="p">],</span>
+                                                    <span class="n">heights</span><span class="p">[</span><span class="n">this</span><span class="p">]))</span>
+            <span class="c1"># Strictly speaking, we could skip this line for closed meshes.</span>
+            <span class="c1"># If this vertex is higher than the next vertex round, then the next</span>
+            <span class="c1"># vertex is not a local maxima. Read as:</span>
+            <span class="c1">#   mask[next] &amp;= less_than(heights[this], heights[next])</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="nb">next</span><span class="p">,</span> <span class="n">less_than</span><span class="p">(</span><span class="n">heights</span><span class="p">[</span><span class="n">this</span><span class="p">],</span>
+                                                    <span class="n">heights</span><span class="p">[</span><span class="nb">next</span><span class="p">]))</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">mask</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">boundaries</span><span class="p">:</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_boundary</span><span class="p">(</span><span class="n">i</span><span class="p">)])</span>
+
+        <span class="k">return</span> <span class="n">args</span></div></div>
+
+
+<span class="n">independent</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">Mesh</span><span class="p">)</span>
+<span class="n">Mesh</span><span class="o">.</span><span class="n">_reset_on_rotate</span> <span class="o">=</span> <span class="n">independent</span><span class="o">.</span><span class="n">reset_on</span><span class="p">(</span><span class="s2">&quot;rotate&quot;</span><span class="p">)</span>
+<span class="n">Mesh</span><span class="o">.</span><span class="n">_reset_on_translate</span> <span class="o">=</span> <span class="n">independent</span><span class="o">.</span><span class="n">reset_on</span><span class="p">(</span><span class="s2">&quot;translate&quot;</span><span class="p">)</span>
+<span class="n">Mesh</span><span class="o">.</span><span class="n">_reset_all</span> <span class="o">=</span> <span class="n">independent</span><span class="o">.</span><span class="n">reset_all</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2021, Brénainn Woodsend
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

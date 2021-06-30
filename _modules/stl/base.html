@@ -1,0 +1,870 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>stl.base &mdash; Motmot 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/more-theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/theme-overrides.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/motmot-favicon.jpg"/>
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> Motmot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../stubs/mesh.html">Mesh API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stubs/geometry.html">Geometry API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stubs/connectivity.html">Connectivity API reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Motmot</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>stl.base</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for stl.base</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="p">(</span><span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span>
+                        <span class="n">unicode_literals</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">enum</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="k">try</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+    <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">abc</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+    <span class="kn">import</span> <span class="nn">collections</span> <span class="k">as</span> <span class="nn">abc</span>
+
+<span class="kn">from</span> <span class="nn">python_utils</span> <span class="kn">import</span> <span class="n">logger</span>
+
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">s</span>
+
+<span class="c1">#: When removing empty areas, remove areas that are smaller than this</span>
+<span class="n">AREA_SIZE_THRESHOLD</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="c1">#: Vectors in a point</span>
+<span class="n">VECTORS</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="c1">#: Dimensions used in a vector</span>
+<span class="n">DIMENSIONS</span> <span class="o">=</span> <span class="mi">3</span>
+
+
+<span class="k">class</span> <span class="nc">Dimension</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">IntEnum</span><span class="p">):</span>
+    <span class="c1">#: X index (for example, `mesh.v0[0][X]`)</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1">#: Y index (for example, `mesh.v0[0][Y]`)</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="c1">#: Z index (for example, `mesh.v0[0][Z]`)</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="mi">2</span>
+
+
+<span class="c1"># For backwards compatibility, leave the original references</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">Dimension</span><span class="o">.</span><span class="n">X</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">Dimension</span><span class="o">.</span><span class="n">Y</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="n">Dimension</span><span class="o">.</span><span class="n">Z</span>
+
+
+<span class="k">class</span> <span class="nc">RemoveDuplicates</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Choose whether to remove no duplicates, leave only a single of the</span>
+<span class="sd">    duplicates or remove all duplicates (leaving holes).</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">NONE</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">SINGLE</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">ALL</span> <span class="o">=</span> <span class="mi">2</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">map</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">SINGLE</span>
+        <span class="k">elif</span> <span class="n">value</span> <span class="ow">and</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">cls</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">NONE</span>
+
+        <span class="k">return</span> <span class="n">value</span>
+
+
+<span class="k">def</span> <span class="nf">logged</span><span class="p">(</span><span class="n">class_</span><span class="p">):</span>
+    <span class="c1"># For some reason the Logged baseclass is not properly initiated on Linux</span>
+    <span class="c1"># systems while this works on OS X. Please let me know if you can tell me</span>
+    <span class="c1"># what silly mistake I made here</span>
+
+    <span class="n">logger_name</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">Logged</span><span class="o">.</span><span class="n">_Logged__get_name</span><span class="p">(</span>
+        <span class="vm">__name__</span><span class="p">,</span>
+        <span class="n">class_</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">class_</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">logger_name</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">logger</span><span class="o">.</span><span class="n">Logged</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;__&#39;</span><span class="p">):</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">class_</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">class_</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">class_</span>
+
+
+<span class="nd">@logged</span>
+<span class="k">class</span> <span class="nc">BaseMesh</span><span class="p">(</span><span class="n">logger</span><span class="o">.</span><span class="n">Logged</span><span class="p">,</span> <span class="n">abc</span><span class="o">.</span><span class="n">Mapping</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Mesh object with easy access to the vectors through v0, v1 and v2.</span>
+<span class="sd">    The normals, areas, min, max and units are calculated automatically.</span>
+
+<span class="sd">    :param numpy.array data: The data for this mesh</span>
+<span class="sd">    :param bool calculate_normals: Whether to calculate the normals</span>
+<span class="sd">    :param bool remove_empty_areas: Whether to remove triangles with 0 area</span>
+<span class="sd">            (due to rounding errors for example)</span>
+
+<span class="sd">    :ivar str name: Name of the solid, only exists in ASCII files</span>
+<span class="sd">    :ivar numpy.array data: Data as :func:`BaseMesh.dtype`</span>
+<span class="sd">    :ivar numpy.array points: All points (Nx9)</span>
+<span class="sd">    :ivar numpy.array normals: Normals for this mesh, calculated automatically</span>
+<span class="sd">        by default (Nx3)</span>
+<span class="sd">    :ivar numpy.array vectors: Vectors in the mesh (Nx3x3)</span>
+<span class="sd">    :ivar numpy.array attr: Attributes per vector (used by binary STL)</span>
+<span class="sd">    :ivar numpy.array x: Points on the X axis by vertex (Nx3)</span>
+<span class="sd">    :ivar numpy.array y: Points on the Y axis by vertex (Nx3)</span>
+<span class="sd">    :ivar numpy.array z: Points on the Z axis by vertex (Nx3)</span>
+<span class="sd">    :ivar numpy.array v0: Points in vector 0 (Nx3)</span>
+<span class="sd">    :ivar numpy.array v1: Points in vector 1 (Nx3)</span>
+<span class="sd">    :ivar numpy.array v2: Points in vector 2 (Nx3)</span>
+
+<span class="sd">    &gt;&gt;&gt; data = numpy.zeros(10, dtype=BaseMesh.dtype)</span>
+<span class="sd">    &gt;&gt;&gt; mesh = BaseMesh(data, remove_empty_areas=False)</span>
+<span class="sd">    &gt;&gt;&gt; # Increment vector 0 item 0</span>
+<span class="sd">    &gt;&gt;&gt; mesh.v0[0] += 1</span>
+<span class="sd">    &gt;&gt;&gt; mesh.v1[0] += 2</span>
+
+<span class="sd">    &gt;&gt;&gt; # Check item 0 (contains v0, v1 and v2)</span>
+<span class="sd">    &gt;&gt;&gt; assert numpy.array_equal(</span>
+<span class="sd">    ...     mesh[0],</span>
+<span class="sd">    ...     numpy.array([1., 1., 1., 2., 2., 2., 0., 0., 0.]))</span>
+<span class="sd">    &gt;&gt;&gt; assert numpy.array_equal(</span>
+<span class="sd">    ... mesh.vectors[0],</span>
+<span class="sd">    ... numpy.array([[1., 1., 1.],</span>
+<span class="sd">    ...     [2., 2., 2.],</span>
+<span class="sd">    ...     [0., 0., 0.]]))</span>
+<span class="sd">    &gt;&gt;&gt; assert numpy.array_equal(</span>
+<span class="sd">    ...     mesh.v0[0],</span>
+<span class="sd">    ...     numpy.array([1., 1., 1.]))</span>
+<span class="sd">    &gt;&gt;&gt; assert numpy.array_equal(</span>
+<span class="sd">    ...     mesh.points[0],</span>
+<span class="sd">    ...     numpy.array([1., 1., 1., 2., 2., 2., 0., 0., 0.]))</span>
+<span class="sd">    &gt;&gt;&gt; assert numpy.array_equal(</span>
+<span class="sd">    ...     mesh.data[0],</span>
+<span class="sd">    ...     numpy.array((</span>
+<span class="sd">    ...             [0., 0., 0.],</span>
+<span class="sd">    ...             [[1., 1., 1.], [2., 2., 2.], [0., 0., 0.]],</span>
+<span class="sd">    ...             [0]),</span>
+<span class="sd">    ...         dtype=BaseMesh.dtype))</span>
+<span class="sd">    &gt;&gt;&gt; assert numpy.array_equal(mesh.x[0], numpy.array([1., 2., 0.]))</span>
+
+<span class="sd">    &gt;&gt;&gt; mesh[0] = 3</span>
+<span class="sd">    &gt;&gt;&gt; assert numpy.array_equal(</span>
+<span class="sd">    ...     mesh[0],</span>
+<span class="sd">    ...     numpy.array([3., 3., 3., 3., 3., 3., 3., 3., 3.]))</span>
+
+<span class="sd">    &gt;&gt;&gt; len(mesh) == len(list(mesh))</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; (mesh.min_ &lt; mesh.max_).all()</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; mesh.update_normals()</span>
+<span class="sd">    &gt;&gt;&gt; mesh.units.sum()</span>
+<span class="sd">    0.0</span>
+<span class="sd">    &gt;&gt;&gt; mesh.v0[:] = mesh.v1[:] = mesh.v2[:] = 0</span>
+<span class="sd">    &gt;&gt;&gt; mesh.points.sum()</span>
+<span class="sd">    0.0</span>
+
+<span class="sd">    &gt;&gt;&gt; mesh.v0 = mesh.v1 = mesh.v2 = 0</span>
+<span class="sd">    &gt;&gt;&gt; mesh.x = mesh.y = mesh.z = 0</span>
+
+<span class="sd">    &gt;&gt;&gt; mesh.attr = 1</span>
+<span class="sd">    &gt;&gt;&gt; (mesh.attr == 1).all()</span>
+<span class="sd">    True</span>
+
+<span class="sd">    &gt;&gt;&gt; mesh.normals = 2</span>
+<span class="sd">    &gt;&gt;&gt; (mesh.normals == 2).all()</span>
+<span class="sd">    True</span>
+
+<span class="sd">    &gt;&gt;&gt; mesh.vectors = 3</span>
+<span class="sd">    &gt;&gt;&gt; (mesh.vectors == 3).all()</span>
+<span class="sd">    True</span>
+
+<span class="sd">    &gt;&gt;&gt; mesh.points = 4</span>
+<span class="sd">    &gt;&gt;&gt; (mesh.points == 4).all()</span>
+<span class="sd">    True</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1">#: - normals: :func:`numpy.float32`, `(3, )`</span>
+    <span class="c1">#: - vectors: :func:`numpy.float32`, `(3, 3)`</span>
+    <span class="c1">#: - attr: :func:`numpy.uint16`, `(1, )`</span>
+    <span class="n">dtype</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dtype</span><span class="p">([</span>
+        <span class="p">(</span><span class="n">s</span><span class="p">(</span><span class="s1">&#39;normals&#39;</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="p">)),</span>
+        <span class="p">(</span><span class="n">s</span><span class="p">(</span><span class="s1">&#39;vectors&#39;</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span>
+        <span class="p">(</span><span class="n">s</span><span class="p">(</span><span class="s1">&#39;attr&#39;</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">uint16</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">)),</span>
+    <span class="p">])</span>
+    <span class="n">dtype</span> <span class="o">=</span> <span class="n">dtype</span><span class="o">.</span><span class="n">newbyteorder</span><span class="p">(</span><span class="s1">&#39;&lt;&#39;</span><span class="p">)</span>  <span class="c1"># Even on big endian arches, use little e.</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">calculate_normals</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                 <span class="n">remove_empty_areas</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">remove_duplicate_polygons</span><span class="o">=</span><span class="n">RemoveDuplicates</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span>
+                 <span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">speedups</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">BaseMesh</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">speedups</span> <span class="o">=</span> <span class="n">speedups</span>
+        <span class="k">if</span> <span class="n">remove_empty_areas</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_empty_areas</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">RemoveDuplicates</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">remove_duplicate_polygons</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_duplicate_polygons</span><span class="p">(</span><span class="n">data</span><span class="p">,</span>
+                                                  <span class="n">remove_duplicate_polygons</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+
+        <span class="k">if</span> <span class="n">calculate_normals</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_normals</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">attr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;attr&#39;</span><span class="p">]</span>
+
+    <span class="nd">@attr</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">attr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;attr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">normals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;normals&#39;</span><span class="p">]</span>
+
+    <span class="nd">@normals</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">normals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;normals&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;vectors&#39;</span><span class="p">]</span>
+
+    <span class="nd">@vectors</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;vectors&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vectors</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+
+    <span class="nd">@points</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">v0</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vectors</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+
+    <span class="nd">@v0</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">v0</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vectors</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">v1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vectors</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="nd">@v1</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">v1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vectors</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">v2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vectors</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+
+    <span class="nd">@v2</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">v2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vectors</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">x</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[:,</span> <span class="n">Dimension</span><span class="o">.</span><span class="n">X</span><span class="p">::</span><span class="mi">3</span><span class="p">]</span>
+
+    <span class="nd">@x</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">x</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[:,</span> <span class="n">Dimension</span><span class="o">.</span><span class="n">X</span><span class="p">::</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">y</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[:,</span> <span class="n">Dimension</span><span class="o">.</span><span class="n">Y</span><span class="p">::</span><span class="mi">3</span><span class="p">]</span>
+
+    <span class="nd">@y</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">y</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[:,</span> <span class="n">Dimension</span><span class="o">.</span><span class="n">Y</span><span class="p">::</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">z</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[:,</span> <span class="n">Dimension</span><span class="o">.</span><span class="n">Z</span><span class="p">::</span><span class="mi">3</span><span class="p">]</span>
+
+    <span class="nd">@z</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">z</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[:,</span> <span class="n">Dimension</span><span class="o">.</span><span class="n">Z</span><span class="p">::</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">remove_duplicate_polygons</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">RemoveDuplicates</span><span class="o">.</span><span class="n">SINGLE</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">RemoveDuplicates</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">polygons</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;vectors&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># Get a sorted list of indices</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">lexsort</span><span class="p">(</span><span class="n">polygons</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+        <span class="c1"># Get the indices of all different indices</span>
+        <span class="n">diff</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">polygons</span><span class="p">[</span><span class="n">idx</span><span class="p">[</span><span class="mi">1</span><span class="p">:]]</span> <span class="o">!=</span> <span class="n">polygons</span><span class="p">[</span><span class="n">idx</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="n">RemoveDuplicates</span><span class="o">.</span><span class="n">SINGLE</span><span class="p">:</span>
+            <span class="c1"># Only return the unique data, the True is so we always get at</span>
+            <span class="c1"># least the originals</span>
+            <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">idx</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(([</span><span class="kc">True</span><span class="p">],</span> <span class="n">diff</span><span class="p">))])]</span>
+        <span class="k">elif</span> <span class="n">value</span> <span class="ow">is</span> <span class="n">RemoveDuplicates</span><span class="o">.</span><span class="n">ALL</span><span class="p">:</span>
+            <span class="c1"># We need to return both items of the shifted diff</span>
+            <span class="n">diff_a</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(([</span><span class="kc">True</span><span class="p">],</span> <span class="n">diff</span><span class="p">))</span>
+            <span class="n">diff_b</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">diff</span><span class="p">,</span> <span class="p">[</span><span class="kc">True</span><span class="p">]))</span>
+            <span class="n">diff</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">diff</span><span class="p">,</span> <span class="p">[</span><span class="kc">False</span><span class="p">]))</span>
+
+            <span class="c1"># Combine both unique lists</span>
+            <span class="n">filtered_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">idx</span><span class="p">[</span><span class="n">diff_a</span> <span class="o">&amp;</span> <span class="n">diff_b</span><span class="p">])]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">filtered_data</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">idx</span><span class="p">[</span><span class="n">diff_a</span><span class="p">])]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">idx</span><span class="p">[</span><span class="n">diff</span><span class="p">])]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">data</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">remove_empty_areas</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="n">vectors</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;vectors&#39;</span><span class="p">]</span>
+        <span class="n">v0</span> <span class="o">=</span> <span class="n">vectors</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">v1</span> <span class="o">=</span> <span class="n">vectors</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">v2</span> <span class="o">=</span> <span class="n">vectors</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="n">normals</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">v1</span> <span class="o">-</span> <span class="n">v0</span><span class="p">,</span> <span class="n">v2</span> <span class="o">-</span> <span class="n">v0</span><span class="p">)</span>
+        <span class="n">squared_areas</span> <span class="o">=</span> <span class="p">(</span><span class="n">normals</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="n">squared_areas</span> <span class="o">&gt;</span> <span class="n">AREA_SIZE_THRESHOLD</span> <span class="o">**</span> <span class="mi">2</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">update_normals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">update_areas</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Update the normals and areas for all points&#39;&#39;&#39;</span>
+        <span class="n">normals</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">v0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">v2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">v0</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">update_areas</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_areas</span><span class="p">(</span><span class="n">normals</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">normals</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">normals</span>
+
+    <span class="k">def</span> <span class="nf">get_unit_normals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">normals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normals</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">normal</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">normals</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">non_zero</span> <span class="o">=</span> <span class="n">normal</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">non_zero</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+            <span class="n">normals</span><span class="p">[</span><span class="n">non_zero</span><span class="p">]</span> <span class="o">/=</span> <span class="n">normal</span><span class="p">[</span><span class="n">non_zero</span><span class="p">][:,</span> <span class="kc">None</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">normals</span>
+
+    <span class="k">def</span> <span class="nf">update_min</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vectors</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">update_max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vectors</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">update_areas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">normals</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">normals</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">normals</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">v0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">v2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">v0</span><span class="p">)</span>
+
+        <span class="n">areas</span> <span class="o">=</span> <span class="mf">.5</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">normals</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">areas</span> <span class="o">=</span> <span class="n">areas</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">areas</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">check</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Check the mesh is valid or not&#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_closed</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">is_closed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+        <span class="sd">&quot;&quot;&quot;Check the mesh is closed or not&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">normals</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">            Your mesh is not closed, the mass methods will not function</span>
+<span class="s1">            correctly on this mesh.  For more info:</span>
+<span class="s1">            https://github.com/WoLpH/numpy-stl/issues/69</span>
+<span class="s1">            &#39;&#39;&#39;</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">get_mass_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Evaluate and return a tuple with the following elements:</span>
+<span class="sd">          - the volume</span>
+<span class="sd">          - the position of the center of gravity (COG)</span>
+<span class="sd">          - the inertia matrix expressed at the COG</span>
+
+<span class="sd">        Documentation can be found here:</span>
+<span class="sd">        http://www.geometrictools.com/Documentation/PolyhedralMassProperties.pdf</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">subexpression</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+            <span class="n">w0</span><span class="p">,</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+            <span class="n">temp0</span> <span class="o">=</span> <span class="n">w0</span> <span class="o">+</span> <span class="n">w1</span>
+            <span class="n">f1</span> <span class="o">=</span> <span class="n">temp0</span> <span class="o">+</span> <span class="n">w2</span>
+            <span class="n">temp1</span> <span class="o">=</span> <span class="n">w0</span> <span class="o">*</span> <span class="n">w0</span>
+            <span class="n">temp2</span> <span class="o">=</span> <span class="n">temp1</span> <span class="o">+</span> <span class="n">w1</span> <span class="o">*</span> <span class="n">temp0</span>
+            <span class="n">f2</span> <span class="o">=</span> <span class="n">temp2</span> <span class="o">+</span> <span class="n">w2</span> <span class="o">*</span> <span class="n">f1</span>
+            <span class="n">f3</span> <span class="o">=</span> <span class="n">w0</span> <span class="o">*</span> <span class="n">temp1</span> <span class="o">+</span> <span class="n">w1</span> <span class="o">*</span> <span class="n">temp2</span> <span class="o">+</span> <span class="n">w2</span> <span class="o">*</span> <span class="n">f2</span>
+            <span class="n">g0</span> <span class="o">=</span> <span class="n">f2</span> <span class="o">+</span> <span class="n">w0</span> <span class="o">*</span> <span class="p">(</span><span class="n">f1</span> <span class="o">+</span> <span class="n">w0</span><span class="p">)</span>
+            <span class="n">g1</span> <span class="o">=</span> <span class="n">f2</span> <span class="o">+</span> <span class="n">w1</span> <span class="o">*</span> <span class="p">(</span><span class="n">f1</span> <span class="o">+</span> <span class="n">w1</span><span class="p">)</span>
+            <span class="n">g2</span> <span class="o">=</span> <span class="n">f2</span> <span class="o">+</span> <span class="n">w2</span> <span class="o">*</span> <span class="p">(</span><span class="n">f1</span> <span class="o">+</span> <span class="n">w2</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">,</span> <span class="n">f3</span><span class="p">,</span> <span class="n">g0</span><span class="p">,</span> <span class="n">g1</span><span class="p">,</span> <span class="n">g2</span>
+
+        <span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="n">y0</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">y2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="n">z0</span><span class="p">,</span> <span class="n">z1</span><span class="p">,</span> <span class="n">z2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="n">a1</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">c1</span> <span class="o">=</span> <span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span><span class="p">,</span> <span class="n">y1</span> <span class="o">-</span> <span class="n">y0</span><span class="p">,</span> <span class="n">z1</span> <span class="o">-</span> <span class="n">z0</span>
+        <span class="n">a2</span><span class="p">,</span> <span class="n">b2</span><span class="p">,</span> <span class="n">c2</span> <span class="o">=</span> <span class="n">x2</span> <span class="o">-</span> <span class="n">x0</span><span class="p">,</span> <span class="n">y2</span> <span class="o">-</span> <span class="n">y0</span><span class="p">,</span> <span class="n">z2</span> <span class="o">-</span> <span class="n">z0</span>
+        <span class="n">d0</span><span class="p">,</span> <span class="n">d1</span><span class="p">,</span> <span class="n">d2</span> <span class="o">=</span> <span class="n">b1</span> <span class="o">*</span> <span class="n">c2</span> <span class="o">-</span> <span class="n">b2</span> <span class="o">*</span> <span class="n">c1</span><span class="p">,</span> <span class="n">a2</span> <span class="o">*</span> <span class="n">c1</span> <span class="o">-</span> <span class="n">a1</span> <span class="o">*</span> <span class="n">c2</span><span class="p">,</span> <span class="n">a1</span> <span class="o">*</span> <span class="n">b2</span> <span class="o">-</span> <span class="n">a2</span> <span class="o">*</span> <span class="n">b1</span>
+
+        <span class="n">f1x</span><span class="p">,</span> <span class="n">f2x</span><span class="p">,</span> <span class="n">f3x</span><span class="p">,</span> <span class="n">g0x</span><span class="p">,</span> <span class="n">g1x</span><span class="p">,</span> <span class="n">g2x</span> <span class="o">=</span> <span class="n">subexpression</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">f1y</span><span class="p">,</span> <span class="n">f2y</span><span class="p">,</span> <span class="n">f3y</span><span class="p">,</span> <span class="n">g0y</span><span class="p">,</span> <span class="n">g1y</span><span class="p">,</span> <span class="n">g2y</span> <span class="o">=</span> <span class="n">subexpression</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">f1z</span><span class="p">,</span> <span class="n">f2z</span><span class="p">,</span> <span class="n">f3z</span><span class="p">,</span> <span class="n">g0z</span><span class="p">,</span> <span class="n">g1z</span><span class="p">,</span> <span class="n">g2z</span> <span class="o">=</span> <span class="n">subexpression</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+
+        <span class="n">intg</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">10</span><span class="p">))</span>
+        <span class="n">intg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">d0</span> <span class="o">*</span> <span class="n">f1x</span><span class="p">)</span>
+        <span class="n">intg</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">d0</span> <span class="o">*</span> <span class="n">f2x</span><span class="p">),</span> <span class="nb">sum</span><span class="p">(</span><span class="n">d1</span> <span class="o">*</span> <span class="n">f2y</span><span class="p">),</span> <span class="nb">sum</span><span class="p">(</span><span class="n">d2</span> <span class="o">*</span> <span class="n">f2z</span><span class="p">)</span>
+        <span class="n">intg</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">d0</span> <span class="o">*</span> <span class="n">f3x</span><span class="p">),</span> <span class="nb">sum</span><span class="p">(</span><span class="n">d1</span> <span class="o">*</span> <span class="n">f3y</span><span class="p">),</span> <span class="nb">sum</span><span class="p">(</span><span class="n">d2</span> <span class="o">*</span> <span class="n">f3z</span><span class="p">)</span>
+        <span class="n">intg</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">d0</span> <span class="o">*</span> <span class="p">(</span><span class="n">y0</span> <span class="o">*</span> <span class="n">g0x</span> <span class="o">+</span> <span class="n">y1</span> <span class="o">*</span> <span class="n">g1x</span> <span class="o">+</span> <span class="n">y2</span> <span class="o">*</span> <span class="n">g2x</span><span class="p">))</span>
+        <span class="n">intg</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">d1</span> <span class="o">*</span> <span class="p">(</span><span class="n">z0</span> <span class="o">*</span> <span class="n">g0y</span> <span class="o">+</span> <span class="n">z1</span> <span class="o">*</span> <span class="n">g1y</span> <span class="o">+</span> <span class="n">z2</span> <span class="o">*</span> <span class="n">g2y</span><span class="p">))</span>
+        <span class="n">intg</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">d2</span> <span class="o">*</span> <span class="p">(</span><span class="n">x0</span> <span class="o">*</span> <span class="n">g0z</span> <span class="o">+</span> <span class="n">x1</span> <span class="o">*</span> <span class="n">g1z</span> <span class="o">+</span> <span class="n">x2</span> <span class="o">*</span> <span class="n">g2z</span><span class="p">))</span>
+        <span class="n">intg</span> <span class="o">/=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">6</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">120</span><span class="p">])</span>
+        <span class="n">volume</span> <span class="o">=</span> <span class="n">intg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">cog</span> <span class="o">=</span> <span class="n">intg</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">/</span> <span class="n">volume</span>
+        <span class="n">cogsq</span> <span class="o">=</span> <span class="n">cog</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="n">inertia</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+        <span class="n">inertia</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">intg</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">+</span> <span class="n">intg</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">-</span> <span class="n">volume</span> <span class="o">*</span> <span class="p">(</span><span class="n">cogsq</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">cogsq</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">inertia</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">intg</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="n">intg</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">-</span> <span class="n">volume</span> <span class="o">*</span> <span class="p">(</span><span class="n">cogsq</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">cogsq</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">inertia</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">intg</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="n">intg</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">-</span> <span class="n">volume</span> <span class="o">*</span> <span class="p">(</span><span class="n">cogsq</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">cogsq</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">inertia</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">inertia</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">intg</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">-</span> <span class="n">volume</span> <span class="o">*</span> <span class="n">cog</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">cog</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">inertia</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">inertia</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">intg</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">-</span> <span class="n">volume</span> <span class="o">*</span> <span class="n">cog</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">cog</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">inertia</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">inertia</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">intg</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">-</span> <span class="n">volume</span> <span class="o">*</span> <span class="n">cog</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">cog</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">volume</span><span class="p">,</span> <span class="n">cog</span><span class="p">,</span> <span class="n">inertia</span>
+
+    <span class="k">def</span> <span class="nf">update_units</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">units</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normals</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">non_zero_areas</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">areas</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="n">areas</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">areas</span>
+
+        <span class="k">if</span> <span class="n">non_zero_areas</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">areas</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>  <span class="c1"># pragma: no cover</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Zero sized areas found, &#39;</span>
+                         <span class="s1">&#39;units calculation will be partially incorrect&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">non_zero_areas</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+            <span class="n">non_zero_areas</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="n">non_zero_areas</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">areas</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="n">areas</span><span class="p">[</span><span class="n">non_zero_areas</span><span class="p">],)</span> <span class="o">*</span> <span class="n">DIMENSIONS</span><span class="p">)</span>
+            <span class="n">units</span><span class="p">[</span><span class="n">non_zero_areas</span><span class="p">]</span> <span class="o">/=</span> <span class="n">areas</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">units</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">rotation_matrix</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Generate a rotation matrix to Rotate the matrix over the given axis by</span>
+<span class="sd">        the given theta (angle)</span>
+
+<span class="sd">        Uses the `Euler-Rodrigues</span>
+<span class="sd">        &lt;https://en.wikipedia.org/wiki/Euler%E2%80%93Rodrigues_formula&gt;`_</span>
+<span class="sd">        formula for fast rotations.</span>
+
+<span class="sd">        :param numpy.array axis: Axis to rotate over (x, y, z)</span>
+<span class="sd">        :param float theta: Rotation angle in radians, use `math.radians` to</span>
+<span class="sd">                     convert degrees to radians if needed.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">axis</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span>
+        <span class="c1"># No need to rotate if there is no actual rotation</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">axis</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+        <span class="n">theta</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+
+        <span class="n">axis</span> <span class="o">=</span> <span class="n">axis</span> <span class="o">/</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span>
+
+        <span class="n">a</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+        <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="o">-</span> <span class="n">axis</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+        <span class="n">angles</span> <span class="o">=</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span>
+        <span class="n">powers</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="o">*</span> <span class="n">y</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">angles</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">angles</span><span class="p">]</span>
+        <span class="n">aa</span><span class="p">,</span> <span class="n">ab</span><span class="p">,</span> <span class="n">ac</span><span class="p">,</span> <span class="n">ad</span> <span class="o">=</span> <span class="n">powers</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+        <span class="n">ba</span><span class="p">,</span> <span class="n">bb</span><span class="p">,</span> <span class="n">bc</span><span class="p">,</span> <span class="n">bd</span> <span class="o">=</span> <span class="n">powers</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">8</span><span class="p">]</span>
+        <span class="n">ca</span><span class="p">,</span> <span class="n">cb</span><span class="p">,</span> <span class="n">cc</span><span class="p">,</span> <span class="n">cd</span> <span class="o">=</span> <span class="n">powers</span><span class="p">[</span><span class="mi">8</span><span class="p">:</span><span class="mi">12</span><span class="p">]</span>
+        <span class="n">da</span><span class="p">,</span> <span class="n">db</span><span class="p">,</span> <span class="n">dc</span><span class="p">,</span> <span class="n">dd</span> <span class="o">=</span> <span class="n">powers</span><span class="p">[</span><span class="mi">12</span><span class="p">:</span><span class="mi">16</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">aa</span> <span class="o">+</span> <span class="n">bb</span> <span class="o">-</span> <span class="n">cc</span> <span class="o">-</span> <span class="n">dd</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">bc</span> <span class="o">+</span> <span class="n">ad</span><span class="p">),</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">bd</span> <span class="o">-</span> <span class="n">ac</span><span class="p">)],</span>
+                            <span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">bc</span> <span class="o">-</span> <span class="n">ad</span><span class="p">),</span> <span class="n">aa</span> <span class="o">+</span> <span class="n">cc</span> <span class="o">-</span> <span class="n">bb</span> <span class="o">-</span> <span class="n">dd</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">cd</span> <span class="o">+</span> <span class="n">ab</span><span class="p">)],</span>
+                            <span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">bd</span> <span class="o">+</span> <span class="n">ac</span><span class="p">),</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">cd</span> <span class="o">-</span> <span class="n">ab</span><span class="p">),</span> <span class="n">aa</span> <span class="o">+</span> <span class="n">dd</span> <span class="o">-</span> <span class="n">bb</span> <span class="o">-</span> <span class="n">cc</span><span class="p">]])</span>
+
+    <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">point</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Rotate the matrix over the given axis by the given theta (angle)</span>
+
+<span class="sd">        Uses the :py:func:`rotation_matrix` in the background.</span>
+
+<span class="sd">        .. note:: Note that the `point` was accidentaly inverted with the</span>
+<span class="sd">           old version of the code. To get the old and incorrect behaviour</span>
+<span class="sd">           simply pass `-point` instead of `point` or `-numpy.array(point)` if</span>
+<span class="sd">           you&#39;re passing along an array.</span>
+
+<span class="sd">        :param numpy.array axis: Axis to rotate over (x, y, z)</span>
+<span class="sd">        :param float theta: Rotation angle in radians, use `math.radians` to</span>
+<span class="sd">                            convert degrees to radians if needed.</span>
+<span class="sd">        :param numpy.array point: Rotation point so manual translation is not</span>
+<span class="sd">                                  required</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># No need to rotate if there is no actual rotation</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">theta</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">rotate_using_matrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rotation_matrix</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">theta</span><span class="p">),</span> <span class="n">point</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">rotate_using_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rotation_matrix</span><span class="p">,</span> <span class="n">point</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Rotate using a given rotation matrix and optional rotation point</span>
+
+<span class="sd">        Note that this rotation produces clockwise rotations for positive</span>
+<span class="sd">        angles which is arguably incorrect but will remain for legacy reasons.</span>
+<span class="sd">        For more details, read here:</span>
+<span class="sd">        https://github.com/WoLpH/numpy-stl/issues/166</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="n">identity</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">rotation_matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="c1"># No need to rotate if there is no actual rotation</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">rotation_matrix</span><span class="o">.</span><span class="n">any</span><span class="p">()</span> <span class="ow">or</span> <span class="p">(</span><span class="n">identity</span> <span class="o">==</span> <span class="n">rotation_matrix</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">point</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">point</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">point</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">point</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+            <span class="n">point</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">point</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Incorrect type for point&#39;</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">_rotate</span><span class="p">(</span><span class="n">matrix</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">point</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+                <span class="c1"># Translate while rotating</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">matrix</span> <span class="o">-</span> <span class="n">point</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">rotation_matrix</span><span class="p">)</span> <span class="o">+</span> <span class="n">point</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Simply apply the rotation</span>
+                <span class="k">return</span> <span class="n">matrix</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">rotation_matrix</span><span class="p">)</span>
+
+        <span class="c1"># Rotate the normals</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">normals</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">_rotate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">normals</span><span class="p">[:])</span>
+
+        <span class="c1"># Rotate the vectors</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vectors</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">_rotate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vectors</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">translation</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Translate the mesh in the three directions</span>
+
+<span class="sd">        :param numpy.array translation: Translation vector (x, y, z)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">translation</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;Translation vector must be of length 3&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">+=</span> <span class="n">translation</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">+=</span> <span class="n">translation</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">+=</span> <span class="n">translation</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Transform the mesh with a rotation and a translation stored in a</span>
+<span class="sd">        single 4x4 matrix</span>
+
+<span class="sd">        :param numpy.array matrix: Transform matrix with shape (4, 4), where</span>
+<span class="sd">                                   matrix[0:3, 0:3] represents the rotation</span>
+<span class="sd">                                   part of the transformation</span>
+<span class="sd">                                   matrix[0:3, 3] represents the translation</span>
+<span class="sd">                                   part of the transformation</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">is_a_4x4_matrix</span> <span class="o">=</span> <span class="n">matrix</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">is_a_4x4_matrix</span><span class="p">,</span> <span class="s2">&quot;Transformation matrix must be of shape (4, 4)&quot;</span>
+        <span class="n">rotation</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">unit_det_rotation</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">rotation</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">unit_det_rotation</span><span class="p">,</span> <span class="s2">&quot;Rotation matrix has not a unit determinant&quot;</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vectors</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">rotation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">vectors</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">+=</span> <span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">+=</span> <span class="n">matrix</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">+=</span> <span class="n">matrix</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_get_or_update</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">_get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="p">):</span>
+                <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;update_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="p">)()</span>
+            <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">_get</span>
+
+    <span class="k">def</span> <span class="nf">_set</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">_set</span>
+
+    <span class="n">min_</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_or_update</span><span class="p">(</span><span class="s1">&#39;min&#39;</span><span class="p">),</span> <span class="n">_set</span><span class="p">(</span><span class="s1">&#39;min&#39;</span><span class="p">),</span>
+                    <span class="n">doc</span><span class="o">=</span><span class="s1">&#39;Mesh minimum value&#39;</span><span class="p">)</span>
+    <span class="n">max_</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_or_update</span><span class="p">(</span><span class="s1">&#39;max&#39;</span><span class="p">),</span> <span class="n">_set</span><span class="p">(</span><span class="s1">&#39;max&#39;</span><span class="p">),</span>
+                    <span class="n">doc</span><span class="o">=</span><span class="s1">&#39;Mesh maximum value&#39;</span><span class="p">)</span>
+    <span class="n">areas</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_or_update</span><span class="p">(</span><span class="s1">&#39;areas&#39;</span><span class="p">),</span> <span class="n">_set</span><span class="p">(</span><span class="s1">&#39;areas&#39;</span><span class="p">),</span>
+                     <span class="n">doc</span><span class="o">=</span><span class="s1">&#39;Mesh areas&#39;</span><span class="p">)</span>
+    <span class="n">units</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_or_update</span><span class="p">(</span><span class="s1">&#39;units&#39;</span><span class="p">),</span> <span class="n">_set</span><span class="p">(</span><span class="s1">&#39;units&#39;</span><span class="p">),</span>
+                     <span class="n">doc</span><span class="o">=</span><span class="s1">&#39;Mesh unit vectors&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">point</span>
+
+    <span class="k">def</span> <span class="nf">get_mass_properties_with_density</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">density</span><span class="p">):</span>
+        <span class="c1"># add density for mesh,density unit kg/m3 when mesh is unit is m</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">subexpression</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+            <span class="n">w0</span><span class="p">,</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+            <span class="n">temp0</span> <span class="o">=</span> <span class="n">w0</span> <span class="o">+</span> <span class="n">w1</span>
+            <span class="n">f1</span> <span class="o">=</span> <span class="n">temp0</span> <span class="o">+</span> <span class="n">w2</span>
+            <span class="n">temp1</span> <span class="o">=</span> <span class="n">w0</span> <span class="o">*</span> <span class="n">w0</span>
+            <span class="n">temp2</span> <span class="o">=</span> <span class="n">temp1</span> <span class="o">+</span> <span class="n">w1</span> <span class="o">*</span> <span class="n">temp0</span>
+            <span class="n">f2</span> <span class="o">=</span> <span class="n">temp2</span> <span class="o">+</span> <span class="n">w2</span> <span class="o">*</span> <span class="n">f1</span>
+            <span class="n">f3</span> <span class="o">=</span> <span class="n">w0</span> <span class="o">*</span> <span class="n">temp1</span> <span class="o">+</span> <span class="n">w1</span> <span class="o">*</span> <span class="n">temp2</span> <span class="o">+</span> <span class="n">w2</span> <span class="o">*</span> <span class="n">f2</span>
+            <span class="n">g0</span> <span class="o">=</span> <span class="n">f2</span> <span class="o">+</span> <span class="n">w0</span> <span class="o">*</span> <span class="p">(</span><span class="n">f1</span> <span class="o">+</span> <span class="n">w0</span><span class="p">)</span>
+            <span class="n">g1</span> <span class="o">=</span> <span class="n">f2</span> <span class="o">+</span> <span class="n">w1</span> <span class="o">*</span> <span class="p">(</span><span class="n">f1</span> <span class="o">+</span> <span class="n">w1</span><span class="p">)</span>
+            <span class="n">g2</span> <span class="o">=</span> <span class="n">f2</span> <span class="o">+</span> <span class="n">w2</span> <span class="o">*</span> <span class="p">(</span><span class="n">f1</span> <span class="o">+</span> <span class="n">w2</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">,</span> <span class="n">f3</span><span class="p">,</span> <span class="n">g0</span><span class="p">,</span> <span class="n">g1</span><span class="p">,</span> <span class="n">g2</span>
+
+        <span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="n">y0</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">y2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="n">z0</span><span class="p">,</span> <span class="n">z1</span><span class="p">,</span> <span class="n">z2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="n">a1</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">c1</span> <span class="o">=</span> <span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span><span class="p">,</span> <span class="n">y1</span> <span class="o">-</span> <span class="n">y0</span><span class="p">,</span> <span class="n">z1</span> <span class="o">-</span> <span class="n">z0</span>
+        <span class="n">a2</span><span class="p">,</span> <span class="n">b2</span><span class="p">,</span> <span class="n">c2</span> <span class="o">=</span> <span class="n">x2</span> <span class="o">-</span> <span class="n">x0</span><span class="p">,</span> <span class="n">y2</span> <span class="o">-</span> <span class="n">y0</span><span class="p">,</span> <span class="n">z2</span> <span class="o">-</span> <span class="n">z0</span>
+        <span class="n">d0</span><span class="p">,</span> <span class="n">d1</span><span class="p">,</span> <span class="n">d2</span> <span class="o">=</span> <span class="n">b1</span> <span class="o">*</span> <span class="n">c2</span> <span class="o">-</span> <span class="n">b2</span> <span class="o">*</span> <span class="n">c1</span><span class="p">,</span> <span class="n">a2</span> <span class="o">*</span> <span class="n">c1</span> <span class="o">-</span> <span class="n">a1</span> <span class="o">*</span> <span class="n">c2</span><span class="p">,</span> <span class="n">a1</span> <span class="o">*</span> <span class="n">b2</span> <span class="o">-</span> <span class="n">a2</span> <span class="o">*</span> <span class="n">b1</span>
+
+        <span class="n">f1x</span><span class="p">,</span> <span class="n">f2x</span><span class="p">,</span> <span class="n">f3x</span><span class="p">,</span> <span class="n">g0x</span><span class="p">,</span> <span class="n">g1x</span><span class="p">,</span> <span class="n">g2x</span> <span class="o">=</span> <span class="n">subexpression</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">f1y</span><span class="p">,</span> <span class="n">f2y</span><span class="p">,</span> <span class="n">f3y</span><span class="p">,</span> <span class="n">g0y</span><span class="p">,</span> <span class="n">g1y</span><span class="p">,</span> <span class="n">g2y</span> <span class="o">=</span> <span class="n">subexpression</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">f1z</span><span class="p">,</span> <span class="n">f2z</span><span class="p">,</span> <span class="n">f3z</span><span class="p">,</span> <span class="n">g0z</span><span class="p">,</span> <span class="n">g1z</span><span class="p">,</span> <span class="n">g2z</span> <span class="o">=</span> <span class="n">subexpression</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+
+        <span class="n">intg</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">10</span><span class="p">))</span>
+        <span class="n">intg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">d0</span> <span class="o">*</span> <span class="n">f1x</span><span class="p">)</span>
+        <span class="n">intg</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">d0</span> <span class="o">*</span> <span class="n">f2x</span><span class="p">),</span> <span class="nb">sum</span><span class="p">(</span><span class="n">d1</span> <span class="o">*</span> <span class="n">f2y</span><span class="p">),</span> <span class="nb">sum</span><span class="p">(</span><span class="n">d2</span> <span class="o">*</span> <span class="n">f2z</span><span class="p">)</span>
+        <span class="n">intg</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">d0</span> <span class="o">*</span> <span class="n">f3x</span><span class="p">),</span> <span class="nb">sum</span><span class="p">(</span><span class="n">d1</span> <span class="o">*</span> <span class="n">f3y</span><span class="p">),</span> <span class="nb">sum</span><span class="p">(</span><span class="n">d2</span> <span class="o">*</span> <span class="n">f3z</span><span class="p">)</span>
+        <span class="n">intg</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">d0</span> <span class="o">*</span> <span class="p">(</span><span class="n">y0</span> <span class="o">*</span> <span class="n">g0x</span> <span class="o">+</span> <span class="n">y1</span> <span class="o">*</span> <span class="n">g1x</span> <span class="o">+</span> <span class="n">y2</span> <span class="o">*</span> <span class="n">g2x</span><span class="p">))</span>
+        <span class="n">intg</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">d1</span> <span class="o">*</span> <span class="p">(</span><span class="n">z0</span> <span class="o">*</span> <span class="n">g0y</span> <span class="o">+</span> <span class="n">z1</span> <span class="o">*</span> <span class="n">g1y</span> <span class="o">+</span> <span class="n">z2</span> <span class="o">*</span> <span class="n">g2y</span><span class="p">))</span>
+        <span class="n">intg</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">d2</span> <span class="o">*</span> <span class="p">(</span><span class="n">x0</span> <span class="o">*</span> <span class="n">g0z</span> <span class="o">+</span> <span class="n">x1</span> <span class="o">*</span> <span class="n">g1z</span> <span class="o">+</span> <span class="n">x2</span> <span class="o">*</span> <span class="n">g2z</span><span class="p">))</span>
+        <span class="n">intg</span> <span class="o">/=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">6</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">120</span><span class="p">])</span>
+        <span class="n">volume</span> <span class="o">=</span> <span class="n">intg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">cog</span> <span class="o">=</span> <span class="n">intg</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">/</span> <span class="n">volume</span>
+        <span class="n">cogsq</span> <span class="o">=</span> <span class="n">cog</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="n">vmass</span> <span class="o">=</span> <span class="n">volume</span> <span class="o">*</span> <span class="n">density</span>
+        <span class="n">inertia</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+        <span class="n">inertia</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">intg</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">+</span> <span class="n">intg</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span> <span class="o">*</span> <span class="n">density</span> <span class="o">-</span> <span class="n">vmass</span> <span class="o">*</span> <span class="p">(</span>
+            <span class="n">cogsq</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">cogsq</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">inertia</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">intg</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="n">intg</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span> <span class="o">*</span> <span class="n">density</span> <span class="o">-</span> <span class="n">vmass</span> <span class="o">*</span> <span class="p">(</span>
+            <span class="n">cogsq</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">cogsq</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">inertia</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">intg</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="n">intg</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span> <span class="o">*</span> <span class="n">density</span> <span class="o">-</span> <span class="n">vmass</span> <span class="o">*</span> <span class="p">(</span>
+            <span class="n">cogsq</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">cogsq</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">inertia</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">inertia</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span>
+            <span class="n">intg</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">*</span> <span class="n">density</span> <span class="o">-</span> <span class="n">vmass</span> <span class="o">*</span> <span class="n">cog</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">cog</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">inertia</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">inertia</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span>
+            <span class="n">intg</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">*</span> <span class="n">density</span> <span class="o">-</span> <span class="n">vmass</span> <span class="o">*</span> <span class="n">cog</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">cog</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">inertia</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">inertia</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span>
+            <span class="n">intg</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">*</span> <span class="n">density</span> <span class="o">-</span> <span class="n">vmass</span> <span class="o">*</span> <span class="n">cog</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">cog</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">volume</span><span class="p">,</span> <span class="n">vmass</span><span class="p">,</span> <span class="n">cog</span><span class="p">,</span> <span class="n">inertia</span>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2021, Brénainn Woodsend
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,600 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>motmot.geometry._geometry &mdash; Motmot 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/more-theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/theme-overrides.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/motmot-favicon.jpg"/>
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/clipboard.min.js"></script>
+        <script src="../../../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Motmot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../stubs/mesh.html">Mesh API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../stubs/geometry.html">Geometry API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../stubs/connectivity.html">Connectivity API reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Motmot</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>motmot.geometry._geometry</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for motmot.geometry._geometry</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy</span>  <span class="c1"># Needed for PyCharm&#39;s type checking.</span>
+
+
+<div class="viewcode-block" id="inner_product"><a class="viewcode-back" href="../../../stubs/geometry.html#motmot.geometry.inner_product">[docs]</a><span class="k">def</span> <span class="nf">inner_product</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculates the scalar/inner/interior/dot/&quot;whatever you want to call it&quot;</span>
+<span class="sd">    product of vectors **a** and **b**, returning a scalar.</span>
+
+<span class="sd">    Arguments **a** and **b** must be numpy-broadcastable.</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        The :class:`UnitVector` class for a more convenient way to perform</span>
+<span class="sd">        multiple :meth:`inner_product` calls.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_sum_last_axis</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">b</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="n">keepdims</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="magnitude"><a class="viewcode-back" href="../../../stubs/geometry.html#motmot.geometry.magnitude">[docs]</a><span class="k">def</span> <span class="nf">magnitude</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the hypotenuse/magnitude/length  of a **vector**.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">magnitude_sqr</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="n">keepdims</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="magnitude_sqr"><a class="viewcode-back" href="../../../stubs/geometry.html#motmot.geometry.magnitude_sqr">[docs]</a><span class="k">def</span> <span class="nf">magnitude_sqr</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the square of the hypotenuse of a **vector**.</span>
+
+<span class="sd">    This is faster than :func:`magnitude` because it skips taking the square</span>
+<span class="sd">    root and can be used to compare or sort distances.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_sum_last_axis</span><span class="p">(</span><span class="n">vector</span> <span class="o">*</span> <span class="n">vector</span><span class="p">,</span> <span class="n">keepdims</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_sum_last_axis</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Faster ``np.sum(x, axis=-1, keepdims=keepdims)``.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_reduce_last_axis</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">,</span> <span class="n">keepdims</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_reduce_last_axis</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">operator</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Faster :meth:`numpy.ufunc.reduce()`.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">keepdims</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_reduce_last_axis</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">operator</span><span class="p">)[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">operator</span><span class="o">.</span><span class="n">identity</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+    <span class="n">itr</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">itr</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">itr</span><span class="p">:</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">operator</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="k">return</span> <span class="n">out</span>
+
+
+<div class="viewcode-block" id="furthest"><a class="viewcode-back" href="../../../stubs/geometry.html#motmot.geometry.furthest">[docs]</a><span class="k">def</span> <span class="nf">furthest</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_projection</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+             <span class="n">return_args</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Select the point the furthest in **direction**.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        points (numpy.ndarray):</span>
+<span class="sd">            Some points.</span>
+<span class="sd">        direction (numpy.ndarray or UnitVector):</span>
+<span class="sd">            A direction.</span>
+<span class="sd">        n (int or None):</span>
+<span class="sd">             Specify the furthest **n** points instead of just one.</span>
+<span class="sd">        return_projection (bool):</span>
+<span class="sd">             If true, also return the projection of the furthest point(s).</span>
+<span class="sd">        return_args (bool):</span>
+<span class="sd">            If true, also return the index(es) similar to :func:`numpy.argmax`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">points</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Can&#39;t select furthest from an empty array of `points`.&quot;</span><span class="p">)</span>
+
+    <span class="n">heights</span> <span class="o">=</span> <span class="n">inner_product</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">direction</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">n</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">heights</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">n</span><span class="p">:</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argpartition</span><span class="p">(</span><span class="n">heights</span><span class="p">,</span> <span class="o">-</span><span class="n">n</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">)[</span><span class="o">-</span><span class="n">n</span><span class="p">:]</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">heights</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span>
+                <span class="n">args</span><span class="p">,</span> <span class="n">heights</span><span class="o">.</span><span class="n">shape</span><span class="p">)])][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">args</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">heights</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+    <span class="n">out</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">args</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">return_args</span> <span class="ow">or</span> <span class="n">return_projection</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">out</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="p">,</span>
+    <span class="k">if</span> <span class="n">return_projection</span><span class="p">:</span>
+        <span class="n">out</span> <span class="o">+=</span> <span class="p">(</span><span class="n">heights</span><span class="p">[</span><span class="n">args</span><span class="p">],)</span>
+    <span class="k">if</span> <span class="n">return_args</span><span class="p">:</span>
+        <span class="n">out</span> <span class="o">+=</span> <span class="p">(</span><span class="n">args</span><span class="p">,)</span>
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="normalise"><a class="viewcode-back" href="../../../stubs/geometry.html#motmot.geometry.normalise">[docs]</a><span class="k">def</span> <span class="nf">normalise</span><span class="p">(</span><span class="n">vector</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Modify in-place **vector** so that it has magnitude ``1.0``.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        vector (numpy.ndarray):</span>
+<span class="sd">            Vector(s) to normalise.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        numpy.ndarray:</span>
+<span class="sd">            The original magnitudes of **vector**.</span>
+
+<span class="sd">    .. seealso:: :func:`normalised` which leaves the original as-is.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">magnitudes</span> <span class="o">=</span> <span class="n">magnitude</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">vector</span> <span class="o">/=</span> <span class="n">magnitudes</span>
+    <span class="k">return</span> <span class="n">magnitudes</span></div>
+
+
+<div class="viewcode-block" id="normalised"><a class="viewcode-back" href="../../../stubs/geometry.html#motmot.geometry.normalised">[docs]</a><span class="k">def</span> <span class="nf">normalised</span><span class="p">(</span><span class="n">vector</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return a normalised copy of **vector**.</span>
+
+<span class="sd">    .. seealso:: :func:`normalise` to modify in-place.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">vector</span> <span class="o">/</span> <span class="n">magnitude</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_components"><a class="viewcode-back" href="../../../stubs/geometry.html#motmot.geometry.get_components">[docs]</a><span class="k">def</span> <span class="nf">get_components</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="o">*</span><span class="n">unit_vectors</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get the inner product for each unit vector as separate arrays.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        points (numpy.ndarray):</span>
+<span class="sd">        *unit_vectors (numpy.ndarray or UnitVector):</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple[numpy.ndarray]:</span>
+<span class="sd">            Projections for each unit vector.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">inner_product</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">uv</span><span class="p">)</span> <span class="k">for</span> <span class="n">uv</span> <span class="ow">in</span> <span class="n">unit_vectors</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_components_zipped"><a class="viewcode-back" href="../../../stubs/geometry.html#motmot.geometry.get_components_zipped">[docs]</a><span class="k">def</span> <span class="nf">get_components_zipped</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="o">*</span><span class="n">unit_vectors</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get the inner product for each unit vector.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        points:</span>
+<span class="sd">        *unit_vectors (numpy.ndarray or UnitVector):</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        numpy.ndarray:</span>
+<span class="sd">            Projections as one array.</span>
+
+<span class="sd">    The unit-vector iteration corresponds to the last axis of the output. i.e ::</span>
+
+<span class="sd">        out[..., i] == inner_product(unit_vectors[i], points)</span>
+
+<span class="sd">    The more linear-algebra savvy developer will know that this is just a matrix</span>
+<span class="sd">    multiplication. This function is purely to reduce confusion for those (like</span>
+<span class="sd">    me) who can never remember if you pre or post multiply and when to</span>
+<span class="sd">    transpose.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">points</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">unit_vectors</span><span class="p">)</span><span class="o">.</span><span class="n">T</span></div>
+
+
+<div class="viewcode-block" id="center_of_mass"><a class="viewcode-back" href="../../../stubs/geometry.html#motmot.geometry.center_of_mass">[docs]</a><span class="k">def</span> <span class="nf">center_of_mass</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The (weighted) mean of **points**.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">i</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">points</span><span class="o">.</span><span class="n">T</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[(</span><span class="o">...</span><span class="p">,)</span> <span class="o">+</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,)</span> <span class="o">*</span> <span class="p">(</span><span class="n">points</span><span class="o">.</span><span class="n">ndim</span> <span class="o">-</span> <span class="n">weights</span><span class="o">.</span><span class="n">ndim</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">i</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">(</span><span class="n">points</span> <span class="o">*</span> <span class="n">weights</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">])</span> <span class="o">/</span> <span class="n">weights</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span></div>
+
+
+<span class="k">def</span> <span class="nf">orthogonal_bases</span><span class="p">(</span><span class="n">v0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a set of perpendicular axes.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        v0 (numpy.ndarray):</span>
+<span class="sd">            The first axis.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray]:</span>
+<span class="sd">            Three perpendicular unit vectors.</span>
+
+<span class="sd">    The first returned axis is just the input :func:`normalised`. Although there</span>
+<span class="sd">    are many possible valid outputs for any given input, this function is fully</span>
+<span class="sd">    deterministic. Reproducibility is guaranteed.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">old</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">seterr</span><span class="p">(</span><span class="n">divide</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">invalid</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+
+    <span class="n">v0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">v0</span><span class="p">)</span>
+    <span class="n">shape</span> <span class="o">=</span> <span class="n">v0</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">v0</span> <span class="o">=</span> <span class="n">v0</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">v0</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">v0</span> <span class="o">=</span> <span class="n">normalised</span><span class="p">(</span><span class="n">v0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">v0</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;v0 must have non zero magnitude&quot;</span><span class="p">)</span>
+
+    <span class="n">to_do</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">v1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">v0</span><span class="p">)</span>
+    <span class="n">v2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">v0</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">seed</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>  <span class="c1"># pragma: no branch</span>
+        <span class="k">if</span> <span class="n">to_do</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">to_do</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">v0</span><span class="p">[</span><span class="n">to_do</span><span class="p">],</span> <span class="n">v1</span><span class="p">[</span><span class="n">to_do</span><span class="p">],</span> <span class="n">v2</span><span class="p">[</span><span class="n">to_do</span><span class="p">],</span> <span class="n">_to_do</span> <span class="o">=</span> \
+            <span class="n">_orthogonal_bases</span><span class="p">(</span><span class="n">v0</span><span class="p">[</span><span class="n">to_do</span><span class="p">],</span> <span class="n">seed</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">to_do</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">to_do</span> <span class="o">=</span> <span class="n">_to_do</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">to_do</span> <span class="o">=</span> <span class="n">to_do</span><span class="p">[</span><span class="n">_to_do</span><span class="p">]</span>
+
+    <span class="n">np</span><span class="o">.</span><span class="n">seterr</span><span class="p">(</span><span class="o">**</span><span class="n">old</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">v0</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span> <span class="n">v1</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span> <span class="n">v2</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_orthogonal_bases</span><span class="p">(</span><span class="n">v0</span><span class="p">,</span> <span class="n">seed</span><span class="p">):</span>
+    <span class="n">v1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">v0</span><span class="p">,</span> <span class="n">seed</span><span class="p">)</span>
+    <span class="n">v1_mag</span> <span class="o">=</span> <span class="n">normalise</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
+    <span class="n">v2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">v0</span><span class="p">,</span> <span class="n">v1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">v0</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="p">(</span><span class="n">v1_mag</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="area"><a class="viewcode-back" href="../../../stubs/geometry.html#motmot.geometry.area">[docs]</a><span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the area of arbitrary polygons.&quot;&quot;&quot;</span>
+    <span class="n">polygon</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">polygon</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;=</span> <span class="mi">2</span>
+    <span class="k">assert</span> <span class="n">polygon</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span>
+
+    <span class="k">if</span> <span class="n">polygon</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="c1"># Area of a line or a dot is 0.</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">polygon</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">polygon</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+    <span class="c1"># Triangulate using the first vertex as a focus. i.e. A hexagon:</span>
+    <span class="c1">#   (p0, p1, p2, p3, p4, p5)</span>
+    <span class="c1"># becomes 4 triangles which all start at p0:</span>
+    <span class="c1">#   (p0, p1, p2)</span>
+    <span class="c1">#   (p0, p2, p3)</span>
+    <span class="c1">#   (p0, p3, p4)</span>
+    <span class="c1">#   (p0, p4, p5)</span>
+
+    <span class="n">from_v0</span> <span class="o">=</span> <span class="n">polygon</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">:,</span> <span class="p">:]</span> <span class="o">-</span> <span class="n">polygon</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="n">crosses</span> <span class="o">=</span> <span class="p">[(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">from_v0</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="p">:],</span> <span class="o">-</span><span class="n">from_v0</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:]))</span>
+               <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">polygon</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)]</span>
+
+    <span class="c1"># Area calculation can be simple but isn&#39;t if either all vertices are not</span>
+    <span class="c1"># co-planer (in which case `area` is technically arbitrary as it differs</span>
+    <span class="c1"># depending on which vertex is used as a triangulation focus) or if the</span>
+    <span class="c1"># polygon contains inside corners &gt; 180° (think of a pie with a wedge</span>
+    <span class="c1"># removed).</span>
+
+    <span class="c1"># In the simple case, just magnitude() each item in `crosses`, add them up,</span>
+    <span class="c1"># then divide by 2.</span>
+    <span class="c1"># Non-co-planer polygons are doomed almost by definition - this complication</span>
+    <span class="c1"># is more or less ignored.</span>
+    <span class="c1"># To handle the 2nd problem, some sign magic must be done to treat the</span>
+    <span class="c1"># missing slice of the pie as a negative area. This is done by looking at</span>
+    <span class="c1"># normals to each triangle: The normal to a missing wedge will point in</span>
+    <span class="c1"># the opposite direction to all the other triangles&#39; normals.</span>
+
+    <span class="c1"># Generate a consensus normal to this polygon which can be used to</span>
+    <span class="c1"># sign-match individual triangle normals and thereby detect missing wedges.</span>
+    <span class="n">normal</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">crosses</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">crosses</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="c1"># Calculate a signed area for each triangle. Note that these areas are</span>
+    <span class="c1"># doubled what they should be.</span>
+    <span class="n">areas_x2</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">copysign</span><span class="p">(</span><span class="n">magnitude</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">inner_product</span><span class="p">(</span><span class="n">normal</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">crosses</span><span class="p">)</span>
+
+    <span class="c1"># Add all double-areas together and un-double them.</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">areas_x2</span><span class="p">,</span> <span class="nb">next</span><span class="p">(</span><span class="n">areas_x2</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span></div>
+
+
+<div class="viewcode-block" id="zip"><a class="viewcode-back" href="../../../stubs/geometry.html#motmot.geometry.zip">[docs]</a><span class="k">def</span> <span class="nf">zip</span><span class="p">(</span><span class="o">*</span><span class="n">axes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Combine separate x, y, z arrays into a single *points* array.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        axes:</span>
+<span class="sd">            Each separate axis to combine.</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        A single array with :py:`shape[-1] == len(axes)`.</span>
+
+<span class="sd">    All `axes` must have the matching or broadcast-able shapes. The number of</span>
+<span class="sd">    axes doesn&#39;t have to be 3.</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        &gt;&gt;&gt; zip(np.arange(5), np.arange(-2, 3))</span>
+<span class="sd">        array([[ 0, -2],</span>
+<span class="sd">               [ 1, -1],</span>
+<span class="sd">               [ 2,  0],</span>
+<span class="sd">               [ 3,  1],</span>
+<span class="sd">               [ 4,  2]])</span>
+
+<span class="sd">        &gt;&gt;&gt; zip(np.arange(10), 4, np.arange(-5, 5))</span>
+<span class="sd">        array([[ 0,  4, -5],</span>
+<span class="sd">               [ 1,  4, -4],</span>
+<span class="sd">               [ 2,  4, -3],</span>
+<span class="sd">               [ 3,  4, -2],</span>
+<span class="sd">               [ 4,  4, -1],</span>
+<span class="sd">               [ 5,  4,  0],</span>
+<span class="sd">               [ 6,  4,  1],</span>
+<span class="sd">               [ 7,  4,  2],</span>
+<span class="sd">               [ 8,  4,  3],</span>
+<span class="sd">               [ 9,  4,  4]])</span>
+
+<span class="sd">    .. seealso:: :func:`unzip` for the reverse.</span>
+
+<span class="sd">    This function is similar to :data:`numpy.c_` except that it is not limited</span>
+<span class="sd">    to 2D arrays.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_arrays</span><span class="p">(</span><span class="o">*</span><span class="n">axes</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="unzip"><a class="viewcode-back" href="../../../stubs/geometry.html#motmot.geometry.unzip">[docs]</a><span class="k">def</span> <span class="nf">unzip</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Separate each component from an array of points.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        points: Some points.</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Each axis separately as a tuple.</span>
+
+<span class="sd">    This is the inverse of :func:`zip`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">points</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span></div>
+
+
+<div class="viewcode-block" id="closest"><a class="viewcode-back" href="../../../stubs/geometry.html#motmot.geometry.closest">[docs]</a><span class="k">def</span> <span class="nf">closest</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Select from **points** the point which is closest to **to**.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        points:</span>
+<span class="sd">            An array of vertices to choose from.</span>
+<span class="sd">        target:</span>
+<span class="sd">            A single target vertex to be closest to.</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        One vertex from **points**.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">magnitude_sqr</span><span class="p">(</span><span class="n">points</span> <span class="o">-</span> <span class="n">target</span><span class="p">)</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">points</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">points</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])]</span></div>
+
+
+<div class="viewcode-block" id="snap_to_plane"><a class="viewcode-back" href="../../../stubs/geometry.html#motmot.geometry.snap_to_plane">[docs]</a><span class="k">def</span> <span class="nf">snap_to_plane</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">origin</span><span class="p">,</span> <span class="n">normal</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Map **point** to its nearest point on a plane.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        point:</span>
+<span class="sd">            A vertex or vertices to move.</span>
+<span class="sd">        origin:</span>
+<span class="sd">            The plane&#39;s origin. Or any point already on the plane(s).</span>
+<span class="sd">        normal:</span>
+<span class="sd">            A unit normal to the plane.</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        The translated points.</span>
+
+<span class="sd">    Alternatively, you may think of this as move **point** along</span>
+<span class="sd">    **normal** until the resulting output point satisfies::</span>
+
+<span class="sd">        inner_product(normal, output) == inner_product(normal, point)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">point</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+    <span class="n">normal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">normal</span><span class="p">)</span>
+    <span class="n">height_from_plane</span> <span class="o">=</span> <span class="n">inner_product</span><span class="p">(</span><span class="n">origin</span> <span class="o">-</span> <span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">point</span> <span class="o">+</span> <span class="n">height_from_plane</span> <span class="o">*</span> <span class="n">normal</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2021, Brénainn Woodsend
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

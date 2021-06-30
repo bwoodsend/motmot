@@ -1,0 +1,611 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Motmot &mdash; Motmot 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+  <link rel="stylesheet" href="_static/more-theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme-overrides.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="_static/motmot-favicon.jpg"/>
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Mesh API reference" href="stubs/mesh.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="#" class="icon icon-home" alt="Documentation Home"> Motmot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="stubs/mesh.html">Mesh API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stubs/geometry.html">Geometry API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stubs/connectivity.html">Connectivity API reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Motmot</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Motmot</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <span class="target" id="module-motmot"></span><div class="section" id="motmot">
+<h1>Motmot<a class="headerlink" href="#motmot" title="Permalink to this headline">¶</a></h1>
+<!---
+    from urllib.parse import quote
+    quote("python- {}-#4691C2.svg".format(
+                " | ".join(["3.6", "3.7", "3.8", "3.9", "PyInstaller"])))
+---><a class="reference external image-reference" href="https://img.shields.io/badge/python-%203.6%20%7C%203.7%20%7C%203.8%20%7C%203.9%20%7C%20PyInstaller-%234691C2.svg"><img alt="" src="https://img.shields.io/badge/python-%203.6%20%7C%203.7%20%7C%203.8%20%7C%203.9%20%7C%20PyInstaller-%234691C2.svg" /></a>
+<p>A sophisticated mesh class for analysing colourless <a class="reference external" href="https://en.wikipedia.org/wiki/Polygon_mesh">Polygon meshes</a> such as
+an <a class="reference external" href="https://en.wikipedia.org/wiki/STL_(file_format)">STL file</a>
+providing a seamless abstraction between raw <em>vectors</em> meshes or the more
+efficient <em>vertices + faces</em> (a.k.a <em>vertices + polygons</em>) form.</p>
+<ul class="simple">
+<li><p>Free software: MIT license</p></li>
+</ul>
+<div class="section" id="related-projects">
+<h2>Related projects<a class="headerlink" href="#related-projects" title="Permalink to this headline">¶</a></h2>
+<p>This library focuses almost exclusively on analysing meshes.
+It it highly likely that you will need to supplement it with other libraries
+to read/write to a certain format or to simplify an existing mesh.</p>
+<ul class="simple">
+<li><p>Mesh read/write:</p>
+<ul>
+<li><p><a class="reference external" href="https://github.com/wolph/numpy-stl">numpy-stl</a>:
+Reads and writes STL files. This is a dependency of <code class="docutils literal notranslate"><span class="pre">motmot</span></code>.</p></li>
+<li><p><a class="reference external" href="https://github.com/nschloe/meshio">meshio</a>:
+Reads and writes a multitude of mesh formats.</p></li>
+<li><p><a class="reference external" href="https://github.com/taxpon/pymesh">pymesh</a>:
+Reads and writes STL and OBJ files.</p></li>
+</ul>
+</li>
+<li><p>Mesh analysis:</p>
+<ul>
+<li><p><a class="reference external" href="https://github.com/PyMesh/PyMesh">PyMesh</a>:
+A highly sophisticated mesh library which unfortunately depends on some
+rather
+hairy C++ libraries, making it not generally installable.
+It’s not even on PyPI.</p></li>
+<li><p><a class="reference external" href="https://github.com/mikedh/trimesh">trimesh</a>:
+Another general purpose mesh library. This one is pure Python and focuses
+strictly on triangular and preferably closed meshes.
+It also brings a few readers and writers with it.
+This library is very powerful.
+It’s quite likely that you’d be better off using it instead of <code class="docutils literal notranslate"><span class="pre">motmot</span></code>.</p></li>
+</ul>
+</li>
+<li><p>Mesh generation:</p>
+<ul>
+<li><p><a class="reference external" href="https://github.com/nschloe/meshzoo">meshzoo</a>:
+Creates finite mesh approximations of standard geometric shapes like cubes
+or spheres.</p></li>
+</ul>
+</li>
+<li><p>Mesh cleaning:</p>
+<ul>
+<li><p><a class="reference external" href="https://github.com/jannessm/quadric-mesh-simplification">quad_mesh_simplify</a>:
+Decimate (collapse redundant or near redundant vertices in) meshes to make
+the filesize much smaller with negligible impact on quality.</p></li>
+<li><p><a class="reference external" href="https://github.com/Kramer84/Py_Fast-Quadric-Mesh-Simplification">Py_Fast-Quadric-Mesh-Simplification</a>:
+Another mesh decimator. This one is much faster but not on PyPI (yet).</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>The basic API for <code class="docutils literal notranslate"><span class="pre">motmot</span></code> is modelled off that of <a class="reference external" href="https://github.com/wolph/numpy-stl">numpy-stl</a> with a few
+alterations.</p>
+<div class="section" id="initialisation">
+<h3>Initialisation<a class="headerlink" href="#initialisation" title="Permalink to this headline">¶</a></h3>
+<p>Meshes can be :</p>
+<ol class="arabic">
+<li><p>Constructed from scratch using a single <em>vectors</em> array.
+This array should be 3D with shape <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">k,</span> <span class="pre">3)</span></code> where:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">n</span></code> is the number of polygons in the mesh,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">k</span></code> is the number of corners each polygon has,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">3</span></code> corresponds to having 3 axes. i.e. <code class="docutils literal notranslate"><span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code> and <code class="docutils literal notranslate"><span class="pre">z</span></code>.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># vectors is a (n, 3, 3) numpy array.</span>
+<span class="n">triangle_mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
+
+<span class="c1"># vectors is a (n, 4, 3) numpy array.</span>
+<span class="n">square_mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Or using the more memory efficient <em>vertices + faces</em> form.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># `vertices` is an array of points. It should contain no duplicates.</span>
+<span class="c1"># `faces` is an integer array indicating which vertices are used to construct</span>
+<span class="c1"># each polygon.</span>
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Read from an STL file. This uses <a class="reference external" href="https://github.com/wolph/numpy-stl">numpy-stl</a> under the hood.
+Currently, STL is the only file format that <code class="docutils literal notranslate"><span class="pre">motmot</span></code> will read implicitly:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">motmot</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">(</span><span class="s2">&quot;some-file.stl&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Read from an lzma, gzip or bzip2 compressed STL file:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">motmot</span> <span class="kn">import</span> <span class="n">Mesh</span>
+
+<span class="c1"># An lzma compressed STL file. Create using `xz some-file.stl` in bash.</span>
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">(</span><span class="s2">&quot;some-file.stl.xz&quot;</span><span class="p">)</span>
+<span class="c1"># A gzip compressed STL file. Create using `gzip some-file.stl` in bash.</span>
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">(</span><span class="s2">&quot;some-file.stl.gz&quot;</span><span class="p">)</span>
+<span class="c1"># A bzip2 compressed STL file. Create using `bzip2 some-file.stl` in bash.</span>
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">(</span><span class="s2">&quot;some-file.stl.bz2&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Stream from any subclass of <code class="docutils literal notranslate"><span class="pre">io.RawIOBase</span></code>.
+From here you can read from arbitrary sources such as
+embedded files, streams, archives or other pseudo files.
+For example, the following reads an STL directly from a web request:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">urllib</span> <span class="kn">import</span> <span class="n">request</span>
+<span class="kn">from</span> <span class="nn">motmot</span> <span class="kn">import</span> <span class="n">Mesh</span>
+
+<span class="c1"># Pull an STL file from the internet and load it without an intermediate</span>
+<span class="c1"># temporary file.</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://raw.githubusercontent.com/bwoodsend/vtkplotlib/master/&quot;</span> \
+      <span class="s2">&quot;vtkplotlib/data/models/rabbit/rabbit.stl&quot;</span>
+
+<span class="k">with</span> <span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="k">as</span> <span class="n">req</span><span class="p">:</span>
+    <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="vertices-faces-meshes-vs-vectors-meshes">
+<h3>Vertices + Faces meshes vs Vectors meshes<a class="headerlink" href="#vertices-faces-meshes-vs-vectors-meshes" title="Permalink to this headline">¶</a></h3>
+<p>There are two forms of mesh.</p>
+<ol class="arabic simple">
+<li><p>A <em>vectors</em> mesh is essentially a list of polygons where
+each polygon is a list of points (its corners) and
+each point is an <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y,</span> <span class="pre">z)</span></code> triplet.
+This form is simple but wasteful because points which appear in multiple
+polygons are written multiple times which wastes memory and rendering time.</p></li>
+<li><p>A <em>vertices+faces</em> mesh takes all the unique points from a <em>vectors</em> mesh,
+calling them the <em>vertices</em>, then replaces each point in <em>vectors</em> with its
+index from <em>vertices</em>, calling this <em>faces</em>.
+Note that <em>faces</em> is often also known as <em>facets</em> or <em>polygons</em>.</p></li>
+</ol>
+<p>Motmot makes the two forms interchangeable.
+Each of <em>vectors</em>, <em>vertices</em> and <em>faces</em> are all available as attributes on all
+meshes but,
+depending on how a mesh is constructed,
+<em>vectors</em> may be internally derived from <em>vertices</em> and <em>faces</em> or vice-versa.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">motmot</span> <span class="kn">import</span> <span class="n">Mesh</span>
+
+<span class="c1"># Define the 8 vertices in a cuboid.</span>
+<span class="n">vertices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">3.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">3.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">3.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">3.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">],</span>
+<span class="p">])</span>
+
+<span class="c1"># Define the 6 sides of a cube or cuboid.</span>
+<span class="n">faces</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="c1"># Draw a square using vertices[6], vertices[2], vertices[0] and vertices[4]</span>
+    <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+    <span class="c1"># Draw a square using vertices[0], vertices[1], vertices[5] and vertices[4]</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+    <span class="c1"># And so on...</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+<span class="p">])</span>
+
+<span class="c1"># Construct a vertices+faces mesh.</span>
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
+<span class="c1"># This attribute is set to True to signify that this was originally a faces mesh.</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">is_faces_mesh</span>
+<span class="c1"># Although `vectors` can still be derived automatically.</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">vectors</span>
+
+<span class="c1"># Construct a vectors mesh.</span>
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">(</span><span class="n">vertices</span><span class="p">[</span><span class="n">faces</span><span class="p">])</span>
+<span class="c1"># This attribute is set to False to signify that this was originally a vectors</span>
+<span class="c1"># mesh.</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">is_faces_mesh</span>
+<span class="c1"># But `vertices` and `faces` can still be derived automatically.</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="mesh-properties">
+<h3>Mesh properties<a class="headerlink" href="#mesh-properties" title="Permalink to this headline">¶</a></h3>
+<p>This is just a brief summary of what is available.
+See the corresponding entry in the
+<a class="reference external" href="https://motmot.readthedocs.io/en/latest/stubs/mesh.html">the API reference</a>
+for more information on each property.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Outward normal to each polygon:</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">mesh</span><span class="o">.</span><span class="n">normals</span>
+<span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mf">45.</span><span class="p">,</span>   <span class="mf">0.</span><span class="p">,</span>   <span class="mf">0.</span><span class="p">],</span>
+       <span class="p">[</span> <span class="o">-</span><span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="mf">27.</span><span class="p">,</span>  <span class="o">-</span><span class="mf">0.</span><span class="p">],</span>
+       <span class="p">[</span> <span class="o">-</span><span class="mf">0.</span><span class="p">,</span>  <span class="o">-</span><span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="mf">15.</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">45.</span><span class="p">,</span>   <span class="mf">0.</span><span class="p">,</span>  <span class="o">-</span><span class="mf">0.</span><span class="p">],</span>
+       <span class="p">[</span> <span class="o">-</span><span class="mf">0.</span><span class="p">,</span>  <span class="mf">27.</span><span class="p">,</span>   <span class="mf">0.</span><span class="p">],</span>
+       <span class="p">[</span>  <span class="mf">0.</span><span class="p">,</span>   <span class="mf">0.</span><span class="p">,</span>  <span class="mf">15.</span><span class="p">]])</span>
+
+<span class="c1"># Normalised (magnitude of 1.0) outward normal to each polygon:</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">mesh</span><span class="o">.</span><span class="n">units</span>
+<span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">0.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">1.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">0.</span><span class="p">,</span>  <span class="mf">1.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">0.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">,</span>  <span class="mf">1.</span><span class="p">]])</span>
+
+<span class="c1"># Area of each polygon.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">mesh</span><span class="o">.</span><span class="n">areas</span>
+<span class="n">array</span><span class="p">([</span><span class="mf">45.</span><span class="p">,</span> <span class="mf">27.</span><span class="p">,</span> <span class="mf">15.</span><span class="p">,</span> <span class="mf">45.</span><span class="p">,</span> <span class="mf">27.</span><span class="p">,</span> <span class="mf">15.</span><span class="p">])</span>
+
+<span class="c1"># Total surface area (just a sum of mesh.areas).</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">mesh</span><span class="o">.</span><span class="n">area</span>
+<span class="mf">174.0</span>
+
+<span class="c1"># The number of times each vertex is used (which admittedly</span>
+<span class="c1"># isn&#39;t particularly interesting for a cuboid):</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_counts</span>
+<span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">int32</span><span class="p">)</span>
+
+<span class="c1"># A mapping of which other vertices each vertex is directly connect to.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_map</span>
+<span class="n">RaggedArray</span><span class="o">.</span><span class="n">from_nested</span><span class="p">([</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>  <span class="c1"># vertices[0] connects to vertices[[1, 7, 3]].</span>
+    <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>  <span class="c1"># vertices[1] connects to vertices[[2, 6, 0]].</span>
+    <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>  <span class="c1"># and so on...</span>
+    <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+<span class="p">])</span>
+
+<span class="c1"># Because this mesh&#39;s vertices appear the same number of times,</span>
+<span class="c1"># this example slightly trivialises the problem. Consider instead</span>
+<span class="c1"># a mesh with only the first three faces. Not all vertices have</span>
+<span class="c1"># the same number of neighbours.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">mesh</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">vertex_map</span>
+<span class="n">RaggedArray</span><span class="o">.</span><span class="n">from_nested</span><span class="p">([</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+<span class="p">])</span>
+
+<span class="c1"># If you prefer to use raw vertices rather than vertex ids then</span>
+<span class="c1"># use the connected_vertices() method.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">mesh</span><span class="o">.</span><span class="n">connected_vertices</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span>
+       <span class="p">[</span><span class="mf">3.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">],</span>
+       <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
+
+<span class="c1"># Similarly, `polygon_map` maps every polygon to each of its neighbours.</span>
+<span class="c1"># Read the first line of the following as *polygon 0 shares an edge each with</span>
+<span class="c1"># polygons 4, 2, 1 and 5*.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">mesh</span><span class="o">.</span><span class="n">polygon_map</span>
+<span class="n">array</span><span class="p">([[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="vertex-lookup">
+<h3>Vertex Lookup<a class="headerlink" href="#vertex-lookup" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">motmot</span></code> leverages two libraries for looking up vertices.</p>
+<ul class="simple">
+<li><p>hirola.HashTable for <a class="reference external" href="#exact-lookup">exact lookup</a></p></li>
+<li><p>pykdtree.kdtree.KDTree for <a class="reference external" href="#approximate-lookup">fuzzy lookup</a></p></li>
+</ul>
+<div class="section" id="id4">
+<h4>Exact lookup<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+<p>It is easy to convert vertex IDs to real vertices.
+Simply pass them as indices to <code class="docutils literal notranslate"><span class="pre">mesh.vertices</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">points</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">ids</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">points</span>
+<span class="go">array([[0., 0., 0.],</span>
+<span class="go">       [0., 0., 9.],</span>
+<span class="go">       [3., 0., 9.],</span>
+<span class="go">       [0., 5., 0.]])</span>
+</pre></div>
+</div>
+<p>Go the other way by indexing the <code class="docutils literal notranslate"><span class="pre">vertex_table</span></code> attribute.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_table</span><span class="p">[</span><span class="n">points</span><span class="p">]</span>
+<span class="go">array([0, 4, 5, 2], dtype=int64)</span>
+</pre></div>
+</div>
+<p>Some things to be aware of:</p>
+<ul>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">dtype</span></code> of the points queried must match <code class="docutils literal notranslate"><span class="pre">mesh.dtype</span></code>.</p></li>
+<li><p>As with regular floats in a regular Python <code class="docutils literal notranslate"><span class="pre">dict</span></code>,
+even the smallest deviation will cause lookup to fail.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_table</span><span class="p">[[</span><span class="mf">3.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]]</span>
+<span class="go">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_table</span><span class="p">[[</span><span class="mf">3.</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">9.00000000001</span><span class="p">]]</span>
+<span class="go">KeyError: &#39;key = array([3., 0., 9.]) is not in this table.&#39;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="approximate-lookup">
+<h4>Approximate lookup<a class="headerlink" href="#approximate-lookup" title="Permalink to this headline">¶</a></h4>
+<p>To find <em>nearest points</em>, <code class="docutils literal notranslate"><span class="pre">motmot</span></code> uses a <a class="reference external" href="https://github.com/storpipfugl/pykdtree">KDTree</a>.
+The API here is very shallow and it is quite likely that you may wish to
+create and use <code class="docutils literal notranslate"><span class="pre">KDTree</span></code>s directly rather than use <code class="docutils literal notranslate"><span class="pre">motmot</span></code>‘s methods.</p>
+<p>A KDTree, fitted to <code class="docutils literal notranslate"><span class="pre">mesh.centers</span></code> (the middle of each polygon),
+is found at the <code class="docutils literal notranslate"><span class="pre">mesh.kdtree</span></code> attribute.</p>
+<p>Given a set of points defined as:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">2.</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">,</span> <span class="mf">4.2</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.3</span><span class="p">,</span> <span class="mf">4.2</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">]],</span> <span class="n">mesh</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Find the nearest point on the mesh surface to each point:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">closest_point</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+<span class="go">array([[3. , 3.5, 4.2],</span>
+<span class="go">       [2.3, 4.2, 0. ]])</span>
+</pre></div>
+</div>
+<p>Or to restrict the output to only <code class="docutils literal notranslate"><span class="pre">mesh.centers</span></code> without interpolating between
+them:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">closest_point</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">interpolate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="go">array([[3. , 2.5, 4.5],</span>
+<span class="go">       [1.5, 2.5, 0. ]])</span>
+</pre></div>
+</div>
+<p>For anything else, use <code class="docutils literal notranslate"><span class="pre">mesh.kdtree</span></code> directly.</p>
+</div>
+</div>
+<div class="section" id="laziness">
+<h3>Laziness<a class="headerlink" href="#laziness" title="Permalink to this headline">¶</a></h3>
+<p>A <code class="docutils literal notranslate"><span class="pre">motmot.Mesh</span></code> <em>lazy loads</em> its properties using a backport of
+<a class="reference external" href="https://docs.python.org/3/library/functools.html#functools.cached_property">&#64;functools.cached_property</a>.
+This allows them to be calculated when only you need them so that no time is
+ever wasted calculating something which you do not use.
+Take for example, <a class="reference external" href="https://motmot.readthedocs.io/en/latest/stubs/mesh.html#motmot.Mesh.normals">mesh.normals</a>.
+Nothing is calculated on
+<code class="docutils literal notranslate"><span class="pre">mesh</span> <span class="pre">=</span> <span class="pre">Mesh(vertices,</span> <span class="pre">faces)</span></code> so that if the normals are never used then they are
+never calculated.
+Accessing the attribute <code class="docutils literal notranslate"><span class="pre">mesh.normals</span></code> initialises and returns
+them making <code class="docutils literal notranslate"><span class="pre">mesh.normals</span></code> look like a regular attribute on the outside.
+The value is cached so that the calculation never runs more than once.
+i.e. <code class="docutils literal notranslate"><span class="pre">mesh.normals</span> <span class="pre">is</span> <span class="pre">mesh.normals</span></code>.</p>
+<p>Caches should be reset after a mesh is modified.
+Most of this is done automatically.
+Mesh modifier methods such as <code class="docutils literal notranslate"><span class="pre">rotate()</span></code>, <code class="docutils literal notranslate"><span class="pre">translate()</span></code> or <code class="docutils literal notranslate"><span class="pre">crop(in_place=True)</span></code>
+will all invalidate affected caches themselves.
+Similarly, setting any of the <code class="docutils literal notranslate"><span class="pre">vertices</span></code>, <code class="docutils literal notranslate"><span class="pre">faces</span></code> or <code class="docutils literal notranslate"><span class="pre">vectors</span></code> attributes will
+reset all caches.
+Writing in place to those arrays (e.g. <code class="docutils literal notranslate"><span class="pre">mesh.vectors[:]</span> <span class="pre">=</span> <span class="pre">x</span></code>) however
+is undetectable to <code class="docutils literal notranslate"><span class="pre">motmot</span></code>.
+Call <code class="docutils literal notranslate"><span class="pre">mesh.reset()</span></code> after doing an in place modification.</p>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="stubs/mesh.html">Mesh API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stubs/geometry.html">Geometry API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stubs/connectivity.html">Connectivity API reference</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="stubs/mesh.html" class="btn btn-neutral float-right" title="Mesh API reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2021, Brénainn Woodsend
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
