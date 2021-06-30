@@ -66,26 +66,26 @@ def test_connected_polygons():
     assert not upper_half[self.connected_polygons(upper_half.argmin())].any()
     assert upper_half[self.connected_polygons(upper_half.argmax())].all()
 
-    ids, count = self.group_connected_polygons()
+    faces, count = self.group_connected_polygons()
     assert count == 2
-    assert ids[0] == 0
+    assert faces[0] == 0
 
-    assert np.all(ids[~upper_half] == upper_half[0])
-    assert np.all(ids[upper_half] == 1 - upper_half[0])
+    assert np.all(faces[~upper_half] == upper_half[0])
+    assert np.all(faces[upper_half] == 1 - upper_half[0])
 
     from rockhopper import RaggedArray
-    grouped = RaggedArray.group_by(self.vectors, ids, count)
+    grouped = RaggedArray.group_by(self.vectors, faces, count)
     halves = [Mesh(i) for i in grouped]
-    assert (self[ids == 0].vectors == halves[0].vectors).all()
-    assert (self[ids == 1].vectors == halves[1].vectors).all()
+    assert (self[faces == 0].vectors == halves[0].vectors).all()
+    assert (self[faces == 1].vectors == halves[1].vectors).all()
 
 
 def test_closed_vertex_map():
     """Test Mesh.vertex_map on the simplest possible closed mesh - a
     tetrahedron."""
     vertices = np.array([[1, 0, 0], [0, 1, 0], [0, -1, 0], [0, 0, 1]])
-    ids = np.array([[2, 1, 0], [1, 2, 3], [0, 3, 2], [3, 0, 1]])
-    self = Mesh(vertices, ids)
+    faces = np.array([[2, 1, 0], [1, 2, 3], [0, 3, 2], [3, 0, 1]])
+    self = Mesh(vertices, faces)
 
     # In a tetrahedron, each vertex is connected to every other vertex except
     # itself. So the vertex_map RaggedArray will have 4 rows all of length 3.
@@ -126,8 +126,8 @@ def test_non_closed_vertex_map():
 
         # Ideally we'd check that ``self.vertices[neighbours] == expected`` but
         # the order is not guaranteed so this will fail without some
-        # pre-sorting. Sorting vertices is fiddly. Instead look up their ids,
-        # sort those, then compare to ``sorted(neighbours)``.
+        # pre-sorting. Sorting vertices is fiddly. Instead look up their
+        # vertex IDs, sort those, then compare to ``sorted(neighbours)``.
         expected_ids = self.vertex_table[expected]
         assert sorted(neighbours) == sorted(expected_ids)
 
@@ -177,7 +177,7 @@ def test_on_boundary():
 def test_local_maxima(strict):
     # Create an egg-box shaped (hilly) surface.
     self = square_grid(30)
-    self = Mesh(self.vertex_table.destroy(), self.ids)
+    self = Mesh(self.vertex_table.destroy(), self.faces)
     self.vertices[:, 2] = np.round(
         np.sin(10 * np.pi * (self.vertices[:, 0] + .05)) *
         np.sin(10 * np.pi * self.vertices[:, 1]), 5) * .1
@@ -218,7 +218,7 @@ def test_local_maxima(strict):
 
 @pytest.mark.parametrize("strict", [False, True])
 def test_local_maxima_with_colliding_indices(strict):
-    """Test Mesh().local_maxima() where columns in mesh.ids contain duplicates
+    """Test Mesh().local_maxima() where columns in mesh.faces contain duplicates
     and those duplicates disagree on whether the duplicated vertex id is a local
     maxima. Prevents a nastily subtle bug caused by NumPy's buffering."""
 
@@ -226,16 +226,16 @@ def test_local_maxima_with_colliding_indices(strict):
     # height.
     vertices = geometry.zip(0, 0, [1, 2, 3])
     heights = vertices[:, 2]
-    # The middle vertex id (1) appears in the same column of ids.
-    ids = [[1, 0], [1, 2]]
+    # The middle vertex id (1) appears in the same column of faces.
+    faces = [[1, 0], [1, 2]]
 
     # The only local maxima is the 3rd point. But if done wrong, the middle
     # point may be included too.
 
     # Try where (1, 0) is seen before (1, 2).
-    self = Mesh(vertices, ids)
+    self = Mesh(vertices, faces)
     assert self.local_maxima(heights, boundaries=True).tolist() == [2]
 
     # Try where (1, 0) is seen after (1, 2).
-    self = Mesh(vertices, ids[::-1])
+    self = Mesh(vertices, faces[::-1])
     assert self.local_maxima(heights, boundaries=True).tolist() == [2]

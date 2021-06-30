@@ -40,13 +40,13 @@ independent = Independency()
 
 class Mesh(object):
     __vectors__: np.ndarray
-    __ids__: np.ndarray
+    __faces__: np.ndarray
     __vertices__: np.ndarray
-    is_ids_mesh: bool = False
-    """If true, this mesh internally uses :attr:`vertices` and :attr:`ids`.
+    is_faces_mesh: bool = False
+    """If true, this mesh internally uses :attr:`vertices` and :attr:`faces`.
     Otherwise, it uses :attr:`vectors`."""
 
-    def __init__(self, vertices, ids=None, name=""):
+    def __init__(self, vertices, faces=None, name=""):
         """A :class:`Mesh` can be constructed in three different ways:
 
         1. From a filename or file-like binary stream::
@@ -57,7 +57,7 @@ class Mesh(object):
            where ``n`` is the number of polygons and ``d`` is the number of
            vertices per polygon.
 
-        3. From :attr:`vertices` and polygon :attr:`ids`.
+        3. From :attr:`vertices` and polygon :attr:`faces`.
 
         Currently only STL files can be read directly. For other 3D files, read
         using meshio_ then convert to :class:`motmot.Mesh`::
@@ -72,7 +72,7 @@ class Mesh(object):
         .. _meshio: https://github.com/nschloe/meshio
 
         """
-        if ids is None:
+        if faces is None:
             if isinstance(vertices, (str, os.PathLike)):
                 file = read_archived(vertices)
                 self.__init__(file, name=name)
@@ -88,9 +88,9 @@ class Mesh(object):
             else:
                 self.vectors = vertices
         else:
-            self.is_ids_mesh = True
+            self.is_faces_mesh = True
             self.vertices = vertices
-            self.ids = ids
+            self.faces = faces
         self.name = name
 
         self._bounds = np.empty((2, 3), self.dtype)
@@ -98,12 +98,12 @@ class Mesh(object):
     _vertex_table: HashTable
 
     def __repr__(self):
-        if not self.is_ids_mesh:
+        if not self.is_faces_mesh:
             return f"<Vectors {type(self).__name__} at {hex(id(self))} | " \
                    f"{len(self)} {self.vectors.shape[1]}-sided polygons>"
-        return f"<IDs {type(self).__name__} at {hex(id(self))} | " \
+        return f"<Faces {type(self).__name__} at {hex(id(self))} | " \
                f"{len(self.vertices)} vertices | " \
-               f"{len(self)} {self.ids.shape[1]}-sided polygons>"
+               f"{len(self)} {self.faces.shape[1]}-sided polygons>"
 
     @property
     def path(self) -> Optional[Path]:
@@ -132,7 +132,7 @@ class Mesh(object):
         with this mesh's unique vertices as its keys and an enumeration as its
         values.
 
-        To get a vertex id (or ids) for a given point(s) use::
+        To get a vertex ID (or IDs) for a given point(s) use::
 
             ids = mesh.vertex_table[points]
 
@@ -144,7 +144,7 @@ class Mesh(object):
         :meth:`mesh.vertex_table.contains() <hirola.HashTable.contains>`.
 
         """
-        if not self.is_ids_mesh:
+        if not self.is_faces_mesh:
             points = self.__vectors__
             length = points.shape[0] * points.shape[1]
         else:
@@ -156,15 +156,15 @@ class Mesh(object):
         # and a key dtype of 3 numbers (probably floats).
         table = HashTable(int(1.25 * length), points.dtype * 3)
         # Add all points to the table logging the vertex ID for each point.
-        ids = table.add(points)
+        faces = table.add(points)
 
-        if not self.is_ids_mesh:
-            # For vectors meshes, set ids attribute.
-            self.__ids__ = ids
+        if not self.is_faces_mesh:
+            # For vectors meshes, set faces attribute.
+            self.__faces__ = faces
         elif len(table) < len(self.__vertices__):
-            # For ids meshes, `self.ids` should already be set and be identical
-            # to the `ids` found above unless there were duplicates in
-            # `self.vertices`. These can cause some algorithms to break.
+            # For faces meshes, `self.faces` should already be set and be
+            # identical to the `faces` found above unless there were duplicates
+            # in `self.vertices`. These can cause some algorithms to break.
             warnings.warn("Duplicate vertices in mesh.vertices.")
 
         return table
@@ -173,7 +173,7 @@ class Mesh(object):
     def dtype(self):
         """The :class:`numpy.dtype` of :attr:`vertices` and :attr:`vectors`.
         """
-        if self.is_ids_mesh:
+        if self.is_faces_mesh:
             return self.__vertices__.dtype
         return self.__vectors__.dtype
 
@@ -181,17 +181,17 @@ class Mesh(object):
     def vertices(self) -> np.ndarray:
         """All points in the mesh with duplicity removed.
 
-        If this mesh is not originally an IDs mesh, i.e. :attr:`vertices` had to
-        be calculated from :attr:`vectors`, then this array is read-only.
+        If this mesh is not originally an faces mesh, i.e. :attr:`vertices` had
+        to be calculated from :attr:`vectors`, then this array is read-only.
 
         """
-        if self.is_ids_mesh:
+        if self.is_faces_mesh:
             return self.__vertices__
         return self.vertex_table.keys
 
     @vertices.setter
     def vertices(self, x):
-        if not self.is_ids_mesh:
+        if not self.is_faces_mesh:
             raise ValueError("A vectors mesh's vertices are readonly. "
                              "Write to mesh.vectors instead.")
         # Vertices must be C contiguous for hirola.HashTable.
@@ -211,24 +211,24 @@ class Mesh(object):
         self.reset()
 
     @property
-    def ids(self) -> np.ndarray:
+    def faces(self) -> np.ndarray:
         """Indices of vertices used to construct each polygon.
 
         Returns:
             Integer array with shape :py:`(len(mesh), mesh.per_polygon)`.
 
         """
-        if self.is_ids_mesh:
-            return self.__ids__
-        return self._ids_from_vectors
+        if self.is_faces_mesh:
+            return self.__faces__
+        return self._faces_from_vectors
 
-    @ids.setter
-    def ids(self, x):
-        if not self.is_ids_mesh:
-            raise ValueError("A vectors mesh's ids are readonly. "
+    @faces.setter
+    def faces(self, x):
+        if not self.is_faces_mesh:
+            raise ValueError("A vectors mesh's faces are readonly. "
                              "Write to mesh.vectors instead.")
 
-        # ids must be C contiguous and of a fixed dtype for the various C
+        # faces must be C contiguous and of a fixed dtype for the various C
         # functions to work.
         x = np.asarray(x, dtype=np.intp, order="C")
 
@@ -236,19 +236,19 @@ class Mesh(object):
         if x.size == 0 and x.ndim == 1:
             x = np.empty((0, 3), np.intp)
 
-        self.__ids__ = as_nD(x, 2, "ids")
+        self.__faces__ = as_nD(x, 2, "faces")
         self.reset()
 
     @independent.of("translate", "rotate")
     @cached_property
-    def _ids_from_vectors(self):
+    def _faces_from_vectors(self):
         self.vertex_table
-        return self.__ids__
+        return self.__faces__
 
     @cached_property
-    def _vectors_from_ids(self):
-        assert self.is_ids_mesh
-        return self.__vertices__[self.__ids__]
+    def _vectors_from_faces(self):
+        assert self.is_faces_mesh
+        return self.__vertices__[self.__faces__]
 
     @property
     def vectors(self) -> np.ndarray:
@@ -258,14 +258,14 @@ class Mesh(object):
             An :py:`(number of polygons, mesh.per_polygon, 3)` shaped array.
 
         """
-        if self.is_ids_mesh:
-            return self._vectors_from_ids
+        if self.is_faces_mesh:
+            return self._vectors_from_faces
         return self.__vectors__
 
     @vectors.setter
     def vectors(self, x):
-        if self.is_ids_mesh:
-            raise ValueError("An ids mesh's vectors are readonly. "
+        if self.is_faces_mesh:
+            raise ValueError("A faces mesh's vectors are readonly. "
                              "Write to mesh.vertices instead.")
         x = np.ascontiguousarray(x)
         if x.ndim != 3 or x.shape[-1] != 3:
@@ -297,24 +297,25 @@ class Mesh(object):
 
     def __len__(self):
         """Length is defined as the number of polygons."""
-        return len(self.__ids__ if self.is_ids_mesh else self.__vectors__)
+        return len(self.__faces__ if self.is_faces_mesh else self.__vectors__)
 
     @property
     def per_polygon(self) -> int:
         """The number of corners each polygon has."""
-        return (self.__ids__ if self.is_ids_mesh else self.__vectors__).shape[1]
+        return (self.__faces__
+                if self.is_faces_mesh else self.__vectors__).shape[1]
 
     @independent.of("translate", "rotate")
     @cached_property
     def vertex_counts(self) -> np.ndarray:
-        """The number of times each vertex id appears in :attr:`ids`.
+        """The number of times each vertex id appears in :attr:`faces`.
 
         Returns:
             1D integer array with the same length as :attr:`vertices`.
 
         """
         counts = np.zeros(len(self.vertices), np.intc)
-        np.add.at(counts, self.ids, 1)
+        np.add.at(counts, self.faces, 1)
         return counts
 
     @cached_property
@@ -432,15 +433,15 @@ class Mesh(object):
     def _vertex_normals(self):
         """Raw un-normalised vertex normals."""
         normals = np.zeros_like(self.vertices)
-        for ids in self.ids.T:
-            np.add.at(normals, ids, self.normals)
+        for faces in self.faces.T:
+            np.add.at(normals, faces, self.normals)
         return normals
 
     def translate(self, translation):
         """Move this mesh without rotating."""
         # Avoid inplace array modification because it either breaks or loses
         # precision if the dtypes don't match.
-        if self.is_ids_mesh:
+        if self.is_faces_mesh:
             self.__vertices__ = self.__vertices__ + translation
         else:
             self.__vectors__ = self.__vectors__ + translation
@@ -463,7 +464,7 @@ class Mesh(object):
             return
 
         # Inplace matrix multiplication (i.e. ``@=``) is not allowed.
-        if self.is_ids_mesh:
+        if self.is_faces_mesh:
             self.__vertices__ = self.__vertices__ @ rotation_matrix
         else:
             self.__vectors__ = self.__vectors__ @ rotation_matrix
@@ -485,14 +486,15 @@ class Mesh(object):
         self._reset_all(self)
 
     def __getitem__(self, item) -> 'Mesh':
-        if self.is_ids_mesh:
-            return type(self)(self.vertices, self.ids[item], name=self.name)
+        if self.is_faces_mesh:
+            return type(self)(self.vertices, self.faces[item], name=self.name)
         return type(self)(self.vectors[item], name=self.name)
 
     @staticmethod
     def __array__():
-        raise TypeError("Meshes can't be converted directly to arrays. Use one "
-                        "of `vertices`, `vectors` or `ids` attributes instead.")
+        raise TypeError(
+            "Meshes can't be converted directly to arrays. Use one "
+            "of `vertices`, `vectors` or `faces` attributes instead.")
 
     def crop(self, mask: Union[np.ndarray, slice],
              in_place: bool = False) -> 'Mesh':
@@ -515,10 +517,10 @@ class Mesh(object):
             # Get only polygons with non-negative average Z-values.
             cropped = mesh.crop(mesh.centers[:, 2] >= 0)
 
-        For an IDs based mesh this samples :attr:`ids` and leaves
+        For a faces mesh this samples :attr:`faces` and leaves
         :attr:`vertices` untouched without copying and is equivalent to::
 
-            cropped = Mesh(mesh.vertices, mesh.ids[mask], name=mesh.name)
+            cropped = Mesh(mesh.vertices, mesh.faces[mask], name=mesh.name)
 
         For a vectors based mesh this function simply samples :attr:`vectors`::
 
@@ -537,8 +539,8 @@ class Mesh(object):
         """
         if not in_place:
             return self[mask]
-        if self.is_ids_mesh:
-            self.__ids__ = self.__ids__[mask]
+        if self.is_faces_mesh:
+            self.__faces__ = self.__faces__[mask]
         else:
             self.__vectors__ = self.__vectors__[mask]
         self.reset()
@@ -564,8 +566,8 @@ class Mesh(object):
         Args:
             deep:
                 If true, copy the underlying :attr:`vectors` or :attr:`vertices`
-                and :attr:`ids` arrays. Otherwise output will share these arrays
-                with this mesh.
+                and :attr:`faces` arrays. Otherwise output will share these
+                arrays with this mesh.
         Returns:
             Another mesh.
 
@@ -575,17 +577,17 @@ class Mesh(object):
         return self.__deepcopy__({}) if deep else self.__copy__()
 
     def __getstate__(self):
-        if self.is_ids_mesh:
+        if self.is_faces_mesh:
             return {
                 "vertices": self.__vertices__,
-                "ids": self.__ids__,
+                "faces": self.__faces__,
                 "name": self.name,
                 "path": self.path,
             }
         return {"vectors": self.vectors, "name": self.name, "path": self.path}
 
     def __setstate__(self, dic):
-        self.__init__(dic.get("vectors", dic.get("vertices")), dic.get("ids"),
+        self.__init__(dic.get("vectors", dic.get("vertices")), dic.get("faces"),
                       dic["name"])
         self.path = dic["path"]
 
@@ -612,8 +614,8 @@ class Mesh(object):
         """Maps each polygon to its adjacent (shares a common edge) polygons.
 
         The format is an numpy int array with the same shape as
-        :attr:`Mesh.ids`. A polygon is referenced by its position in
-        :attr:`Mesh.ids` (or :attr:`Mesh.vectors`).
+        :attr:`Mesh.faces`. A polygon is referenced by its position in
+        :attr:`Mesh.faces` (or :attr:`Mesh.vectors`).
 
         For example, assume a triangular mesh is called  ``mesh``. And suppose
         :py:`mesh.polygon_map[n]` is :py:`[i, j, k]`, then:
@@ -633,7 +635,7 @@ class Mesh(object):
 
         """
         from motmot._polygon_map import make_polygon_map
-        return make_polygon_map(self.ids, len(self.vertices))
+        return make_polygon_map(self.faces, len(self.vertices))
 
     def connected_polygons(self, initial, mask=None, polygon_map=None):
         """Recursively walk connected polygons.
@@ -683,13 +685,13 @@ class Mesh(object):
             ragged = RaggedArray.group_by(mesh.vectors, *mesh.group_connected_polygons())
             sub_meshes = [Mesh(i) for i in ragged]
 
-        Or if your using vertices/ids meshes::
+        Or if your using vertices/faces meshes::
 
             from rockhopper import RaggedArray
-            ragged = RaggedArray.group_by(mesh.ids, *mesh.group_connected_polygons())
-            sub_meshes = [Mesh(mesh.vertices, ids) for ids in ragged]
+            ragged = RaggedArray.group_by(mesh.faces, *mesh.group_connected_polygons())
+            sub_meshes = [Mesh(mesh.vertices, faces) for faces in ragged]
 
-        Note that both will work irregardless of :attr:`is_ids_mesh`, however
+        Note that both will work irregardless of :attr:`is_faces_mesh`, however
         the mismatched implementation will be slower.
 
         """
@@ -751,7 +753,7 @@ class Mesh(object):
         .. seealso::
 
             :meth:`connected_vertices` if you prefer to work directly with
-            vertices rather than vertex ids.
+            vertices rather than vertex faces.
 
         """
         # In a closed mesh each edge is written once going from A to B and once
@@ -765,24 +767,24 @@ class Mesh(object):
 
         # To make the map requires an array listing the start of each edge
         # and an array listing the end of each edge.
-        starts = np.empty(self.ids.size + len(singular), np.intc)
-        ends = np.empty(self.ids.size + len(singular), np.intc)
+        starts = np.empty(self.faces.size + len(singular), np.intc)
+        ends = np.empty(self.faces.size + len(singular), np.intc)
 
         for i in range(self.per_polygon):
             # Add only the counter-clockwise edges.
             # There is usually no need to add clockwise edges because the
             # polygon on the opposite side of the edge will add it.
             s = slice(i * len(self), (1 + i) * len(self))
-            starts[s] = self.ids[:, i]
-            ends[s] = self.ids[:, (i + 1) % self.per_polygon]
+            starts[s] = self.faces[:, i]
+            ends[s] = self.faces[:, (i + 1) % self.per_polygon]
 
         if len(singular):
             # Add the edges going clockwise for the *singular* edges. i.e
             # Those which have no polygon on the other side of the edge.
             s = slice(-len(singular), None)
-            starts[s] = self.ids[singular[:, 0],
-                                 (singular[:, 1] + 1) % self.per_polygon]
-            ends[s] = self.ids[singular[:, 0], singular[:, 1]]
+            starts[s] = self.faces[singular[:, 0],
+                                   (singular[:, 1] + 1) % self.per_polygon]
+            ends[s] = self.faces[singular[:, 0], singular[:, 1]]
 
         return RaggedArray.group_by(ends, starts, len(self.vertices))
 
@@ -813,7 +815,7 @@ class Mesh(object):
         return self.vertices[self.vertex_map[self.vertex_table[vertex]]]
 
     @cached_property
-    def _reverse_ids(self):
+    def _reverse_faces(self):
         """A mapping of which polygons each vertex is in.
 
         This mapping uses flat indices. i.e. To find all instances of vertex
@@ -822,12 +824,13 @@ class Mesh(object):
             polygon_ids, corners = \\
                 np.divmod(self._reverse_ids[123], self.per_polygon)
 
-        Then ``self.ids[polygon_ids, corners]`` will all equal 123.
+        Then ``self.faces[polygon_ids, corners]`` will all equal 123.
 
         """
         # I'm keeping this private for now as I'm not convinced that it'll be
         # that useful.
-        return RaggedArray.group_by(np.arange(self.ids.size), self.ids.ravel())
+        return RaggedArray.group_by(np.arange(self.faces.size),
+                                    self.faces.ravel())
 
     def on_boundary(self, vertex: Union[np.ndarray, Integral]) -> bool:
         """Test if a **vertex** touches the edge of this mesh.
@@ -851,9 +854,10 @@ class Mesh(object):
             id = self.vertex_table[vertex]
         if not np.isscalar(id):
             raise ValueError("Only single vertices are supported.")
-        polygons, sub_ids = np.divmod(self._reverse_ids[id], self.per_polygon)
-        return np.any(self.polygon_map[polygons, sub_ids] == -1) \
-               or np.any(self.polygon_map[polygons, sub_ids - 1] == -1)
+        polygons, sub_faces = np.divmod(self._reverse_faces[id],
+                                        self.per_polygon)
+        return np.any(self.polygon_map[polygons, sub_faces] == -1) \
+               or np.any(self.polygon_map[polygons, sub_faces - 1] == -1)
 
     @cached_property
     def kdtree(self):
@@ -957,8 +961,8 @@ class Mesh(object):
         less_than = operator.lt if strict else operator.le
 
         for i in range(self.per_polygon):
-            this = self.ids[:, i]
-            next = self.ids[:, i - 1]
+            this = self.faces[:, i]
+            next = self.faces[:, i - 1]
             # If the next vertex round is higher, then this is not a local
             # maxima. Read as:
             #   mask[this] &= less_than(heights[next], heights[this])

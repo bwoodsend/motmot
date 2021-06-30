@@ -15,7 +15,7 @@ typedef struct RaggedArray
 } RaggedArray;
 
 
-void populate_polygon_map(ptrdiff_t * polygon_map, ptrdiff_t * ids,
+void populate_polygon_map(ptrdiff_t * polygon_map, ptrdiff_t * faces,
                           int n, int d,
                           RaggedArray * dest_vertices, RaggedArray * polygons) {
 
@@ -33,11 +33,11 @@ void populate_polygon_map(ptrdiff_t * polygon_map, ptrdiff_t * ids,
     for (int j = 0; j < d; j++) {
 
       // Get the edge to search for.
-      // We have to do some pointer arithmetic because ``ids`` is a 2D
+      // We have to do some pointer arithmetic because ``faces`` is a 2D
       // array in Python but 1D in C.
-      ptrdiff_t * ids_row = ids + (d * i);
-      ptrdiff_t v0 = ids_row[j];
-      ptrdiff_t v1 = ids_row[(j + 1) % d];
+      ptrdiff_t * faces_row = faces + (d * i);
+      ptrdiff_t v0 = faces_row[j];
+      ptrdiff_t v1 = faces_row[(j + 1) % d];
 
       // Find, and default to -1, where we'll write the answer to.
       ptrdiff_t * neighbour = polygon_map + (d * i) + j;

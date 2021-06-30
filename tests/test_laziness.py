@@ -7,7 +7,7 @@ import numpy as np
 import pytest
 
 from motmot import Mesh, geometry, _compat, Curvature
-from tests import data, ids_mesh, vectors_mesh
+from tests import data, faces_mesh, vectors_mesh
 
 pytestmark = pytest.mark.order(-1)
 
@@ -78,8 +78,8 @@ def test_lazy_updates(modifier, attr, use_id_mesh):
 
     # Get two copies of the same mesh.
     if use_id_mesh:
-        trial = ids_mesh(10)
-        placebo = Mesh(trial.vertices.copy(), trial.ids.copy())
+        trial = faces_mesh(10)
+        placebo = Mesh(trial.vertices.copy(), trial.faces.copy())
     else:
         trial = vectors_mesh(10)
         placebo = Mesh(trial.vectors.copy())

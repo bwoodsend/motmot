@@ -17,12 +17,12 @@ def assert_mesh_equal(a: Mesh, b: Mesh, ignore_path=False):
     """
     import numpy as np
     assert np.all(a.vectors == b.vectors)
-    assert np.all(a.ids == b.ids)
+    assert np.all(a.faces == b.faces)
     assert np.all(a.vertices == b.vertices)
     assert a.name == b.name
     if not ignore_path:
         assert a.path == b.path
-    assert a.is_ids_mesh == b.is_ids_mesh
+    assert a.is_faces_mesh == b.is_faces_mesh
 
 
 def unique_vertices(n):
@@ -33,16 +33,17 @@ def unique_vertices(n):
     return table.destroy()
 
 
-def ids_mesh(n, d=3):
+def faces_mesh(n, d=3):
     np.random.seed(0)
     vertices = unique_vertices(n * 3 // 2)
-    ids = np.append(np.arange(len(vertices)),
-                    np.random.randint(0, len(vertices), n * d - len(vertices)))
-    return Mesh(vertices, ids.reshape((n, d)))
+    faces = np.append(
+        np.arange(len(vertices)),
+        np.random.randint(0, len(vertices), n * d - len(vertices)))
+    return Mesh(vertices, faces.reshape((n, d)))
 
 
 def vectors_mesh(n, d=3):
-    _mesh = ids_mesh(n, d)
+    _mesh = faces_mesh(n, d)
     return Mesh(_mesh.vectors)
 
 
@@ -60,13 +61,13 @@ def cylinder(n):
     vertices[:n, 0] = np.cos(t, out=vertices[n:, 0])
     vertices[:n, 1] = np.sin(t, out=vertices[n:, 1])
 
-    ids = np.empty((n, 4), dtype=int)
-    ids[:, 0] = np.arange(0, n)
-    ids[:, 1] = np.arange(n, 2 * n)
-    ids[:, 2] = np.roll(ids[:, 1], 1)
-    ids[:, 3] = np.roll(ids[:, 0], 1)
+    faces = np.empty((n, 4), dtype=int)
+    faces[:, 0] = np.arange(0, n)
+    faces[:, 1] = np.arange(n, 2 * n)
+    faces[:, 2] = np.roll(faces[:, 1], 1)
+    faces[:, 3] = np.roll(faces[:, 0], 1)
 
-    return Mesh(vertices, ids)
+    return Mesh(vertices, faces)
 
 
 def square_grid(n):

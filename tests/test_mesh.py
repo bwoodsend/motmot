@@ -9,27 +9,27 @@ import numpy as np
 import pytest
 
 from motmot import Mesh, geometry
-from tests import data, ids_mesh, vectors_mesh, assert_mesh_equal, closed_mesh
+from tests import data, faces_mesh, vectors_mesh, assert_mesh_equal, closed_mesh
 
 pytestmark = pytest.mark.order(2)
 
 
 def test_basics():
-    """Test the basics of a mesh, generating vertices/ids from a vectors mesh
-    and vectors from a vertices/ids mesh."""
+    """Test the basics of a mesh, generating vertices/faces from a vectors mesh
+    and vectors from a vertices/faces mesh."""
     # Read a mesh from an STL file. This is automatically a vectors mesh.
     mesh = Mesh(data.rabbit_path, name="cat")
     assert mesh.name == "cat"
 
-    # Test generating vertices/ids from a vectors mesh.
+    # Test generating vertices/faces from a vectors mesh.
     # The work is all handled by hirola and therefore doesn't need to be tested
     # extensively here.
-    assert np.array_equal(mesh.vectors, mesh.vertices[mesh.ids])
-    _assert_first_appearances_are_sorted(mesh.ids.flat, len(mesh.vertices))
+    assert np.array_equal(mesh.vectors, mesh.vertices[mesh.faces])
+    _assert_first_appearances_are_sorted(mesh.faces.flat, len(mesh.vertices))
 
-    # A vertices/ids mesh.
-    self = Mesh(mesh.vertices, mesh.ids, name="octopus")
-    assert self.ids is mesh.ids
+    # A vertices/faces mesh.
+    self = Mesh(mesh.vertices, mesh.faces, name="octopus")
+    assert self.faces is mesh.faces
     assert np.array_equal(self.vertices, mesh.vertices)
     assert self.name == "octopus"
 
@@ -37,13 +37,14 @@ def test_basics():
     assert len(mesh) == len(self) == len(mesh.vectors)
     assert mesh.per_polygon == self.per_polygon == mesh.vectors.shape[1]
 
-    # Test generating vectors from vertices/ids.
+    # Test generating vectors from vertices/faces.
     assert np.array_equal(self.vectors, mesh.vectors)
     assert len(self.vertex_table) == len(self.vertices)
 
-    # Test the duplicity warning for duplicate vertices in a vertices/ids mesh.
+    # Test the duplicity warning for duplicate vertices in a vertices/faces
+    # mesh.
     vertices_with_duplicate = mesh.vertices[np.arange(-1, len(mesh.vertices))]
-    contains_duplicate = Mesh(vertices_with_duplicate, mesh.ids)
+    contains_duplicate = Mesh(vertices_with_duplicate, mesh.faces)
     with pytest.warns(UserWarning):
         contains_duplicate.vertex_table
 
@@ -108,7 +109,7 @@ def test_normals():
 
 
 def test_square_normals():
-    self = ids_mesh(10, 4)
+    self = faces_mesh(10, 4)
     magnitudes = geometry.magnitude_sqr(self.units)
     assert magnitudes[np.isfinite(magnitudes)] == pytest.approx(1)
 
@@ -143,7 +144,7 @@ def test_vertex_normals():
 
 
 def test_translate():
-    self = ids_mesh(5)
+    self = faces_mesh(5)
     old = self.vertices.copy()
     self.translate([1, 2, 3])
     assert np.all(self.vertices == old + [1, 2, 3])
@@ -157,7 +158,7 @@ def test_translate():
 def test_rotate():
     m = Mesh.rotation_matrix([0, 0, 1], np.pi / 2).round(3)
 
-    self = ids_mesh(5)
+    self = faces_mesh(5)
     old = self.vertices.copy()
     self.rotate_using_matrix(m)
     assert np.all(self.vertices.T == [old[:, 1], -old[:, 0], old[:, 2]])
@@ -165,13 +166,13 @@ def test_rotate():
     self.rotate_using_matrix(m, [1, 0, 0])
     assert np.all(self.vertices.T == [1 - old[:, 0], 1 - old[:, 1], old[:, 2]])
 
-    self = Mesh(old[self.ids])
+    self = Mesh(old[self.faces])
     self.rotate_using_matrix(m)
     assert np.all(self.vectors == vectors)
 
 
 def test_reset():
-    self = ids_mesh(10)
+    self = faces_mesh(10)
     old = self.vectors
     self.vertices[:] += 1
     assert np.array_equal(self.vectors, old)
@@ -186,10 +187,12 @@ def test_repr():
 
     r = repr(Mesh(np.empty((10, 3)), np.empty((6, 4))))
     assert re.fullmatch(
-        r'<IDs Mesh at 0x[0-9a-fA-F]+ \| 10 vertices \| 6 4-sided polygons>', r)
+        r'<Faces Mesh at 0x[0-9a-fA-F]+ \| 10 vertices \| 6 4-sided polygons>',
+        r,
+    )
 
 
-@pytest.mark.parametrize("make_mesh", [ids_mesh, vectors_mesh])
+@pytest.mark.parametrize("make_mesh", [faces_mesh, vectors_mesh])
 @pytest.mark.parametrize("in_place", [False, True])
 @pytest.mark.parametrize("crop_at", [np.min, np.mean, np.max])
 def test_cropped(make_mesh, in_place, crop_at):
@@ -211,7 +214,7 @@ shallow_copy_methods = [lambda mesh: mesh.copy(deep=False), copy.copy]
 
 @pytest.mark.parametrize("copy_method",
                          shallow_copy_methods + deep_copy_methods)
-@pytest.mark.parametrize("make_mesh", [ids_mesh, vectors_mesh])
+@pytest.mark.parametrize("make_mesh", [faces_mesh, vectors_mesh])
 def test_copy(copy_method, make_mesh):
     """Test shallow copying either using Mesh.copy(deep=False) or copy.copy().
     Test deep-copying via Mesh.copy(), copy.deepcopy() and pickle/unpickle."""
@@ -221,40 +224,40 @@ def test_copy(copy_method, make_mesh):
 
     if copy_method in shallow_copy_methods:
         # This is a shallow copy. The contents should be the same objects.
-        if mesh.is_ids_mesh:
-            assert copy.__ids__ is mesh.__ids__
+        if mesh.is_faces_mesh:
+            assert copy.__faces__ is mesh.__faces__
             assert copy.__vertices__ is mesh.__vertices__
         else:
             assert copy.__vectors__ is mesh.__vectors__
     else:
 
         # This is a deep copy. The contents should be copied too.
-        if mesh.is_ids_mesh:
-            assert not np.shares_memory(copy.__ids__, mesh.__ids__)
+        if mesh.is_faces_mesh:
+            assert not np.shares_memory(copy.__faces__, mesh.__faces__)
             assert not np.shares_memory(copy.__vertices__, mesh.__vertices__)
         else:
             assert not np.shares_memory(copy.__vectors__, mesh.__vectors__)
 
 
-@pytest.mark.parametrize("make_mesh", [ids_mesh, vectors_mesh])
+@pytest.mark.parametrize("make_mesh", [faces_mesh, vectors_mesh])
 def test_centers(make_mesh):
     self = make_mesh(100)
     assert self.centers == pytest.approx(np.mean(self.vectors, axis=1))
 
 
-@pytest.mark.parametrize("make_mesh", [ids_mesh, vectors_mesh, closed_mesh])
+@pytest.mark.parametrize("make_mesh", [faces_mesh, vectors_mesh, closed_mesh])
 def test_polygon_map(make_mesh):
     self = make_mesh(100)
     # For each polygon, what vertices does it share with each neighbour.
-    points_match = self.ids[self.polygon_map][:, :, np.newaxis] \
-                   == self.ids[:, np.newaxis, :, np.newaxis]
+    points_match = self.faces[self.polygon_map][:, :, np.newaxis] \
+                   == self.faces[:, np.newaxis, :, np.newaxis]
 
     from motmot._polygon_map import make_polygon_map
-    no_C = make_polygon_map(self.ids, len(self.vertices), use_C=False)
+    no_C = make_polygon_map(self.faces, len(self.vertices), use_C=False)
     assert np.all(self.polygon_map == no_C)
     no_neighbour_mask = self.polygon_map == -1
 
-    assert self.polygon_map.shape == self.ids.shape
+    assert self.polygon_map.shape == self.faces.shape
     if make_mesh is closed_mesh:
         assert not np.any(no_neighbour_mask)
 
@@ -269,13 +272,13 @@ def test_polygon_map(make_mesh):
 
 def test_as_array():
     """numpy.asarray(mesh) must be blocked."""
-    self = ids_mesh(10)
+    self = faces_mesh(10)
     with pytest.raises(TypeError, match="Meshes can't .*"):
         np.asarray(self)
 
 
 def test_displacements():
-    self = ids_mesh(5, 4)
+    self = faces_mesh(5, 4)
     assert self.displacements.shape == (5, 4, 3)
 
     # Another non-test.
@@ -331,48 +334,49 @@ def test_closes_point():
 
 
 def test_writing_core_attributes_of_vectors_mesh():
-    """Tests writing to the vectors, vertices and ids attributes of an ids mesh.
+    """Tests writing to the vectors, vertices and faces attributes of a faces
+    mesh.
 
     - `vectors` should not be writeable.
     - `vertices` should be writeable, resizable, allow changes of dtypes but
       always silently enforce C contiguous arrays.
-    - `ids` should be writeable and resizable but silently enforce C contiguity
-      and numpy.intp dtype.
+    - `faces` should be writeable and resizable but silently enforce C
+      contiguity and numpy.intp dtype.
 
     After any modifications, all lazy attributes should be reset.
 
     """
-    self = ids_mesh(5, 4)
+    self = faces_mesh(5, 4)
     assert self.vertices.flags.writeable
 
     old_vertices = self.vertices
     old_normals = self.normals
-    old_ids = self.ids
+    old_faces = self.faces
 
     self.vertices = np.asarray(np.append([[9, 9, 9]], self.vertices, axis=0),
                                dtype=np.float32, order="f")
     assert self.vertices is not old_vertices
     assert self.normals is not old_normals
-    assert self.ids is old_ids
+    assert self.faces is old_faces
     assert self.vertices.flags.c_contiguous
     assert self.vertices.dtype == np.float32
 
-    self.ids = np.asarray(self.ids + 1, dtype=np.uint8, order="f")
-    assert self.ids.dtype == np.intp
-    assert self.ids.dtype
+    self.faces = np.asarray(self.faces + 1, dtype=np.uint8, order="f")
+    assert self.faces.dtype == np.intp
+    assert self.faces.dtype
 
-    with pytest.raises(ValueError, match="ids mesh's vectors .* readonly"):
+    with pytest.raises(ValueError, match="faces mesh's vectors .* readonly"):
         self.vectors += 1
 
 
-def test_writing_core_attributes_of_ids_mesh():
-    """Tests writing to the vectors, vertices and ids attributes of a vectors
+def test_writing_core_attributes_of_faces_mesh():
+    """Tests writing to the vectors, vertices and faces attributes of a vectors
      mesh.
 
     - `vectors` should be writeable, resizable, allow changes of dtypes but
       always silently enforce C contiguous arrays.
     - `vertices` should not be writeable.
-    - `ids` should not be writeable.
+    - `faces` should not be writeable.
 
     After any modifications, all lazy attributes should be reset.
 
@@ -388,8 +392,8 @@ def test_writing_core_attributes_of_ids_mesh():
     with pytest.raises(ValueError, match="vectors mesh's vertices .*"):
         self.vertices = 8
 
-    with pytest.raises(ValueError, match="vectors mesh's ids .*"):
-        self.ids += 1
+    with pytest.raises(ValueError, match="vectors mesh's faces .*"):
+        self.faces += 1
 
     self.vectors = np.asarray(self.vectors[:-2], order="f", dtype=np.float32)
     assert self.dtype == np.float32
@@ -397,7 +401,7 @@ def test_writing_core_attributes_of_ids_mesh():
 
 
 def test_invalid_core_inputs():
-    """Test setting vectors, vertices or ids to arrays with invalid shapes.
+    """Test setting vectors, vertices or faces to arrays with invalid shapes.
     This can be done either on construction or later by setting attributes.
     """
 
@@ -448,32 +452,32 @@ def test_invalid_core_inputs():
     self.vertices = np.zeros((4, 3), order="f")
     assert self.vertices.flags.c_contiguous
 
-    # --- IDs ---
+    # --- Faces ---
 
-    # IDs follows almost the same rules as Vertices.
+    # Faces follows almost the same rules as Vertices.
     self = Mesh([], [])
     # Assume zero triangular polygons by default.
-    assert self.ids.shape == (0, 3)
+    assert self.faces.shape == (0, 3)
 
     # Again, a single polygon should be promoted to a 2D array with length 1.
-    self.ids = np.array([1, 2, 3], np.int8)
-    assert self.ids.shape == (1, 3)
+    self.faces = np.array([1, 2, 3], np.int8)
+    assert self.faces.shape == (1, 3)
     # But the integer type must be normalised to ptrdiff_t.
-    assert self.ids.dtype == np.intp
+    assert self.faces.dtype == np.intp
 
     # C contiguity must be enforced.
-    self.ids = np.zeros((10, 3), order="f")
-    assert self.ids.flags.c_contiguous
+    self.faces = np.zeros((10, 3), order="f")
+    assert self.faces.flags.c_contiguous
 
     # Arbitrary shapes are allowed...
-    self.ids = [[1, 2, 3, 4]]
-    assert self.ids.shape == (1, 4)
-    self.ids = np.empty((0, 12))
-    assert self.ids.shape == (0, 12)
+    self.faces = [[1, 2, 3, 4]]
+    assert self.faces.shape == (1, 4)
+    self.faces = np.empty((0, 12))
+    assert self.faces.shape == (0, 12)
     assert (len(self), self.per_polygon) == (0, 12)
 
     # ... unless they are 3D.
     with pytest.raises(
             ValueError,
-            match=r"'ids' .* too many .* A 2D .* shape \(5, 4, 3\)\."):
-        self.ids = np.zeros((5, 4, 3))
+            match=r"'faces' .* too many .* A 2D .* shape \(5, 4, 3\)\."):
+        self.faces = np.zeros((5, 4, 3))

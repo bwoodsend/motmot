@@ -49,7 +49,7 @@ def test_signed():
     assert self.curvature.signed.shape == (len(self), self.per_polygon)
     assert np.all(self.curvature.signed > 0)
 
-    self.ids[:] = self.ids[:, ::-1]
+    self.faces[:] = self.faces[:, ::-1]
     self.reset()
     assert np.all(self.curvature.signed < 0)
 

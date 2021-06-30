@@ -29,7 +29,7 @@ INPUTS = [
 def test_read(path):
 
     self = Mesh(path)
-    assert self.is_ids_mesh is False
+    assert self.is_faces_mesh is False
     assert np.array_equal(self.vectors, numpy_rabbit.vectors)
 
     if isinstance(path, (io.BytesIO, np.ndarray)):
