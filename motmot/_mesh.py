@@ -815,20 +815,18 @@ class Mesh(object):
         return self.vertices[self.vertex_map[self.vertex_table[vertex]]]
 
     @cached_property
-    def _reverse_faces(self):
+    def reverse_faces(self):
         """A mapping of which polygons each vertex is in.
 
         This mapping uses flat indices. i.e. To find all instances of vertex
         123 use::
 
             polygon_ids, corners = \\
-                np.divmod(self._reverse_ids[123], self.per_polygon)
+                np.divmod(self.reverse_ids[123], self.per_polygon)
 
-        Then ``self.faces[polygon_ids, corners]`` will all equal 123.
+        Then :py:`self.faces[polygon_ids, corners]` will all equal 123.
 
         """
-        # I'm keeping this private for now as I'm not convinced that it'll be
-        # that useful.
         return RaggedArray.group_by(np.arange(self.faces.size),
                                     self.faces.ravel())
 
@@ -854,7 +852,7 @@ class Mesh(object):
             id = self.vertex_table[vertex]
         if not np.isscalar(id):
             raise ValueError("Only single vertices are supported.")
-        polygons, sub_faces = np.divmod(self._reverse_faces[id],
+        polygons, sub_faces = np.divmod(self.reverse_faces[id],
                                         self.per_polygon)
         return np.any(self.polygon_map[polygons, sub_faces] == -1) \
                or np.any(self.polygon_map[polygons, sub_faces - 1] == -1)

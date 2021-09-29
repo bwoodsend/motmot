@@ -4,6 +4,7 @@
 import operator
 
 import numpy as np
+from rockhopper import RaggedArray
 import pytest
 
 from motmot import Mesh, geometry, _compat, Curvature
@@ -111,7 +112,7 @@ def test_lazy_updates(modifier, attr, use_id_mesh):
         placebo_[geometry.magnitude(placebo._vertex_normals) < 1e-12] = np.nan
         trial_[geometry.magnitude(trial._vertex_normals) < 1e-12] = np.nan
 
-    elif attr == "vertex_map":
+    elif isinstance(trial_, RaggedArray):
         # This is a RaggedArray which doesn't (yet) support ==.
         assert np.array_equal(trial_.flat, placebo_.flat)
         assert np.array_equal(trial_.starts, placebo_.starts)
