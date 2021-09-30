@@ -35,5 +35,5 @@ COPY motmot/_version.py /io/motmot
 # Set this repo's root as the cwd.
 WORKDIR /io
 
-# Install it. Skip build isolation for speed (and sanity).
-RUN pip install --prefer-binary --no-build-isolation -e .[test]
+# Install it.
+RUN pip install --prefer-binary -e .[test]
