@@ -22,6 +22,8 @@ import sys
 
 sys.path.insert(0, os.path.abspath('../..'))
 
+from pathlib import Path
+from textwrap import indent
 import motmot
 
 # -- General configuration ---------------------------------------------
@@ -179,3 +181,28 @@ nitpick_ignore = [
     # This has no intersphinx-able location.
     ("py:class", "rockhopper.RaggedArray"),
 ]
+
+# --- Changelog ---
+
+histories = sorted(
+    Path("../../history").resolve().glob("*.rst"),
+    key=lambda x: tuple(map(int, x.stem.split("."))), reverse=True)
+
+history = """\
+=========
+Changelog
+=========
+
+.. role:: red
+    :class: in-red
+
+Release history for `motmot`.
+Breaking changes are :red:`highlighted in red` text.
+
+""" + "\n".join(f"v{i.stem}\n-{'-' * len(i.stem)}\n\n"
+                f".. rst-class:: spacious\n\n"
+                f"{indent(i.read_text(), '    ')}" for i in histories)
+
+history_path = Path("history.rst")
+if (not history_path.exists()) or history_path.read_text() != history:
+    history_path.write_text(history)

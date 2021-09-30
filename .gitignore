@@ -125,3 +125,6 @@ motmot/queue.h
 
 # Git itself. Used by yapfignore and dockerignore.
 .git
+
+# Generated automatically.
+docs/source/history.rst

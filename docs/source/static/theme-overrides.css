@@ -74,3 +74,8 @@ html.writer-html4 .rst-content dl:not(.docutils) > dt, html.writer-html5 .rst-co
     color: #0C546C;
     border-top: 3px solid #1586AC;
 }
+
+/* Custom `.. rst-class:: in-red` blocks. */
+.in-red {
+  color: darkred;
+}

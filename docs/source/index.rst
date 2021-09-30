@@ -8,6 +8,7 @@
     stubs/mesh
     stubs/geometry
     stubs/connectivity
+    history
 
 
 Indices and tables
