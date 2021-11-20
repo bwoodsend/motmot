@@ -1,0 +1,4 @@
+* Add :meth:`Mesh.save()` to write to STL file.
+
+* Support reading raw file handle numbers (like the builtin :func:`open`
+  function).
