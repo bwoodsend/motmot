@@ -25,7 +25,7 @@ INPUTS = [
 ]
 
 
-@pytest.mark.parametrize("path", INPUTS)
+@pytest.mark.parametrize("path", INPUTS, ids=repr)
 def test_read(path):
 
     self = Mesh(path)

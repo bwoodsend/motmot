@@ -18,7 +18,7 @@ from hirola import HashTable
 from rockhopper import RaggedArray
 
 from motmot._compat import cached_property
-from motmot._misc import idx, Independency, read_archived, as_nD
+from motmot._misc import idx, Independency, as_nD, open_
 from motmot import geometry
 
 
@@ -72,26 +72,30 @@ class Mesh(object):
         .. _meshio: https://github.com/nschloe/meshio
 
         """
+        self.name = ""
+
         if faces is None:
-            if isinstance(vertices, (str, os.PathLike)):
-                file = read_archived(vertices)
-                self.__init__(file, name=name)
-                self.path = vertices
-                return
-            elif isinstance(vertices, io.IOBase):
-                # numpy-stl's detection for streams has some holes in it.
-                # Force streams to be BytesIO()s. Note that even ASCII STLs must
-                # be read in binary mode.
-                fh = io.BytesIO(vertices.read())
+            if not isinstance(vertices, (list, np.ndarray)):
+                with open_(vertices, "rb") as f:
+                    # numpy-stl's detection for streams has some holes in it.
+                    # For some reason, just passing the open compressed file to
+                    # numpy-stl causes it to only read some of it. Create a
+                    # redundant intermediate io.BytesIO(). Note that even ASCII
+                    # STLs must be read in binary mode.
+                    fh = io.BytesIO(f.read())
+
                 mesh = _Mesh.from_file(None, fh=fh, calculate_normals=False)
                 self.vectors = mesh.vectors
+                if isinstance(vertices, (str, os.PathLike)):
+                    self.path = vertices
+                self.name = mesh.name
             else:
                 self.vectors = vertices
         else:
             self.is_faces_mesh = True
             self.vertices = vertices
             self.faces = faces
-        self.name = name
+        self.name = name or self.name
 
         self._bounds = np.empty((2, 3), self.dtype)
 

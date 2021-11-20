@@ -5,11 +5,12 @@
 import sys
 import os
 import runpy
+import io
 
 import pytest
 
 from motmot._compat import cached_property
-from motmot._misc import Independency, read_archived
+from motmot._misc import Independency, open_
 
 from tests.data import HERE
 
@@ -109,6 +110,26 @@ compressed_files = list((HERE / "compressed_files").glob("*"))
 def test_read_archived(path):
     """Decompress each file in tests/compressed_files and check that they say
      what they're supposed to say."""
-    contents = read_archived(path).read().strip()
+    with open_(path, "rb") as f:
+        contents = f.read().strip()
     # Each file contains: "This file is compression-method compressed."
     assert contents == f"This file is {path.stem} compressed.".encode()
+
+
+def test_open_pipe():
+    """Test opening a raw file handle number."""
+    read, write = os.pipe()
+    with open_(write, "wb") as f:
+        f.write(b"hello\n")
+
+    with open_(read, "rb") as f:
+        assert f.read() == b"hello\n"
+
+
+def test_open_buffer():
+    """Test opening an already open buffer."""
+    write = io.BytesIO()
+    with open_(write, "wb") as f:
+        write.write(b"hello\n")
+    assert not write.closed
+    assert write.getvalue() == b"hello\n"
