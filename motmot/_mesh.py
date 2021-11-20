@@ -983,6 +983,20 @@ class Mesh(object):
 
         return args
 
+    def save(self, file):
+        """Write the mesh to a file or pseudo file. Currently only STL format
+        and compressed variants of STL (``.stl.xz``) are supported."""
+        data = np.empty(len(self), _Mesh.dtype)
+        mesh = _Mesh(data, name=self.name)
+        mesh.vectors = self.vectors
+        mesh.normals = self.units
+        mesh.name = self.name
+        # Monkeypatch numpy-stl's header making method to use just the name we
+        # gave it.
+        mesh.get_header = lambda *args: mesh.name[:80].ljust(80, " ")
+        with open_(file, "wb") as f:
+            mesh.save(self.name, fh=f, update_normals=False)
+
 
 independent.init(Mesh)
 Mesh._reset_on_rotate = independent.reset_on("rotate")

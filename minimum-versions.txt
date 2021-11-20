@@ -4,6 +4,6 @@
 cslug==0.1.0
 hirola==0.1.0
 numpy==1.16.0
-numpy-stl==2.12.0
+numpy-stl==2.14.0
 pykdtree==1.2.0
 rockhopper==0.1.1

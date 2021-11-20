@@ -4,6 +4,7 @@
 
 import io
 from pathlib import Path
+import os
 
 import numpy as np
 import pytest
@@ -40,3 +41,25 @@ def test_read(path):
         assert self.path is None
 
     assert self.vectors.flags.contiguous
+
+
+@pytest.mark.parametrize(
+    "name", ["foo.stl", "foo.stl.gz", "foo.stl.bz2", "foo.stl.xz"], ids=repr)
+def test_write(name):
+    vectors = np.arange(18, dtype=np.float32).reshape((2, 3, 3))
+    self = Mesh(vectors, name="bob")
+    assert self.name == "bob"
+
+    path = data.DUMP_DIR / name
+    try:
+        os.remove(path)
+    except FileNotFoundError:
+        pass
+    self.save(path)
+
+    if name == "foo.stl":
+        assert b"bob     " == path.read_bytes()[:8]
+
+    mesh = Mesh(path)
+    assert np.all(mesh.vectors == vectors)
+    assert mesh.name == b"bob"
