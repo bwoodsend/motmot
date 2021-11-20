@@ -53,7 +53,7 @@
 }
 .wy-body-for-nav {
   /* Color-match the empty space on the right hand side. */
-  background-image: linear-gradient(30deg, #A59D6C, rgb(118, 118, 66));
+  background-image: linear-gradient(30deg, #A59D6C, #BEC2C3);
   height: 100%;
   margin: 0;
   background-repeat: no-repeat;
