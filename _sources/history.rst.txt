@@ -1,0 +1,33 @@
+=========
+Changelog
+=========
+
+.. role:: red
+    :class: in-red
+
+Release history for `motmot`.
+Breaking changes are :red:`highlighted in red` text.
+
+v0.3.0
+------
+
+.. rst-class:: spacious
+
+    * Add :meth:`Mesh.save()` to write to STL file.
+
+    * Support reading raw file handle numbers (like the builtin :func:`open`
+      function).
+
+v0.2.0
+------
+
+.. rst-class:: spacious
+
+    * Add :attr:`Mesh.reverse_faces` property.
+
+v0.1.0
+------
+
+.. rst-class:: spacious
+
+    * Initial release.

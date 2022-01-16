@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Search &mdash; Motmot 0.3.0 documentation</title>
+  <title>Changelog &mdash; Motmot 0.3.0 documentation</title>
   
 
   
@@ -27,7 +27,6 @@
   
 
   
-    
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -44,9 +43,9 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-    <script type="text/javascript" src="_static/searchtools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="#" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Connectivity API reference" href="stubs/connectivity.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -77,7 +76,7 @@
 
           
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="#" method="get">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -96,11 +95,16 @@
             
             
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="stubs/mesh.html">Mesh API reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="stubs/geometry.html">Geometry API reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="stubs/connectivity.html">Connectivity API reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="history.html">Changelog</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#v0-3-0">v0.3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-2-0">v0.2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-1-0">v0.1.0</a></li>
+</ul>
+</li>
 </ul>
 
             
@@ -147,12 +151,14 @@
     
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Search</li>
+      <li>Changelog</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
+            <a href="_sources/history.rst.txt" rel="nofollow"> View page source</a>
+          
         
       </li>
     
@@ -164,23 +170,44 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <noscript>
-  <div id="fallback" class="admonition warning">
-    <p class="last">
-      Please activate JavaScript to enable the search functionality.
-    </p>
-  </div>
-  </noscript>
+  <div class="section" id="changelog">
+<h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
+<p>Release history for <cite>motmot</cite>.
+Breaking changes are <span class="in-red">highlighted in red</span> text.</p>
+<div class="section" id="v0-3-0">
+<h2>v0.3.0<a class="headerlink" href="#v0-3-0" title="Permalink to this headline">¶</a></h2>
+<ul class="spacious simple">
+<li><p>Add <a class="reference internal" href="stubs/mesh.html#motmot.Mesh.save" title="motmot.Mesh.save"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Mesh.save()</span></code></a> to write to STL file.</p></li>
+<li><p>Support reading raw file handle numbers (like the builtin <a class="reference external" href="https://docs.python.org/3/library/functions.html#open" title="(in Python v3.10)"><code class="xref py py-func docutils literal notranslate"><span class="pre">open()</span></code></a>
+function).</p></li>
+</ul>
+</div>
+<div class="section" id="v0-2-0">
+<h2>v0.2.0<a class="headerlink" href="#v0-2-0" title="Permalink to this headline">¶</a></h2>
+<ul class="spacious simple">
+<li><p>Add <a class="reference internal" href="stubs/mesh.html#motmot.Mesh.reverse_faces" title="motmot.Mesh.reverse_faces"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Mesh.reverse_faces</span></code></a> property.</p></li>
+</ul>
+</div>
+<div class="section" id="v0-1-0">
+<h2>v0.1.0<a class="headerlink" href="#v0-1-0" title="Permalink to this headline">¶</a></h2>
+<ul class="spacious simple">
+<li><p>Initial release.</p></li>
+</ul>
+</div>
+</div>
 
-  
-  <div id="search-results">
-  
-  </div>
 
            </div>
            
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="stubs/connectivity.html" class="btn btn-neutral float-left" title="Connectivity API reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
@@ -220,14 +247,7 @@
   
   
     
-  
-  <script type="text/javascript">
-    jQuery(function() { Search.loadIndex("searchindex.js"); });
-  </script>
-  
-  <script type="text/javascript" id="searchindexloader"></script>
    
-
 
 </body>
 </html>

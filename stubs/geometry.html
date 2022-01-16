@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Geometry API reference &mdash; Motmot 0.1.0 documentation</title>
+  <title>Geometry API reference &mdash; Motmot 0.3.0 documentation</title>
   
 
   
@@ -71,7 +71,7 @@
             
             
               <div class="version">
-                0.1.0
+                0.3.0
               </div>
             
           
@@ -96,11 +96,12 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="mesh.html">Mesh API reference</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Geometry API reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="connectivity.html">Connectivity API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../history.html">Changelog</a></li>
 </ul>
 
             
@@ -174,7 +175,7 @@
 <dd><p>Calculate the area of arbitrary polygons.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -209,11 +210,11 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>points</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><em>numpy.ndarray</em></a>) – Some points.</p></li>
-<li><p><strong>direction</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><em>numpy.ndarray</em></a><em> or </em><a class="reference internal" href="#motmot.geometry.UnitVector" title="motmot.geometry.UnitVector"><em>UnitVector</em></a>) – A direction.</p></li>
-<li><p><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – Specify the furthest <strong>n</strong> points instead of just one.</p></li>
-<li><p><strong>return_projection</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – If true, also return the projection of the furthest point(s).</p></li>
-<li><p><strong>return_args</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – If true, also return the index(es) similar to <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.argmax.html#numpy.argmax" title="(in NumPy v1.21)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.argmax()</span></code></a>.</p></li>
+<li><p><strong>points</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><em>numpy.ndarray</em></a>) – Some points.</p></li>
+<li><p><strong>direction</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><em>numpy.ndarray</em></a><em> or </em><a class="reference internal" href="#motmot.geometry.UnitVector" title="motmot.geometry.UnitVector"><em>UnitVector</em></a>) – A direction.</p></li>
+<li><p><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em> or </em><em>None</em>) – Specify the furthest <strong>n</strong> points instead of just one.</p></li>
+<li><p><strong>return_projection</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – If true, also return the projection of the furthest point(s).</p></li>
+<li><p><strong>return_args</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – If true, also return the index(es) similar to <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.argmax.html#numpy.argmax" title="(in NumPy v1.22)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.argmax()</span></code></a>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -226,15 +227,15 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>points</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><em>numpy.ndarray</em></a>) – </p></li>
-<li><p><strong>*unit_vectors</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><em>numpy.ndarray</em></a><em> or </em><a class="reference internal" href="#motmot.geometry.UnitVector" title="motmot.geometry.UnitVector"><em>UnitVector</em></a>) – </p></li>
+<li><p><strong>points</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><em>numpy.ndarray</em></a>) – </p></li>
+<li><p><strong>*unit_vectors</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><em>numpy.ndarray</em></a><em> or </em><a class="reference internal" href="#motmot.geometry.UnitVector" title="motmot.geometry.UnitVector"><em>UnitVector</em></a>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Projections for each unit vector.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)">tuple</a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)">numpy.ndarray</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)">tuple</a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)">numpy.ndarray</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -247,14 +248,14 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>points</strong> – </p></li>
-<li><p><strong>*unit_vectors</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><em>numpy.ndarray</em></a><em> or </em><a class="reference internal" href="#motmot.geometry.UnitVector" title="motmot.geometry.UnitVector"><em>UnitVector</em></a>) – </p></li>
+<li><p><strong>*unit_vectors</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><em>numpy.ndarray</em></a><em> or </em><a class="reference internal" href="#motmot.geometry.UnitVector" title="motmot.geometry.UnitVector"><em>UnitVector</em></a>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Projections as one array.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)">numpy.ndarray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)">numpy.ndarray</a></p>
 </dd>
 </dl>
 <p>The unit-vector iteration corresponds to the last axis of the output. i.e</p>
@@ -300,13 +301,13 @@ root and can be used to compare or sort distances.</p>
 <dd><p>Modify in-place <strong>vector</strong> so that it has magnitude <code class="docutils literal notranslate"><span class="pre">1.0</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>vector</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><em>numpy.ndarray</em></a>) – Vector(s) to normalise.</p>
+<dd class="field-odd"><p><strong>vector</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><em>numpy.ndarray</em></a>) – Vector(s) to normalise.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>The original magnitudes of <strong>vector</strong>.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)">numpy.ndarray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)">numpy.ndarray</a></p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -338,7 +339,7 @@ root and can be used to compare or sort distances.</p>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>The translated points.</p>
@@ -360,7 +361,7 @@ root and can be used to compare or sort distances.</p>
 <dd class="field-odd"><p><strong>points</strong> – Some points.</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>, …]</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>, …]</p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>Each axis separately as a tuple.</p>
@@ -378,7 +379,7 @@ root and can be used to compare or sort distances.</p>
 <dd class="field-odd"><p><strong>axes</strong> – Each separate axis to combine.</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>A single array with <code class="code highlight python docutils literal notranslate"><span class="n"><span class="pre">shape</span></span><span class="p"><span class="pre">[</span></span><span class="o"><span class="pre">-</span></span><span class="mi"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span> <span class="o"><span class="pre">==</span></span> <span class="nb"><span class="pre">len</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">axes</span></span><span class="p"><span class="pre">)</span></span></code>.</p>
@@ -410,13 +411,13 @@ axes doesn’t have to be 3.</p>
 <p class="admonition-title">See also</p>
 <p><a class="reference internal" href="#motmot.geometry.unzip" title="motmot.geometry.unzip"><code class="xref py py-func docutils literal notranslate"><span class="pre">unzip()</span></code></a> for the reverse.</p>
 </div>
-<p>This function is similar to <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.c_.html#numpy.c_" title="(in NumPy v1.21)"><code class="xref py py-data docutils literal notranslate"><span class="pre">numpy.c_</span></code></a> except that it is not limited
+<p>This function is similar to <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.c_.html#numpy.c_" title="(in NumPy v1.22)"><code class="xref py py-data docutils literal notranslate"><span class="pre">numpy.c_</span></code></a> except that it is not limited
 to 2D arrays.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="motmot.geometry.UnitVector">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">motmot.geometry.</span></span><span class="sig-name descname"><span class="pre">UnitVector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/geometry/_unit_vector.html#UnitVector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.geometry.UnitVector" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">motmot.geometry.</span></span><span class="sig-name descname"><span class="pre">UnitVector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/geometry/_unit_vector.html#UnitVector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.geometry.UnitVector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Unit vectors symbolise directions.</p>
 <p>A <a class="reference internal" href="#motmot.geometry.UnitVector" title="motmot.geometry.UnitVector"><code class="xref py py-class docutils literal notranslate"><span class="pre">UnitVector</span></code></a> wraps around an numpy array, stored in the
 <a class="reference internal" href="#motmot.geometry.UnitVector.vector" title="motmot.geometry.UnitVector.vector"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vector</span></code></a> attribute, which contains the actual data. It behaves
@@ -446,7 +447,7 @@ normalised automatically.</p>
 </pre></div>
 </div>
 <p>This can do everything a numpy array can do. Any outputs produced are of
-type <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>.</p>
+type <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">up</span> <span class="o">*</span> <span class="mi">2</span>
 <span class="go">array([1.2, 1.6, 0. ])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">up</span> <span class="o">+</span> <span class="mi">1</span>
@@ -506,7 +507,7 @@ the input onto a plane with <code class="docutils literal notranslate"><span cla
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/motmot/geometry/_unit_vector.html#UnitVector.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#motmot.geometry.UnitVector.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>vector</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><em>numpy.ndarray</em></a><em> or </em><a class="reference internal" href="#motmot.geometry.UnitVector" title="motmot.geometry.UnitVector"><em>UnitVector</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><em>tuple</em></a>) – The direction as a vector, or an axis name as a string.</p>
+<dd class="field-odd"><p><strong>vector</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><em>numpy.ndarray</em></a><em> or </em><a class="reference internal" href="#motmot.geometry.UnitVector" title="motmot.geometry.UnitVector"><em>UnitVector</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)"><em>tuple</em></a>) – The direction as a vector, or an axis name as a string.</p>
 </dd>
 </dl>
 <p><strong>vector</strong> is normalised automatically.</p>
@@ -565,7 +566,7 @@ the angle between <em>this</em> vector and <strong>vector</strong> is more than 
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="motmot.geometry.UnitVector.vector">
-<span class="sig-name descname"><span class="pre">vector</span></span><em class="property"><span class="pre">:</span> <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><span class="pre">numpy.ndarray</span></a></em><a class="headerlink" href="#motmot.geometry.UnitVector.vector" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">vector</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><span class="pre">numpy.ndarray</span></a></em><a class="headerlink" href="#motmot.geometry.UnitVector.vector" title="Permalink to this definition">¶</a></dt>
 <dd><p>The raw numpy vector.</p>
 </dd></dl>
 
