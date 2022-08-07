@@ -20,7 +20,6 @@ numpy_rabbit = numpy_Mesh.from_file(str(data.rabbit_path))
 INPUTS = [
     data.rabbit_path,
     str(data.rabbit_path),
-    io.BytesIO(data.rabbit_path.read_bytes()),
     numpy_rabbit.vectors,
     data.rabbit_xz,
 ]
@@ -41,6 +40,10 @@ def test_read(path):
         assert self.path is None
 
     assert self.vectors.flags.contiguous
+
+
+def test_read_bytes_io():
+    test_read(io.BytesIO(data.rabbit_path.read_bytes()))
 
 
 @pytest.mark.parametrize(
