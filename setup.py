@@ -16,16 +16,16 @@ readme = (HERE / 'README.md').read_text("utf-8")
 setup(
     author="Brénainn Woodsend",
     author_email='bwoodsend@gmail.com',
-    python_requires='>=3.6',
+    python_requires='>=3.7',
     classifiers=[
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
     ],
     description="A sophisticated mesh class for analysing 3D surfaces.",
     install_requires=copy_requirements(),

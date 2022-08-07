@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        python-version: [3.9, 3.6, 3.7, 3.8]
+        python-version: ['3.10', 3.9, 3.7, 3.8]
         architecture: ['x64']
         include:
           - os: macos-10.15
@@ -39,7 +39,7 @@ jobs:
           git fetch --prune --unshallow
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
           architecture: ${{ matrix.architecture }}
@@ -79,4 +79,4 @@ jobs:
       # Test old versions of dependencies. Should these fail, re-pin to working
       # versions both here and in the pyproject.toml
       - run: pip install -r minimum-versions.txt && pytest
-        if: ${{ matrix.python-version == 3.6 }}
+        if: ${{ matrix.python-version == 3.7 }}
