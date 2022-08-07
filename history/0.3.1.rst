@@ -1,0 +1,1 @@
+* Fix numpy-stl assertion when saving an STL with no name.
