@@ -33,24 +33,9 @@ jobs:
 
       # Compile with clang by default which produces faster binaries.
       - run: echo CC=clang >> $GITHUB_ENV
-      # macOS needs special compiler flags to enable 'universal2' binaries.
-      - if: startsWith(matrix.os, 'macos')
-        run: echo CC_FLAGS='-arch x86_64 -arch arm64' >> $GITHUB_ENV
-
-      # Check the compiler. Don't fail if CC isn't set.
-      - run: ${CC:-echo} -v
-        shell: bash
-
       - run: pip wheel --no-deps -w dist .
-
-      # Build a universal2 wheel for macOS to support both arm64 and x86_64.
-      # Hopefully I'll think of a better way to do this and add it to cslug.
       - if: startsWith(matrix.os, 'macos')
-        run: |
-          mv dist/*.whl "dist/$(ls dist/ | sed 's/x86_64/universal2/')"
-
-      # Build a wheel for modern x86_64 Linux using clang (which produces
-      # a faster binary than gcc).
+        run: MACOS_ARCHITECTURE=arm64 pip wheel --no-deps -w arm-dist .
       - if: startsWith(matrix.os, 'ubuntu')
         run: |
           pip install auditwheel
@@ -59,31 +44,33 @@ jobs:
           auditwheel repair "$OLD_WHEEL" --plat=manylinux2014_x86_64 -w dist
           rm $OLD_WHEEL
 
-      - name: Upload wheel(s) as build artifacts
-        uses: actions/upload-artifact@v2
+      - name: Test Wheel
+        run: |
+          pip install "$(echo dist/*.whl)[test]"
+          rm -rf motmot
+          pytest --no-cov
+        shell: bash
+
+      - if: startsWith(matrix.os, 'macos')
+        run: mv arm-dist/* dist
+
+      - uses: actions/upload-artifact@v2
         with:
           name: wheels
           path: dist/*.whl
-
-      - name: Test Wheel
-        run: |
-          pip install "$(echo dist/*.whl)[test]" &&
-          rm -rf motmot &&
-          pytest --no-cov
-        shell: bash
 
   Whacky-Linux:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        base: [
-          manylinux1_x86_64,
-          manylinux1_i686,
-          manylinux2014_aarch64,
+        base:
+          - manylinux1_x86_64
+          - manylinux1_i686
+          - manylinux2014_aarch64
           # Support these when NumPy provides wheels for them.
-          # manylinux2014_ppc64le,
-          # manylinux2014_s390x,
-        ]
+          # - manylinux2014_ppc64le
+          # - manylinux2014_s390x
+
     steps:
 
       - uses: actions/checkout@v2

@@ -22,7 +22,7 @@ ENV PATH=/opt/python/cp39-cp39/bin:$PATH
 
 # Install dependencies. Do this before COPY to encourage caching.
 RUN pip install --prefer-binary wheel auditwheel numpy
-RUN pip install cslug coverage
+RUN pip install cslug coverage toml
 
 # Copy across enough of this repo to build from.
 RUN mkdir -p /io/motmot
