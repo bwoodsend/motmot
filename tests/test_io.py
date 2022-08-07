@@ -66,3 +66,8 @@ def test_write(name):
     mesh = Mesh(path)
     assert np.all(mesh.vectors == vectors)
     assert mesh.name == b"bob"
+
+    os.remove(path)
+    self.name = None
+    self.save(path)
+    assert Mesh(path).name == b""

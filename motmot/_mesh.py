@@ -993,9 +993,9 @@ class Mesh(object):
         mesh.name = self.name
         # Monkeypatch numpy-stl's header making method to use just the name we
         # gave it.
-        mesh.get_header = lambda *args: mesh.name[:80].ljust(80, " ")
+        mesh.get_header = lambda *args: (mesh.name or "")[:80].ljust(80, " ")
         with open_(file, "wb") as f:
-            mesh.save(self.name, fh=f, update_normals=False)
+            mesh.save("unused", fh=f, update_normals=False)
 
 
 independent.init(Mesh)
