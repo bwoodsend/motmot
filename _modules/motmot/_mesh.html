@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>motmot._mesh &mdash; Motmot 0.3.0 documentation</title>
+  <title>motmot._mesh &mdash; Motmot 0.3.1 documentation</title>
   
 
   
@@ -68,7 +68,7 @@
             
             
               <div class="version">
-                0.3.0
+                0.3.1
               </div>
             
           
@@ -1158,9 +1158,9 @@
         <span class="n">mesh</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
         <span class="c1"># Monkeypatch numpy-stl&#39;s header making method to use just the name we</span>
         <span class="c1"># gave it.</span>
-        <span class="n">mesh</span><span class="o">.</span><span class="n">get_header</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">mesh</span><span class="o">.</span><span class="n">name</span><span class="p">[:</span><span class="mi">80</span><span class="p">]</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+        <span class="n">mesh</span><span class="o">.</span><span class="n">get_header</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">name</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)[:</span><span class="mi">80</span><span class="p">]</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
         <span class="k">with</span> <span class="n">open_</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">mesh</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">fh</span><span class="o">=</span><span class="n">f</span><span class="p">,</span> <span class="n">update_normals</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div></div>
+            <span class="n">mesh</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;unused&quot;</span><span class="p">,</span> <span class="n">fh</span><span class="o">=</span><span class="n">f</span><span class="p">,</span> <span class="n">update_normals</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div></div>
 
 
 <span class="n">independent</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">Mesh</span><span class="p">)</span>

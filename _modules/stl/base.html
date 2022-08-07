@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>stl.base &mdash; Motmot 0.3.0 documentation</title>
+  <title>stl.base &mdash; Motmot 0.3.1 documentation</title>
   
 
   
@@ -68,7 +68,7 @@
             
             
               <div class="version">
-                0.3.0
+                0.3.1
               </div>
             
           
@@ -478,12 +478,15 @@
         <span class="n">squared_areas</span> <span class="o">=</span> <span class="p">(</span><span class="n">normals</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="n">squared_areas</span> <span class="o">&gt;</span> <span class="n">AREA_SIZE_THRESHOLD</span> <span class="o">**</span> <span class="mi">2</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">update_normals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">update_areas</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Update the normals and areas for all points&#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">update_normals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">update_areas</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">update_centroids</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Update the normals, areas, and centroids for all points&#39;&#39;&#39;</span>
         <span class="n">normals</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">v0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">v2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">v0</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">update_areas</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update_areas</span><span class="p">(</span><span class="n">normals</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">update_centroids</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_centroids</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">normals</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">normals</span>
 
@@ -507,6 +510,9 @@
 
         <span class="n">areas</span> <span class="o">=</span> <span class="mf">.5</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">normals</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">areas</span> <span class="o">=</span> <span class="n">areas</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">areas</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">update_centroids</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">centroids</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">v0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">v1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">v2</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">check</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Check the mesh is valid or not&#39;&#39;&#39;</span>
@@ -747,6 +753,8 @@
                     <span class="n">doc</span><span class="o">=</span><span class="s1">&#39;Mesh maximum value&#39;</span><span class="p">)</span>
     <span class="n">areas</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_or_update</span><span class="p">(</span><span class="s1">&#39;areas&#39;</span><span class="p">),</span> <span class="n">_set</span><span class="p">(</span><span class="s1">&#39;areas&#39;</span><span class="p">),</span>
                      <span class="n">doc</span><span class="o">=</span><span class="s1">&#39;Mesh areas&#39;</span><span class="p">)</span>
+    <span class="n">centroids</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_or_update</span><span class="p">(</span><span class="s1">&#39;centroids&#39;</span><span class="p">),</span> <span class="n">_set</span><span class="p">(</span><span class="s1">&#39;centroids&#39;</span><span class="p">),</span>
+                         <span class="n">doc</span><span class="o">=</span><span class="s1">&#39;Mesh centroids&#39;</span><span class="p">)</span>
     <span class="n">units</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_or_update</span><span class="p">(</span><span class="s1">&#39;units&#39;</span><span class="p">),</span> <span class="n">_set</span><span class="p">(</span><span class="s1">&#39;units&#39;</span><span class="p">),</span>
                      <span class="n">doc</span><span class="o">=</span><span class="s1">&#39;Mesh unit vectors&#39;</span><span class="p">)</span>
 

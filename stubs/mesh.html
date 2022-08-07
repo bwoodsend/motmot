@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Mesh API reference &mdash; Motmot 0.3.0 documentation</title>
+  <title>Mesh API reference &mdash; Motmot 0.3.1 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                0.3.0
+                0.3.1
               </div>
             
           
@@ -221,12 +221,12 @@ first.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="motmot.Mesh.bounds">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bounds</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><span class="pre">numpy.ndarray</span></a></em><a class="headerlink" href="#motmot.Mesh.bounds" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bounds</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><span class="pre">numpy.ndarray</span></a></em><a class="headerlink" href="#motmot.Mesh.bounds" title="Permalink to this definition">¶</a></dt>
 <dd><p>The minimum and maximum <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y,</span> <span class="pre">z)</span></code> values. Equivalent to
 <code class="code highlight python docutils literal notranslate"><span class="n"><span class="pre">array</span></span><span class="p"><span class="pre">([</span></span><span class="n"><span class="pre">mesh</span></span><span class="o"><span class="pre">.</span></span><span class="n"><span class="pre">min</span></span><span class="p"><span class="pre">,</span></span> <span class="n"><span class="pre">mesh</span></span><span class="o"><span class="pre">.</span></span><span class="n"><span class="pre">max</span></span><span class="p"><span class="pre">])</span></span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>2D array with shape <code class="code highlight python docutils literal notranslate"><span class="p"><span class="pre">(</span></span><span class="mi"><span class="pre">2</span></span><span class="p"><span class="pre">,</span></span> <span class="mi"><span class="pre">3</span></span><span class="p"><span class="pre">)</span></span></code>.</p>
@@ -253,7 +253,7 @@ corners.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>target</strong> – The point(s) to query. A <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> with
+<li><p><strong>target</strong> – The point(s) to query. A <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> with
 <code class="code highlight python docutils literal notranslate"><span class="n"><span class="pre">shape</span></span><span class="p"><span class="pre">[</span></span><span class="o"><span class="pre">-</span></span><span class="mi"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span> <span class="o"><span class="pre">==</span></span> <span class="mi"><span class="pre">3</span></span></code>.</p></li>
 <li><p><strong>distance_upper_bound</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]) – A optional maximum allowed distance from <strong>target</strong> before
 giving up. In this case <code class="code highlight python docutils literal notranslate"><span class="n"><span class="pre">nan</span></span></code> is returned.</p></li>
@@ -263,11 +263,11 @@ the nearest polygon.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>The nearest point(s) on the surface of the mesh. A
-<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> with the same shape as <strong>target</strong>.</p>
+<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> with the same shape as <strong>target</strong>.</p>
 </dd>
 </dl>
 <div class="admonition note">
@@ -289,9 +289,9 @@ are joined indirectly by at least one triangle.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>initial</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em> or </em><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><em>numpy.ndarray</em></a>) – The polygon id(s) to start at.</p></li>
-<li><p><strong>mask</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><em>numpy.ndarray</em></a>) – Only include regions covered by <cite>mask</cite> if specified.</p></li>
-<li><p><strong>polygon_map</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><em>numpy.ndarray</em></a>) – An alternative polygon map to use. Defaults to
+<li><p><strong>initial</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em> or </em><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – The polygon id(s) to start at.</p></li>
+<li><p><strong>mask</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – Only include regions covered by <cite>mask</cite> if specified.</p></li>
+<li><p><strong>polygon_map</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – An alternative polygon map to use. Defaults to
 <a class="reference internal" href="#motmot.Mesh.polygon_map" title="motmot.Mesh.polygon_map"><code class="xref py py-attr docutils literal notranslate"><span class="pre">polygon_map</span></code></a>.</p></li>
 </ul>
 </dd>
@@ -299,7 +299,7 @@ are joined indirectly by at least one triangle.</p>
 <dd class="field-even"><p>A connected region as a 1D bool array.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)">numpy.ndarray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)">numpy.ndarray</a></p>
 </dd>
 </dl>
 <p>This is implemented by navigating the <a class="reference internal" href="#motmot.Mesh.polygon_map" title="motmot.Mesh.polygon_map"><code class="xref py py-attr docutils literal notranslate"><span class="pre">polygon_map</span></code></a>.
@@ -318,11 +318,11 @@ then it will still be included in the output.</p>
 polygon edge.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>vertex</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – A single point from <a class="reference internal" href="#motmot.Mesh.vertices" title="motmot.Mesh.vertices"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vertices</span></code></a>.
+<dd class="field-odd"><p><strong>vertex</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – A single point from <a class="reference internal" href="#motmot.Mesh.vertices" title="motmot.Mesh.vertices"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vertices</span></code></a>.
 A NumPy array with shape <code class="docutils literal notranslate"><span class="pre">(3,)</span></code>.</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>An <code class="code highlight python docutils literal notranslate"><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">,</span></span> <span class="mi"><span class="pre">3</span></span><span class="p"><span class="pre">)</span></span></code> array where <code class="docutils literal notranslate"><span class="pre">n</span></code> is the number of connected
@@ -368,7 +368,7 @@ arrays with this mesh.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mask</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#slice" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">slice</span></code></a>]) – Polygons to include.</p></li>
+<li><p><strong>mask</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#slice" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">slice</span></code></a>]) – Polygons to include.</p></li>
 <li><p><strong>in_place</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – Modify this mesh instead of making a modified copy, defaults to
 False.</p></li>
 </ul>
@@ -435,16 +435,16 @@ neighbours’ centers.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="motmot.Mesh.dtype">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dtype</span></span><a class="headerlink" href="#motmot.Mesh.dtype" title="Permalink to this definition">¶</a></dt>
-<dd><p>The <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.dtype</span></code></a> of <a class="reference internal" href="#motmot.Mesh.vertices" title="motmot.Mesh.vertices"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vertices</span></code></a> and <a class="reference internal" href="#motmot.Mesh.vectors" title="motmot.Mesh.vectors"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vectors</span></code></a>.</p>
+<dd><p>The <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.dtype</span></code></a> of <a class="reference internal" href="#motmot.Mesh.vertices" title="motmot.Mesh.vertices"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vertices</span></code></a> and <a class="reference internal" href="#motmot.Mesh.vectors" title="motmot.Mesh.vectors"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vectors</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="motmot.Mesh.faces">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">faces</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><span class="pre">numpy.ndarray</span></a></em><a class="headerlink" href="#motmot.Mesh.faces" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">faces</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><span class="pre">numpy.ndarray</span></a></em><a class="headerlink" href="#motmot.Mesh.faces" title="Permalink to this definition">¶</a></dt>
 <dd><p>Indices of vertices used to construct each polygon.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Integer array with shape <code class="code highlight python docutils literal notranslate"><span class="p"><span class="pre">(</span></span><span class="nb"><span class="pre">len</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">mesh</span></span><span class="p"><span class="pre">),</span></span> <span class="n"><span class="pre">mesh</span></span><span class="o"><span class="pre">.</span></span><span class="n"><span class="pre">per_polygon</span></span><span class="p"><span class="pre">)</span></span></code>.</p>
@@ -461,7 +461,7 @@ neighbours’ centers.</p>
 <dd class="field-odd"><p>A <code class="code highlight python docutils literal notranslate"><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">group_ids</span></span><span class="p"><span class="pre">,</span></span> <span class="n"><span class="pre">group_count</span></span><span class="p"><span class="pre">)</span></span></code> pair.</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p>(<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)">numpy.ndarray</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a>)</p>
+<dd class="field-even"><p>(<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)">numpy.ndarray</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a>)</p>
 </dd>
 </dl>
 <p>Functionally, this is equivalent to calling <a class="reference internal" href="#motmot.Mesh.connected_polygons" title="motmot.Mesh.connected_polygons"><code class="xref py py-meth docutils literal notranslate"><span class="pre">connected_polygons()</span></code></a>
@@ -506,7 +506,7 @@ greater than that of all its <a class="reference internal" href="#motmot.Mesh.co
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>heights</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – A per-vertex scalar to rank by.</p></li>
+<li><p><strong>heights</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – A per-vertex scalar to rank by.</p></li>
 <li><p><strong>boundaries</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – If false, ignore any vertices which <a class="reference internal" href="#motmot.Mesh.on_boundary" title="motmot.Mesh.on_boundary"><code class="xref py py-meth docutils literal notranslate"><span class="pre">touch</span> <span class="pre">the</span> <span class="pre">mesh</span>
 <span class="pre">boundary</span></code></a>.</p></li>
 <li><p><strong>strict</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – If true, a vertex’s value from <strong>heights</strong> must be strictly
@@ -515,7 +515,7 @@ equal.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>The vertex ids of the vertices which are local maxima.</p>
@@ -556,7 +556,7 @@ counter-clockwise order (which is the usual convention).</p>
 <dd><p>Test if a <strong>vertex</strong> touches the edge of this mesh.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>vertex</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/numbers.html#numbers.Integral" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Integral</span></code></a>]) – A 3D point in <a class="reference internal" href="#motmot.Mesh.vertices" title="motmot.Mesh.vertices"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vertices</span></code></a>. Or a single vertex ID.</p>
+<dd class="field-odd"><p><strong>vertex</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/numbers.html#numbers.Integral" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Integral</span></code></a>]) – A 3D point in <a class="reference internal" href="#motmot.Mesh.vertices" title="motmot.Mesh.vertices"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vertices</span></code></a>. Or a single vertex ID.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
@@ -740,11 +740,11 @@ and compressed variants of STL (<code class="docutils literal notranslate"><span
 
 <dl class="py property">
 <dt class="sig sig-object py" id="motmot.Mesh.vectors">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">vectors</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><span class="pre">numpy.ndarray</span></a></em><a class="headerlink" href="#motmot.Mesh.vectors" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">vectors</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><span class="pre">numpy.ndarray</span></a></em><a class="headerlink" href="#motmot.Mesh.vectors" title="Permalink to this definition">¶</a></dt>
 <dd><p>The <code class="code highlight python docutils literal notranslate"><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">,</span></span> <span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">,</span></span> <span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">)</span></span></code> coordinates of each corner of each polygon.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>An <code class="code highlight python docutils literal notranslate"><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">number</span></span> <span class="n"><span class="pre">of</span></span> <span class="n"><span class="pre">polygons</span></span><span class="p"><span class="pre">,</span></span> <span class="n"><span class="pre">mesh</span></span><span class="o"><span class="pre">.</span></span><span class="n"><span class="pre">per_polygon</span></span><span class="p"><span class="pre">,</span></span> <span class="mi"><span class="pre">3</span></span><span class="p"><span class="pre">)</span></span></code> shaped array.</p>
@@ -825,13 +825,13 @@ values.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="motmot.Mesh.vertices">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">vertices</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><span class="pre">numpy.ndarray</span></a></em><a class="headerlink" href="#motmot.Mesh.vertices" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">vertices</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><span class="pre">numpy.ndarray</span></a></em><a class="headerlink" href="#motmot.Mesh.vertices" title="Permalink to this definition">¶</a></dt>
 <dd><p>All points in the mesh with duplicity removed.</p>
 <p>If this mesh is not originally an faces mesh, i.e. <a class="reference internal" href="#motmot.Mesh.vertices" title="motmot.Mesh.vertices"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vertices</span></code></a> had
 to be calculated from <a class="reference internal" href="#motmot.Mesh.vectors" title="motmot.Mesh.vectors"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vectors</span></code></a>, then this array is read-only.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
