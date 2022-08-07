@@ -2,6 +2,9 @@
 """
 """
 
+from pathlib import Path
+import json
+
 import numpy as np
 import hirola
 
@@ -78,3 +81,13 @@ def square_grid(n):
     vectors = top_left[:, np.newaxis] + \
               np.array([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]])
     return Mesh(vectors * .01)
+
+
+def _icosasphere(n):
+    b = Path(__file__).with_name(f"icosasphere-{n}.json").read_bytes()
+    return [np.array(i) for i in json.loads(b)]
+
+
+icosasphere_1 = _icosasphere(1)
+icosasphere_10 = _icosasphere(10)
+icosasphere_15 = _icosasphere(15)

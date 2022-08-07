@@ -49,12 +49,6 @@ to read/write to a certain format or to simplify an existing mesh.
     This library is very powerful.
     It's quite likely that you'd be better off using it instead of `motmot`.
 
-* Mesh generation:
-
-  * [meshzoo](https://github.com/nschloe/meshzoo):
-    Creates finite mesh approximations of standard geometric shapes like cubes
-    or spheres.
-
 * Mesh cleaning:
 
   * [quad_mesh_simplify](https://github.com/jannessm/quadric-mesh-simplification):

@@ -37,10 +37,6 @@ setup(
             'coverage',
             'pytest-cov',
             'coverage-conditional-plugin',
-            # meshzoo dropped 3.6 support in 0.7.6 but forgot to set the
-            # minimum supported Python version. Drop this version constraint
-            # when dropping Python 3.6.
-            'meshzoo<0.7.6',
         ]
     },
     license="MIT license",

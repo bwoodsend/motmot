@@ -3,17 +3,16 @@
 """
 
 import numpy as np
-import meshzoo
 import pytest
 
 from motmot import Mesh
-from tests import cylinder
+from tests import cylinder, icosasphere_10, icosasphere_15, icosasphere_1
 
 pytestmark = pytest.mark.order(4)
 
 
 def test_directional():
-    self = Mesh(*meshzoo.icosa_sphere(1))
+    self = Mesh(*icosasphere_1)
 
     assert self.curvature.directional.shape == (len(self), self.per_polygon, 3)
     edges = np.roll(self.vectors, -1, axis=1) - self.vectors
@@ -23,8 +22,8 @@ def test_directional():
 
 def test_scaleless():
     # Create a low and a high resolution ball both with radius 1.
-    low = Mesh(*meshzoo.icosa_sphere(10))
-    high = Mesh(*meshzoo.icosa_sphere(20))
+    low = Mesh(*icosasphere_10)
+    high = Mesh(*icosasphere_15)
     assert low.curvature.scaleless.shape == (len(low), low.per_polygon)
 
     # Sanity check that the balls do have radius 1.
@@ -45,7 +44,7 @@ def test_scaleless():
 
 
 def test_signed():
-    self = Mesh(*meshzoo.icosa_sphere(10))
+    self = Mesh(*icosasphere_10)
     assert self.curvature.signed.shape == (len(self), self.per_polygon)
     assert np.all(self.curvature.signed > 0)
 
