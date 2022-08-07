@@ -8,6 +8,13 @@ Changelog
 Release history for `motmot`.
 Breaking changes are :red:`highlighted in red` text.
 
+v0.3.1
+------
+
+.. rst-class:: spacious
+
+    * Fix numpy-stl assertion when saving an STL with no name.
+
 v0.3.0
 ------
 
