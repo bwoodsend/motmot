@@ -1,0 +1,1 @@
+* Fix numpy warnings when saving to STL via :any:`Mesh.save`.
