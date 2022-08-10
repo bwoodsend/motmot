@@ -987,7 +987,7 @@ class Mesh(object):
         """Write the mesh to a file or pseudo file. Currently only STL format
         and compressed variants of STL (``.stl.xz``) are supported."""
         data = np.empty(len(self), _Mesh.dtype)
-        mesh = _Mesh(data, name=self.name)
+        mesh = _Mesh(data, name=self.name, calculate_normals=False)
         mesh.vectors = self.vectors
         mesh.normals = self.units
         mesh.name = self.name

@@ -71,3 +71,21 @@ def test_write(name):
     self.name = None
     self.save(path)
     assert Mesh(path).name == b""
+
+
+@pytest.mark.filterwarnings("error")
+def test_write_invalid():
+    """Verify that numpy-stl's mesh cleanups are all off and that no numpy
+    warnings are emitted."""
+    vectors = np.array([
+        [[np.nan] * 3] * 3,
+        [[0] * 3] * 3,
+        [[0, 0, 0], [1, 1, 1], [2, 2, 2]],
+        [[0, 0, 0], [0, 0, 1], [0, 1, 0]],
+        [[0, 0, 0], [0, 0, 1], [0, 1, 0]],
+    ], dtype=np.float32)
+    self = Mesh(vectors)
+    file = io.BytesIO()
+    self.save(file)
+    out = Mesh(io.BytesIO(file.getvalue()))
+    assert out.vectors.tobytes() == self.vectors.tobytes()
