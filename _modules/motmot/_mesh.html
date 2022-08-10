@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>motmot._mesh &mdash; Motmot 0.3.1 documentation</title>
+  <title>motmot._mesh &mdash; Motmot 0.3.2 documentation</title>
   
 
   
@@ -68,7 +68,7 @@
             
             
               <div class="version">
-                0.3.1
+                0.3.2
               </div>
             
           
@@ -1152,7 +1152,7 @@
         <span class="sd">&quot;&quot;&quot;Write the mesh to a file or pseudo file. Currently only STL format</span>
 <span class="sd">        and compressed variants of STL (``.stl.xz``) are supported.&quot;&quot;&quot;</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="n">_Mesh</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
-        <span class="n">mesh</span> <span class="o">=</span> <span class="n">_Mesh</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">mesh</span> <span class="o">=</span> <span class="n">_Mesh</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">calculate_normals</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">mesh</span><span class="o">.</span><span class="n">vectors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vectors</span>
         <span class="n">mesh</span><span class="o">.</span><span class="n">normals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">units</span>
         <span class="n">mesh</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>

@@ -8,6 +8,13 @@ Changelog
 Release history for `motmot`.
 Breaking changes are :red:`highlighted in red` text.
 
+v0.3.2
+------
+
+.. rst-class:: spacious
+
+    * Fix numpy warnings when saving to STL via :any:`Mesh.save`.
+
 v0.3.1
 ------
 
