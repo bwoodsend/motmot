@@ -9,13 +9,10 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        python-version: ['3.10', 3.9, 3.7, 3.8]
+        python-version: ['3.10', 3.9, 3.7, 3.8, 3.11, 3.12]
         architecture: ['x64']
         include:
-          - os: macos-10.15
-            python-version: 3.9
-            architecture: 'x64'
-          - os: macos-11.0
+          - os: macos-latest
             python-version: 3.9
             architecture: 'x64'
           - name: Windows
@@ -34,24 +31,12 @@ jobs:
 
     steps:
 
-      - uses: actions/checkout@v2
-      - run: |
-          git fetch --prune --unshallow
+      - uses: actions/checkout@v4
 
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+      - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
           architecture: ${{ matrix.architecture }}
-
-      - name: Cache pip cached wheels
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: pip-cache
-          key: restore-key
-          restore-keys: restore-key
 
       - name: Install a 32 bit compiler
         if: ${{ matrix.architecture == 'x86' }}
@@ -61,7 +46,7 @@ jobs:
 
       - name: Install
         shell: bash
-        run: pip install --cache-dir=pip-cache -e .[test] toml
+        run: pip install -e .[test] toml setuptools
 
       - name: Compile
         run: python setup.py build
@@ -70,6 +55,7 @@ jobs:
         run: pytest
 
       # Test PyInstaller.
+      - run: pip uninstall -y motmot && pip install .
       - run: pip install pyinstaller
       - working-directory: tests/PyInstaller_
         run: pyinstaller frozen-pytest.spec
@@ -79,4 +65,4 @@ jobs:
       # Test old versions of dependencies. Should these fail, re-pin to working
       # versions both here and in the pyproject.toml
       - run: pip install -r minimum-versions.txt && pytest
-        if: ${{ matrix.python-version == 3.7 }}
+        if: matrix.python-version == '3.7' && matrix.architecture == 'x64'
