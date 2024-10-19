@@ -9,8 +9,6 @@ from stl.mesh import Mesh as numpy_Mesh
 from motmot import Mesh
 from tests import data
 
-pytestmark = pytest.mark.order(1)
-
 numpy_rabbit = numpy_Mesh.from_file(str(data.rabbit_path))
 
 INPUTS = [

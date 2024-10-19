@@ -4,8 +4,6 @@ import pytest
 from motmot import Mesh
 from tests import cylinder, icosasphere_10, icosasphere_15, icosasphere_1
 
-pytestmark = pytest.mark.order(4)
-
 
 def test_directional():
     self = Mesh(*icosasphere_1)

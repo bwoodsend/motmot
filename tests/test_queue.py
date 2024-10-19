@@ -1,9 +1,6 @@
 import numpy as np
-import pytest
 
 from motmot._queue import Queue
-
-pytestmark = pytest.mark.order(3)
 
 
 def test():

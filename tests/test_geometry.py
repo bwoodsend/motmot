@@ -3,8 +3,6 @@ import pytest
 
 from motmot import geometry as g
 
-pytestmark = pytest.mark.order(0)
-
 
 def _test_reduce(arr, operator: np.ufunc):
     assert np.array_equal(operator.reduce(arr, axis=-1),

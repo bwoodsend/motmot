@@ -7,8 +7,6 @@ import pytest
 from motmot import Mesh, geometry, _compat, Curvature
 from tests import faces_mesh, vectors_mesh
 
-pytestmark = pytest.mark.order(-1)
-
 
 def cache_ables(cls):
     return [

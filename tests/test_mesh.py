@@ -8,8 +8,6 @@ import pytest
 from motmot import Mesh, geometry
 from tests import data, faces_mesh, vectors_mesh, assert_mesh_equal, closed_mesh
 
-pytestmark = pytest.mark.order(2)
-
 
 def test_basics():
     """Test the basics of a mesh, generating vertices/faces from a vectors mesh

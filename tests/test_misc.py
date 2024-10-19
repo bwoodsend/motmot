@@ -10,8 +10,6 @@ from motmot._misc import Independency, open_
 
 from tests.data import HERE
 
-pytestmark = pytest.mark.order(0)
-
 
 def test():
     independent = Independency()

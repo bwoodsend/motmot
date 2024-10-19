@@ -5,8 +5,6 @@ from motmot._polygon_walk import connected
 from motmot import Mesh, geometry
 from tests import data, square_grid
 
-pytestmark = pytest.mark.order(4)
-
 
 def test_connected():
     polygon_map = np.array([

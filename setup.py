@@ -28,7 +28,7 @@ setup(
     extras_require={
         "test": [
             'pytest>=3',
-            'pytest-order',
+            'pytest-ordered',
             'coverage',
             'pytest-cov',
             'coverage-conditional-plugin',
