@@ -97,7 +97,7 @@ def test_normals():
     x, y = np.broadcast_arrays(n_projections[:, 0, np.newaxis], n_projections)
 
     # pytest.approx() seems super slow here for some reason.
-    assert np.allclose(x, y, atol=y.ptp() * 1e-5)
+    assert np.allclose(x, y, atol=np.ptp(y) * 1e-5)
 
     normals = geometry.magnitude(mesh.normals, keepdims=True) * mesh.units
     assert np.allclose(normals, mesh.normals)

@@ -83,7 +83,7 @@ class UnitVector(object):
         heights.min()   # minimum height
         heights.max()   # maximum height
         heights.mean()  # average height
-        heights.ptp()   # `peak to peak` equivalent to max - min
+        np.ptp(heights)   # `peak to peak` equivalent to max - min
 
     Get the highest point using::
 
