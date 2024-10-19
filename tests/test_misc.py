@@ -125,7 +125,7 @@ def test_open_pipe():
 def test_open_buffer():
     """Test opening an already open buffer."""
     write = io.BytesIO()
-    with open_(write, "wb") as f:
+    with open_(write, "wb"):
         write.write(b"hello\n")
     assert not write.closed
     assert write.getvalue() == b"hello\n"

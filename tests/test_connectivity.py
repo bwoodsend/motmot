@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from motmot._polygon_walk import connected, slug
+from motmot._polygon_walk import connected
 from motmot import Mesh, geometry
 from tests import data, square_grid
 

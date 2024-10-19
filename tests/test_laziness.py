@@ -5,7 +5,7 @@ from rockhopper import RaggedArray
 import pytest
 
 from motmot import Mesh, geometry, _compat, Curvature
-from tests import data, faces_mesh, vectors_mesh
+from tests import faces_mesh, vectors_mesh
 
 pytestmark = pytest.mark.order(-1)
 
