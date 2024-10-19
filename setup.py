@@ -3,7 +3,6 @@
 """
 
 from setuptools import setup, find_packages
-import runpy
 from pathlib import Path
 
 from cslug.building import (build_slugs, bdist_wheel, CSLUG_SUFFIX,
@@ -49,7 +48,7 @@ setup(
     name='motmot',
     packages=find_packages(include=['motmot', 'motmot.*']),
     url='https://github.com/bwoodsend/motmot',
-    version=runpy.run_path(HERE / "motmot/_version.py")["__version__"],
+    version="0.3.2",
     zip_safe=False,
     cmdclass={
         "build": build_slugs("motmot._slug:slug"),
