@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-"""
-
 from pathlib import Path as _Path
 
 HERE = _Path(__file__).parent.resolve()

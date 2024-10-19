@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-"""
-
 import numpy as np
 
 from motmot._compat import cached_property

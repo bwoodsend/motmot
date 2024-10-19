@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-"""
-
 from ._geometry import (
     area,
     center_of_mass,

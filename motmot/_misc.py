@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Dumping ground for random bits and bobs."""
 
 import contextlib

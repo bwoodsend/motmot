@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-"""
 from . import geometry
 from ._mesh import Mesh
 from ._curvatures import Curvature

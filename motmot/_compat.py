@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-"""
-
 # This is a backport of functools.cached_property().
 
 _UNINITIALISED = object()
