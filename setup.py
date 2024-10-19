@@ -34,7 +34,7 @@ setup(
             'coverage-conditional-plugin',
         ]
     },
-    license="MIT license",
+    license="MIT",
     long_description=readme,
     long_description_content_type='text/markdown',
     package_data={
