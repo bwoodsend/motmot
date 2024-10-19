@@ -40,7 +40,6 @@ setup(
     package_data={
         "motmot": ["*" + CSLUG_SUFFIX, "*.json", "geometry/_unit_vector.pyi"]
     },
-    keywords='motmot',
     name='motmot',
     packages=find_packages(include=['motmot', 'motmot.*']),
     url='https://github.com/bwoodsend/motmot',
