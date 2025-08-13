@@ -463,11 +463,18 @@ class Mesh(object):
             self.translate(point)
             return
 
-        # Inplace matrix multiplication (i.e. ``@=``) is not allowed.
-        if self.is_faces_mesh:
-            self.__vertices__ = self.__vertices__ @ rotation_matrix
-        else:
-            self.__vectors__ = self.__vectors__ @ rotation_matrix
+        # In a more sensible world, a vectors mesh would simply be rotated via
+        # self.__vectors__ @ rotation_matrix but matrix multiplication is
+        # subject to non-deterministic rounding (at least on macOS arm64) which
+        # causes duplicate vertices to no longer be equal to each other,
+        # breaking any subsequent connectivity calculations. Always perform
+        # rotations on faces meshes.
+        if not self.is_faces_mesh:
+            self.__vertices__ = self.vertices
+            self.__faces__ = self.faces
+            self.is_faces_mesh = True
+
+        self.__vertices__ = self.__vertices__ @ rotation_matrix
 
         # noinspection PyUnresolvedReferences
         self._reset_on_rotate()
